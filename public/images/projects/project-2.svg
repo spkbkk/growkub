@@ -1,0 +1,92 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" rx="16" fill="#111111"/>
+  <!-- Top Bar -->
+  <rect x="0" y="0" width="1200" height="48" fill="#181818"/>
+  <circle cx="28" cy="24" r="6" fill="#FF5F56"/>
+  <circle cx="48" cy="24" r="6" fill="#FFBD2E"/>
+  <circle cx="68" cy="24" r="6" fill="#27C93F"/>
+  <rect x="100" y="14" width="280" height="20" rx="4" fill="#222222"/>
+  <text x="115" y="28" fill="#A3A3A3" font-family="monospace" font-size="11">erp.supplychain.helmetdev.studio/hub-bkk</text>
+
+  <!-- Sidebar -->
+  <rect x="0" y="48" width="200" height="627" fill="#141414" stroke="#222222"/>
+  <rect x="20" y="70" width="160" height="32" rx="6" fill="#FF6A00" fill-opacity="0.15" stroke="#FF6A00" stroke-width="0.5"/>
+  <text x="35" y="91" fill="#FF6A00" font-family="sans-serif" font-weight="bold" font-size="12">📊 Hub Dashboard</text>
+  <text x="35" y="135" fill="#A3A3A3" font-family="sans-serif" font-size="12">📦 Inventory (9 Hubs)</text>
+  <text x="35" y="175" fill="#A3A3A3" font-family="sans-serif" font-size="12">🚚 Fleet Dispatch</text>
+  <text x="35" y="215" fill="#A3A3A3" font-family="sans-serif" font-size="12">📑 Barcode Scanner</text>
+  <text x="35" y="255" fill="#A3A3A3" font-family="sans-serif" font-size="12">👥 RBAC Access</text>
+
+  <!-- Main Content Dashboard -->
+  <!-- Stats Row -->
+  <rect x="230" y="80" width="210" height="100" rx="10" fill="#181818" stroke="#333333"/>
+  <text x="250" y="110" fill="#A3A3A3" font-family="sans-serif" font-size="12">Active Stock Units</text>
+  <text x="250" y="148" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="28">184,290</text>
+  <text x="250" y="168" fill="#10B981" font-family="sans-serif" font-size="11">↑ 12% vs last month</text>
+
+  <rect x="465" y="80" width="210" height="100" rx="10" fill="#181818" stroke="#333333"/>
+  <text x="485" y="110" fill="#A3A3A3" font-family="sans-serif" font-size="12">Daily Outbound Fleet</text>
+  <text x="485" y="148" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="28">42 Trucks</text>
+  <text x="485" y="168" fill="#FF6A00" font-family="sans-serif" font-size="11">● 98.4% On-time</text>
+
+  <rect x="700" y="80" width="210" height="100" rx="10" fill="#181818" stroke="#333333"/>
+  <text x="720" y="110" fill="#A3A3A3" font-family="sans-serif" font-size="12">Fulfillment Rate</text>
+  <text x="720" y="148" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="28">99.94%</text>
+  <text x="720" y="168" fill="#10B981" font-family="sans-serif" font-size="11">✓ Zero mismatch</text>
+
+  <rect x="935" y="80" width="225" height="100" rx="10" fill="#181818" stroke="#333333"/>
+  <text x="955" y="110" fill="#A3A3A3" font-family="sans-serif" font-size="12">Multi-Warehouse Sync</text>
+  <text x="955" y="148" fill="#FF6A00" font-family="sans-serif" font-weight="bold" font-size="28">9 / 9 Online</text>
+  <text x="955" y="168" fill="#A3A3A3" font-family="sans-serif" font-size="11">All DBs Synchronized</text>
+
+  <!-- Big Table / Graph Area -->
+  <rect x="230" y="205" width="930" height="430" rx="12" fill="#181818" stroke="#333333"/>
+  <text x="260" y="245" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="16">Live Warehouse Inbound & Outbound Dispatch</text>
+
+  <!-- Table Header -->
+  <rect x="260" y="270" width="870" height="35" rx="6" fill="#222222"/>
+  <text x="280" y="292" fill="#A3A3A3" font-family="monospace" font-size="12">MANIFEST ID</text>
+  <text x="430" y="292" fill="#A3A3A3" font-family="monospace" font-size="12">DESTINATION HUB</text>
+  <text x="630" y="292" fill="#A3A3A3" font-family="monospace" font-size="12">PARCEL COUNT</text>
+  <text x="800" y="292" fill="#A3A3A3" font-family="monospace" font-size="12">DISPATCH STATUS</text>
+  <text x="1000" y="292" fill="#A3A3A3" font-family="monospace" font-size="12">OPERATOR</text>
+
+  <!-- Row 1 -->
+  <text x="280" y="335" fill="#F5F5F5" font-family="monospace" font-size="12">#TRK-2026-8841</text>
+  <text x="430" y="335" fill="#F5F5F5" font-family="sans-serif" font-size="13">BKK Main Hub → Chiang Mai</text>
+  <text x="630" y="335" fill="#F5F5F5" font-family="sans-serif" font-size="13">1,450 units</text>
+  <rect x="800" y="320" width="95" height="22" rx="4" fill="#10B981" fill-opacity="0.15"/>
+  <text x="815" y="335" fill="#10B981" font-family="sans-serif" font-weight="bold" font-size="11">IN TRANSIT</text>
+  <text x="1000" y="335" fill="#A3A3A3" font-family="sans-serif" font-size="12">Driver: #D-041</text>
+  <line x1="260" y1="355" x2="1130" y2="355" stroke="#252525"/>
+
+  <!-- Row 2 -->
+  <text x="280" y="390" fill="#F5F5F5" font-family="monospace" font-size="12">#TRK-2026-8842</text>
+  <text x="430" y="390" fill="#F5F5F5" font-family="sans-serif" font-size="13">BKK Main Hub → Khon Kaen</text>
+  <text x="630" y="390" fill="#F5F5F5" font-family="sans-serif" font-size="13">980 units</text>
+  <rect x="800" y="375" width="95" height="22" rx="4" fill="#FF6A00" fill-opacity="0.15"/>
+  <text x="815" y="390" fill="#FF6A00" font-family="sans-serif" font-weight="bold" font-size="11">LOADING</text>
+  <text x="1000" y="390" fill="#A3A3A3" font-family="sans-serif" font-size="12">Driver: #D-019</text>
+  <line x1="260" y1="410" x2="1130" y2="410" stroke="#252525"/>
+
+  <!-- Row 3 -->
+  <text x="280" y="445" fill="#F5F5F5" font-family="monospace" font-size="12">#TRK-2026-8843</text>
+  <text x="430" y="445" fill="#F5F5F5" font-family="sans-serif" font-size="13">BKK Main Hub → Phuket</text>
+  <text x="630" y="445" fill="#F5F5F5" font-family="sans-serif" font-size="13">2,100 units</text>
+  <rect x="800" y="430" width="95" height="22" rx="4" fill="#10B981" fill-opacity="0.15"/>
+  <text x="815" y="445" fill="#10B981" font-family="sans-serif" font-weight="bold" font-size="11">DELIVERED</text>
+  <text x="1000" y="445" fill="#A3A3A3" font-family="sans-serif" font-size="12">Driver: #D-082</text>
+  <line x1="260" y1="465" x2="1130" y2="465" stroke="#252525"/>
+
+  <!-- Row 4 -->
+  <text x="280" y="500" fill="#F5F5F5" font-family="monospace" font-size="12">#TRK-2026-8844</text>
+  <text x="430" y="500" fill="#F5F5F5" font-family="sans-serif" font-size="13">BKK Main Hub → Rayong Hub</text>
+  <text x="630" y="500" fill="#F5F5F5" font-family="sans-serif" font-size="13">640 units</text>
+  <rect x="800" y="485" width="95" height="22" rx="4" fill="#3B82F6" fill-opacity="0.15"/>
+  <text x="815" y="500" fill="#3B82F6" font-family="sans-serif" font-weight="bold" font-size="11">QUEUED</text>
+  <text x="1000" y="500" fill="#A3A3A3" font-family="sans-serif" font-size="12">Auto Dispatched</text>
+  <line x1="260" y1="520" x2="1130" y2="520" stroke="#252525"/>
+
+  <!-- Bottom Notice -->
+  <text x="260" y="580" fill="#A3A3A3" font-family="monospace" font-size="12">System Latency: 14ms | Postgres Primary-Replica Cluster | Zero Data Loss Target: MET</text>
+</svg>

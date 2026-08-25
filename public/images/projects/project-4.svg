@@ -1,0 +1,62 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" rx="16" fill="#111111"/>
+  <!-- Top Bar -->
+  <rect x="0" y="0" width="1200" height="48" fill="#181818"/>
+  <circle cx="28" cy="24" r="6" fill="#FF5F56"/>
+  <circle cx="48" cy="24" r="6" fill="#FFBD2E"/>
+  <circle cx="68" cy="24" r="6" fill="#27C93F"/>
+  <text x="100" y="28" fill="#A3A3A3" font-family="monospace" font-size="11">telehealth.clinic-suite.helmetdev.studio</text>
+
+  <!-- Mobile Mockup Center Left -->
+  <rect x="120" y="85" width="280" height="540" rx="28" fill="#181818" stroke="#333333" stroke-width="3"/>
+  <rect x="210" y="95" width="100" height="18" rx="9" fill="#242424"/>
+  <!-- Mobile Screen Content -->
+  <rect x="135" y="125" width="250" height="480" rx="16" fill="#141414"/>
+  <text x="155" y="160" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="16">Book Appointment</text>
+  <text x="155" y="180" fill="#A3A3A3" font-family="sans-serif" font-size="11">Select Specialist Doctor</text>
+
+  <!-- Doctor Card in Phone -->
+  <rect x="145" y="200" width="230" height="85" rx="8" fill="#222222" stroke="#FF6A00" stroke-width="0.5"/>
+  <circle cx="180" cy="242" r="22" fill="#333333"/>
+  <text x="210" y="235" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="13">Dr. Ananya P.</text>
+  <text x="210" y="252" fill="#FF6A00" font-family="sans-serif" font-size="11">Cardiologist (MD)</text>
+  <text x="210" y="268" fill="#10B981" font-family="sans-serif" font-size="10">● Available Today 14:00</text>
+
+  <!-- Slots -->
+  <rect x="145" y="300" width="230" height="110" rx="8" fill="#1c1c1c"/>
+  <text x="155" y="325" fill="#A3A3A3" font-family="sans-serif" font-size="11">Available Slots (Thu, 26 Aug)</text>
+  <rect x="155" y="340" width="65" height="28" rx="6" fill="#FF6A00"/>
+  <text x="168" y="358" fill="#FFFFFF" font-family="sans-serif" font-weight="bold" font-size="11">14:00</text>
+  <rect x="228" y="340" width="65" height="28" rx="6" fill="#292929"/>
+  <text x="241" y="358" fill="#A3A3A3" font-family="sans-serif" font-size="11">15:30</text>
+  <rect x="300" y="340" width="65" height="28" rx="6" fill="#292929"/>
+  <text x="313" y="358" fill="#A3A3A3" font-family="sans-serif" font-size="11">17:00</text>
+
+  <rect x="145" y="490" width="230" height="40" rx="8" fill="#FF6A00"/>
+  <text x="190" y="515" fill="#FFFFFF" font-family="sans-serif" font-weight="bold" font-size="13">Confirm Booking →</text>
+
+  <!-- Desktop Telehealth Doctor Portal Right -->
+  <rect x="440" y="85" width="680" height="540" rx="12" fill="#181818" stroke="#333333"/>
+  <text x="470" y="130" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="20">Doctor Telehealth Encrypted Console</text>
+  
+  <rect x="470" y="160" width="620" height="280" rx="8" fill="#141414" stroke="#252525"/>
+  <rect x="485" y="175" width="380" height="250" rx="6" fill="#222222"/>
+  <circle cx="675" cy="290" r="45" fill="#303030"/>
+  <rect x="495" y="185" width="130" height="24" rx="4" fill="#FF6A00" fill-opacity="0.2"/>
+  <text x="505" y="201" fill="#FF6A00" font-family="mono" font-size="11">● Encrypted WebRTC</text>
+
+  <!-- Patient Notes Side Panel -->
+  <rect x="880" y="175" width="195" height="250" rx="6" fill="#1c1c1c"/>
+  <text x="895" y="205" fill="#F5F5F5" font-family="sans-serif" font-weight="bold" font-size="13">Patient Vitals</text>
+  <text x="895" y="235" fill="#A3A3A3" font-family="sans-serif" font-size="11">Heart Rate: 72 bpm</text>
+  <text x="895" y="260" fill="#A3A3A3" font-family="sans-serif" font-size="11">Blood Pressure: 120/80</text>
+  <text x="895" y="285" fill="#A3A3A3" font-family="sans-serif" font-size="11">Status: Regular Checkup</text>
+  <rect x="895" y="375" width="165" height="35" rx="6" fill="#10B981"/>
+  <text x="920" y="397" fill="#FFFFFF" font-family="sans-serif" font-weight="bold" font-size="12">Send Prescription</text>
+
+  <!-- Telemetry Row -->
+  <rect x="470" y="460" width="620" height="140" rx="8" fill="#141414" stroke="#252525"/>
+  <text x="495" y="495" fill="#A3A3A3" font-family="sans-serif" font-size="12">LINE Automated Notification Status</text>
+  <text x="495" y="535" fill="#10B981" font-family="sans-serif" font-weight="bold" font-size="28">100% Delivered</text>
+  <text x="495" y="565" fill="#A3A3A3" font-family="monospace" font-size="11">Zero No-Show Rate target achieved</text>
+</svg>
