@@ -135,6 +135,7 @@ export default async function CaseStudyPage({
             alt={title}
             fill
             priority
+            unoptimized
             className="object-cover object-top"
             sizes="(max-width: 1200px) 100vw, 1200px"
           />
@@ -208,6 +209,7 @@ export default async function CaseStudyPage({
                           src={img.image_url}
                           alt={alt || title}
                           fill
+                          unoptimized
                           className="object-cover object-top"
                           sizes="(max-width: 1200px) 100vw, 800px"
                         />

@@ -419,7 +419,7 @@ export const ProjectForm: React.FC<ProjectFormProps> = ({
               onChange={(e) =>
                 setFormData({ ...formData, cover_image: e.target.value })
               }
-              placeholder="/images/projects/project-1.svg"
+              placeholder="/images/projects/project-1.jpg"
             />
           </Card>
         </div>

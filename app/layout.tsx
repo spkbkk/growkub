@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Prompt } from "next/font/google";
 import "./globals.css";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
+const prompt = Prompt({
+  subsets: ["latin", "thai"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-prompt",
   display: "swap",
 });
 
@@ -52,7 +53,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} bg-smoke-black text-text-primary antialiased min-h-screen flex flex-col font-sans selection:bg-brand-orange/20 selection:text-brand-orange`}>
+      <body className={`${prompt.variable} bg-smoke-black text-text-primary antialiased min-h-screen flex flex-col font-sans selection:bg-brand-orange/20 selection:text-brand-orange`}>
         {children}
       </body>
     </html>

@@ -146,6 +146,7 @@ export default function AdminProjectsPage() {
                             src={proj.cover_image}
                             alt={proj.title_en || proj.title_th}
                             fill
+                            unoptimized
                             className="object-cover"
                           />
                         </div>

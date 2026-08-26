@@ -93,6 +93,7 @@ export const WorksList: React.FC<WorksListProps> = ({
                         src={project.cover_image}
                         alt={title}
                         fill
+                        unoptimized
                         className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                         sizes="(max-width: 768px) 100vw, 50vw"
                       />

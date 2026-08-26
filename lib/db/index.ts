@@ -30,7 +30,11 @@ class DataStore {
     featuredOnly?: boolean;
     category?: string;
   }): Project[] {
-    let list = [...this.projects];
+    // Ensure seed data covers are updated
+    let list = this.projects.map((p) => {
+      const seeded = initialProjects.find((ip) => ip.id === p.id);
+      return seeded ? { ...p, cover_image: seeded.cover_image, images: seeded.images } : p;
+    });
     if (params?.publishedOnly) {
       list = list.filter((p) => p.is_published);
     }
@@ -46,7 +50,10 @@ class DataStore {
   }
 
   getProjectBySlug(slug: string): Project | undefined {
-    return this.projects.find((p) => p.slug === slug);
+    const p = this.projects.find((p) => p.slug === slug);
+    if (!p) return undefined;
+    const seeded = initialProjects.find((ip) => ip.id === p.id);
+    return seeded ? { ...p, cover_image: seeded.cover_image, images: seeded.images } : p;
   }
 
   getProjectById(id: string): Project | undefined {
@@ -64,7 +71,7 @@ class DataStore {
       description_th: data.description_th || "",
       description_en: data.description_en || "",
       category: data.category || "Web Application",
-      cover_image: data.cover_image || "/images/projects/project-1.svg",
+      cover_image: data.cover_image || "/images/projects/project-1.jpg",
       client_name: data.client_name || "Confidential",
       project_year: data.project_year || new Date().getFullYear().toString(),
       technologies: data.technologies || ["TypeScript", "Next.js"],

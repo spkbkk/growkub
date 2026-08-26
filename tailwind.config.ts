@@ -39,6 +39,8 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
+          "var(--font-prompt)",
+          "Prompt",
           "Inter",
           "Sukhumvit Set",
           "Sukhumvit",
@@ -49,9 +51,8 @@ const config: Config = {
           "sans-serif",
         ],
         heading: [
-          "Inter",
-          "Sukhumvit Set",
-          "Sukhumvit",
+          "var(--font-prompt)",
+          "Prompt",
           "sans-serif",
         ],
       },
