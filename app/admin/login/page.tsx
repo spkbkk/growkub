@@ -3,7 +3,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Terminal, Lock, Mail, AlertCircle, ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import { Lock, Mail, AlertCircle, ArrowLeft } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
@@ -61,16 +62,24 @@ export default function AdminLoginPage() {
 
         <Card className="p-8 sm:p-10 bg-smoke-dark/95 border-border shadow-2xl space-y-6">
           {/* Logo & Title */}
-          <div className="text-center space-y-2">
-            <div className="w-12 h-12 rounded-xl bg-smoke border border-border flex items-center justify-center mx-auto text-brand-orange shadow-glow">
-              <Terminal className="w-6 h-6" />
+          <div className="text-center space-y-3">
+            <div className="w-14 h-14 rounded-2xl bg-smoke-dark border border-border/80 p-2 flex items-center justify-center mx-auto shadow-glow">
+              <Image
+                src="/logo-icon.png"
+                alt="HelmetDev Logo"
+                width={40}
+                height={40}
+                className="w-full h-full object-contain"
+              />
             </div>
-            <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
-              HelmetDev Admin
-            </h1>
-            <p className="text-xs text-text-secondary font-mono">
-              Management Portal & CMS Console
-            </p>
+            <div>
+              <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
+                Helmet<span className="text-brand-orange">Dev</span>
+              </h1>
+              <p className="text-xs text-text-secondary font-mono mt-0.5">
+                Management Portal & CMS Console
+              </p>
+            </div>
           </div>
 
           {error && (

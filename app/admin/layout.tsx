@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import {
   LayoutDashboard,
@@ -11,10 +12,10 @@ import {
   Settings,
   LogOut,
   ExternalLink,
-  Terminal,
   Shield,
   Menu,
   X,
+  Terminal,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -26,7 +27,7 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
   const router = useRouter();
-  const [user, setUser] = useState<{ email: string; name: string } | null>(null);
+  const [user, setUser] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
 
@@ -95,11 +96,17 @@ export default function AdminLayout({
               href="/admin/dashboard"
               className="flex items-center gap-2.5 group select-none"
             >
-              <div className="w-8 h-8 rounded-lg bg-smoke border border-border flex items-center justify-center">
-                <Terminal className="w-4 h-4 text-brand-orange" />
+              <div className="w-8 h-8 rounded-lg bg-smoke border border-border p-1 flex items-center justify-center group-hover:border-brand-orange/50 transition-colors">
+                <Image
+                  src="/logo-icon.png"
+                  alt="HelmetDev"
+                  width={26}
+                  height={26}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span className="text-base font-bold tracking-tight text-text-primary">
-                Helmet<span className="text-text-secondary">Dev</span>
+                Helmet<span className="text-brand-orange">Dev</span>
               </span>
             </Link>
             <ThemeToggle />
@@ -166,7 +173,15 @@ export default function AdminLayout({
         {/* Top Mobile Bar */}
         <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-smoke-dark">
           <div className="flex items-center gap-2">
-            <Terminal className="w-5 h-5 text-brand-orange" />
+            <div className="w-6 h-6 rounded-md bg-smoke border border-border p-0.5 flex items-center justify-center">
+              <Image
+                src="/logo-icon.png"
+                alt="HelmetDev"
+                width={20}
+                height={20}
+                className="w-full h-full object-contain"
+              />
+            </div>
             <span className="font-bold text-sm">HelmetDev Admin</span>
           </div>
           <div className="flex items-center gap-2">

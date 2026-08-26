@@ -66,6 +66,49 @@ export default async function ContactPage({
 
           {/* Right Info Cards */}
           <div className="lg:col-span-4 space-y-6">
+            {/* Facebook Messenger Direct Action Card */}
+            <Card className="p-6 bg-gradient-to-b from-blue-950/40 via-smoke-dark to-smoke-dark border-blue-500/30 space-y-4 relative overflow-hidden group shadow-lg">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none" />
+              
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-blue-400 font-semibold flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  {locale === "th" ? "แชทตรงกับทีมงาน (เร็วที่สุด)" : "Live Developer Chat"}
+                </span>
+                <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                  Online
+                </span>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="text-base font-bold text-text-primary">
+                  Facebook Page Messenger
+                </h3>
+                <p className="text-xs text-text-secondary leading-relaxed">
+                  {locale === "th"
+                    ? "หากต้องการปรึกษาเร่งด่วน ทักข้อความคุยกับทีม Senior Developer ผ่าน Messenger ได้ทันที"
+                    : "Need quick answers? Chat directly with our senior development team on Messenger."}
+                </p>
+              </div>
+
+              <a
+                href="https://m.me/helmetdev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition-all group-hover:shadow-blue-500/40"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  className="w-4 h-4 shrink-0"
+                  aria-hidden="true"
+                >
+                  <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.512 3.734 7.209v3.533a.75.75 0 0 0 1.155.632l3.418-2.008c.552.095 1.118.146 1.693.146 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2Zm1.08 12.38-2.613-2.787-5.099 2.787 5.607-5.952 2.68 2.787 5.033-2.787-5.608 5.952Z" />
+                </svg>
+                <span>{locale === "th" ? "เปิด Messenger ทันที →" : "Chat on Messenger →"}</span>
+              </a>
+            </Card>
+
             {/* Direct Contact Card */}
             <Card className="p-6 sm:p-8 bg-smoke-dark border-border space-y-6">
               <h3 className="text-xs font-mono uppercase tracking-wider text-text-muted">
@@ -73,6 +116,30 @@ export default async function ContactPage({
               </h3>
 
               <div className="space-y-4">
+                <div className="flex items-start gap-3.5">
+                  <div className="w-9 h-9 rounded-lg bg-smoke border border-border flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                      className="w-4 h-4"
+                      aria-hidden="true"
+                    >
+                      <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.512 3.734 7.209v3.533a.75.75 0 0 0 1.155.632l3.418-2.008c.552.095 1.118.146 1.693.146 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2Zm1.08 12.38-2.613-2.787-5.099 2.787 5.607-5.952 2.68 2.787 5.033-2.787-5.608 5.952Z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <span className="text-xs text-text-muted block">Facebook Messenger</span>
+                    <a
+                      href="https://m.me/helmetdev"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm font-semibold text-text-primary hover:text-blue-400 transition-colors"
+                    >
+                      m.me/helmetdev
+                    </a>
+                  </div>
+                </div>
+
                 <div className="flex items-start gap-3.5">
                   <div className="w-9 h-9 rounded-lg bg-smoke border border-border flex items-center justify-center text-brand-orange shrink-0 mt-0.5">
                     <Mail className="w-4 h-4" />

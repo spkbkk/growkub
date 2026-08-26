@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X, ArrowUpRight, Terminal } from "lucide-react";
+import Image from "next/image";
+import { Menu, X, ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { LanguageSwitcher } from "@/components/ui/LanguageSwitcher";
@@ -51,8 +52,8 @@ export const Navbar: React.FC<NavbarProps> = ({ locale, dict }) => {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         isScrolled
-          ? "bg-smoke-black/85 backdrop-blur-md border-b border-border shadow-sm py-3.5"
-          : "bg-transparent py-5"
+          ? "bg-smoke-black/85 backdrop-blur-md border-b border-border shadow-sm py-3"
+          : "bg-transparent py-4 sm:py-5"
       )}
     >
       <Container>
@@ -63,13 +64,25 @@ export const Navbar: React.FC<NavbarProps> = ({ locale, dict }) => {
             className="flex items-center gap-2.5 group select-none"
             aria-label="HelmetDev Home"
           >
-            <div className="w-8 h-8 rounded-lg bg-smoke border border-border flex items-center justify-center group-hover:border-brand-orange/50 transition-colors">
-              <Terminal className="w-4 h-4 text-brand-orange" />
+            <div className="relative w-8 h-8 rounded-lg bg-smoke-dark/90 border border-border/80 p-1 flex items-center justify-center group-hover:border-brand-orange/50 transition-all duration-200 group-hover:shadow-[0_0_12px_rgba(255,106,0,0.25)]">
+              <Image
+                src="/logo-icon.png"
+                alt="HelmetDev Logo"
+                width={28}
+                height={28}
+                priority
+                className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-105"
+              />
             </div>
-            <span className="text-lg font-bold tracking-tight text-text-primary flex items-center">
-              Helmet<span className="text-text-secondary group-hover:text-text-primary transition-colors">Dev</span>
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-orange ml-1 animate-pulse" />
-            </span>
+            <div className="flex flex-col">
+              <span className="text-base font-bold tracking-tight text-text-primary flex items-center leading-none">
+                Helmet<span className="text-brand-orange ml-0.5">Dev</span>
+                <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-orange ml-1 animate-pulse" />
+              </span>
+              <span className="text-[9px] font-mono tracking-widest text-text-muted uppercase mt-0.5 leading-none">
+                Digital Studio
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation Links */}

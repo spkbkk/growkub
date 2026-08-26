@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
-import { Terminal, ArrowUpRight, Github, Mail, Shield } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight, Github, Mail, Shield } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Locale, Dictionary } from "@/lib/i18n";
 
@@ -23,16 +24,27 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
           <div className="md:col-span-2 space-y-4">
             <Link
               href={`/${locale}`}
-              className="flex items-center gap-2.5 group select-none"
+              className="flex items-center gap-3 group select-none"
               aria-label="HelmetDev Home"
             >
-              <div className="w-8 h-8 rounded-lg bg-smoke border border-border flex items-center justify-center">
-                <Terminal className="w-4 h-4 text-brand-orange" />
+              <div className="relative w-9 h-9 rounded-lg bg-smoke-dark border border-border p-1.5 flex items-center justify-center group-hover:border-brand-orange/50 transition-colors">
+                <Image
+                  src="/logo-icon.png"
+                  alt="HelmetDev Logo"
+                  width={30}
+                  height={30}
+                  className="w-full h-full object-contain"
+                />
               </div>
-              <span className="text-xl font-bold tracking-tight text-text-primary">
-                Helmet<span className="text-text-secondary">Dev</span>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-orange ml-1" />
-              </span>
+              <div className="flex flex-col">
+                <span className="text-lg font-bold tracking-tight text-text-primary flex items-center leading-none">
+                  Helmet<span className="text-brand-orange ml-0.5">Dev</span>
+                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-orange ml-1" />
+                </span>
+                <span className="text-[10px] font-mono tracking-widest text-text-muted uppercase mt-0.5 leading-none">
+                  Digital Product Studio
+                </span>
+              </div>
             </Link>
             <p className="text-sm text-text-secondary max-w-sm leading-relaxed">
               {dict.footer.tagline}
@@ -96,6 +108,25 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
               {dict.footer.connectTitle}
             </h4>
             <ul className="space-y-2.5 text-sm text-text-secondary">
+              <li>
+                <a
+                  href="https://m.me/helmetdev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-colors flex items-center gap-2 group"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                    className="w-4 h-4 text-blue-400 shrink-0"
+                    aria-hidden="true"
+                  >
+                    <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.512 3.734 7.209v3.533a.75.75 0 0 0 1.155.632l3.418-2.008c.552.095 1.118.146 1.693.146 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2Zm1.08 12.38-2.613-2.787-5.099 2.787 5.607-5.952 2.68 2.787 5.033-2.787-5.608 5.952Z" />
+                  </svg>
+                  <span>Facebook Messenger</span>
+                  <ArrowUpRight className="w-3 h-3 opacity-0 -translate-y-0.5 group-hover:opacity-100 transition-opacity" />
+                </a>
+              </li>
               <li>
                 <a
                   href="mailto:contact@helmetdev.com"

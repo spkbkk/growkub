@@ -122,7 +122,22 @@ export interface Dictionary {
       location: string;
       workingHours: string;
       responseGuarantee: string;
+      facebookPage: string;
+      facebookMessenger: string;
     };
+  };
+  messengerWidget: {
+    floatingTooltip: string;
+    onlineStatus: string;
+    title: string;
+    subtitle: string;
+    greeting: string;
+    quickQuestionsTitle: string;
+    quickQuestions: { label: string; text: string }[];
+    openMessenger: string;
+    chatWithDeveloper: string;
+    otherChannels: string;
+    close: string;
   };
   caseStudy: {
     overview: string;
@@ -145,5 +160,6 @@ export interface Dictionary {
     navigationTitle: string;
     servicesTitle: string;
     connectTitle: string;
+    socialTitle: string;
   };
 }

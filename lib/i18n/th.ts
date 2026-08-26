@@ -179,7 +179,39 @@ export const th: Dictionary = {
       location: "กรุงเทพมหานคร, ประเทศไทย (บริการครอบคลุมทั่วประเทศและสากล)",
       workingHours: "จันทร์ - ศุกร์: 09:00 - 18:00 น.",
       responseGuarantee: "การันตีการติดต่อกลับภายใน 24 ชั่วโมงทำการ",
+      facebookPage: "HelmetDev Official",
+      facebookMessenger: "m.me/helmetdev",
     },
+  },
+  messengerWidget: {
+    floatingTooltip: "แชทปรึกษาทีมงานผ่าน Messenger",
+    onlineStatus: "ออนไลน์ / ตอบกลับไว",
+    title: "HelmetDev Assistant",
+    subtitle: "Digital Product & Engineering Studio",
+    greeting: "สวัสดีครับ! สนใจพัฒนาซอฟต์แวร์ ทำ Web Application, Mobile App หรือปรึกษาประเมินราคา ทักคุยกับทีมงานได้เลยครับ",
+    quickQuestionsTitle: "เลือกหัวข้อที่ต้องการคุยด่วน:",
+    quickQuestions: [
+      {
+        label: "💻 ปรึกษาพัฒนา Web App",
+        text: "สวัสดีครับ สนใจปรึกษาพัฒนา Web Application ครับ",
+      },
+      {
+        label: "📱 สนใจสร้าง Mobile App",
+        text: "สวัสดีครับ สนใจพัฒนาแอปพลิเคชันมือถือ iOS / Android ครับ",
+      },
+      {
+        label: "⚡ ขอใบเสนอราคา / ประเมินงบ",
+        text: "สวัสดีครับ ต้องการให้ทีมงานช่วยประเมินราคาโปรเจกต์ครับ",
+      },
+      {
+        label: "🛠️ ปรึกษาระบบธุรกิจ & ERP",
+        text: "สวัสดีครับ อยากปรึกษาระบบจัดการธุรกิจ / Dashboard องค์กรครับ",
+      },
+    ],
+    openMessenger: "เปิดแชทบน Facebook Messenger",
+    chatWithDeveloper: "คุยตรงกับ Senior Developer",
+    otherChannels: "หรือเลือกส่งแบบฟอร์มขอใบเสนอราคา",
+    close: "ปิดหน้าต่างแชท",
   },
   caseStudy: {
     overview: "ภาพรวมโครงการ",
@@ -202,5 +234,6 @@ export const th: Dictionary = {
     navigationTitle: "เมนูลัด",
     servicesTitle: "บริการ",
     connectTitle: "ช่องทางติดต่อ",
+    socialTitle: "โซเชียลมีเดีย",
   },
 };

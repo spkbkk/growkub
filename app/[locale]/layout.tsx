@@ -2,6 +2,7 @@ import React from "react";
 import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { MessengerFloatingWidget } from "@/components/ui/MessengerFloatingWidget";
 import { getDictionary, isValidLocale, Locale, locales } from "@/lib/i18n";
 
 export async function generateStaticParams() {
@@ -27,6 +28,11 @@ export default async function LocaleLayout({
       <Navbar locale={locale} dict={dict} />
       <main className="flex-1 w-full">{children}</main>
       <Footer locale={locale} dict={dict} />
+      <MessengerFloatingWidget
+        locale={locale}
+        dict={dict}
+        facebookPageUsername={process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || "helmetdev"}
+      />
     </div>
   );
 }

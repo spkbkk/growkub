@@ -127,6 +127,43 @@ export default function AdminSettingsPage() {
           />
         </Card>
 
+        {/* Facebook Page & Live Messenger Settings */}
+        <Card className="p-6 bg-smoke-dark/90 border-border space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold font-mono text-blue-400 uppercase flex items-center gap-2">
+              <svg
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                className="w-4 h-4 text-blue-400"
+                aria-hidden="true"
+              >
+                <path d="M12 2C6.477 2 2 6.145 2 11.258c0 2.91 1.455 5.512 3.734 7.209v3.533a.75.75 0 0 0 1.155.632l3.418-2.008c.552.095 1.118.146 1.693.146 5.523 0 10-4.145 10-9.258C22 6.145 17.523 2 12 2Zm1.08 12.38-2.613-2.787-5.099 2.787 5.607-5.952 2.68 2.787 5.033-2.787-5.608 5.952Z" />
+              </svg>
+              <span>Facebook Page & Messenger Integration</span>
+            </h3>
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              Active Widget
+            </span>
+          </div>
+
+          <p className="text-xs text-text-secondary">
+            ตั้งค่าชื่อเพจ Facebook เพื่อให้ระบบสร้างลิงก์แชท m.me อัตโนมัติสำหรับ Floating Widget และหน้าติดต่อ
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Facebook Page Username / ID"
+              placeholder="e.g. helmetdev"
+              defaultValue="helmetdev"
+            />
+            <Input
+              label="Direct Messenger Link"
+              disabled
+              value="https://m.me/helmetdev"
+            />
+          </div>
+        </Card>
+
         {/* Database & Environment Info */}
         <Card className="p-6 bg-smoke-dark/60 border-border space-y-4">
           <h3 className="text-sm font-bold font-mono text-text-muted uppercase flex items-center gap-2">

@@ -179,7 +179,39 @@ export const en: Dictionary = {
       location: "Bangkok, Thailand (Available Worldwide)",
       workingHours: "Mon - Fri: 09:00 - 18:00 (GMT+7)",
       responseGuarantee: "Fast response within 24 hours guaranteed.",
+      facebookPage: "HelmetDev Official",
+      facebookMessenger: "m.me/helmetdev",
     },
+  },
+  messengerWidget: {
+    floatingTooltip: "Chat with engineering team on Messenger",
+    onlineStatus: "Online / Fast Response",
+    title: "HelmetDev Assistant",
+    subtitle: "Digital Product & Engineering Studio",
+    greeting: "Hi there! Interested in custom web development, mobile apps, or system architecture? Chat directly with our engineering team.",
+    quickQuestionsTitle: "Choose a quick topic to start:",
+    quickQuestions: [
+      {
+        label: "💻 Web Application Consultation",
+        text: "Hi, I'd like to consult on building a Web Application.",
+      },
+      {
+        label: "📱 Mobile App Development",
+        text: "Hi, I'm interested in developing a mobile app (iOS / Android).",
+      },
+      {
+        label: "⚡ Request Quotation / Estimate",
+        text: "Hi, I'd like a project scope and cost estimation.",
+      },
+      {
+        label: "🛠️ Business & ERP Systems",
+        text: "Hi, I'd like to discuss internal business software and dashboard development.",
+      },
+    ],
+    openMessenger: "Open Facebook Messenger",
+    chatWithDeveloper: "Direct Chat with Senior Developer",
+    otherChannels: "Or submit a formal project inquiry",
+    close: "Close chat window",
   },
   caseStudy: {
     overview: "Project Overview",
@@ -202,5 +234,6 @@ export const en: Dictionary = {
     navigationTitle: "Navigation",
     servicesTitle: "Services",
     connectTitle: "Connect",
+    socialTitle: "Social Channels",
   },
 };
