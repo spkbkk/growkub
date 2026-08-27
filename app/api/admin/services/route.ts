@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const services = db.getServices();
+  const services = await db.getServices();
   return NextResponse.json({ success: true, services });
 }
 
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const slug = body.slug || slugify(body.title_en || body.title_th);
 
-    const service = db.createService({
+    const service = await db.createService({
       ...body,
       slug,
     });

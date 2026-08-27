@@ -18,10 +18,11 @@ import { formatDate } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
-export default function AdminDashboardPage() {
-  const stats = db.getAdminStats();
-  const recentLeads = db.getLeads().slice(0, 5);
-  const recentProjects = db.getProjects().slice(0, 4);
+export default async function AdminDashboardPage() {
+  const stats = await db.getAdminStats();
+  const recentLeads = (await db.getLeads()).slice(0, 5);
+  const recentProjects = (await db.getProjects()).slice(0, 4);
+  const dbHealth = await db.checkHealth();
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -47,9 +48,22 @@ export default function AdminDashboardPage() {
       {/* Page Title & Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary tracking-tight">
-            Dashboard Overview
-          </h1>
+          <div className="flex items-center gap-3 flex-wrap">
+            <h1 className="text-2xl font-bold text-text-primary tracking-tight">
+              Dashboard Overview
+            </h1>
+            {dbHealth.connected && dbHealth.mode === "postgresql" ? (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Supabase / Postgres Connected
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-amber-500/15 text-amber-400 border border-amber-500/30" title="Set DATABASE_URL to connect live PostgreSQL">
+                <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                In-Memory Mode
+              </span>
+            )}
+          </div>
           <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
             Key operational metrics and recent customer inquiries.
           </p>

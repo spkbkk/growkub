@@ -11,7 +11,8 @@ export async function GET(req: NextRequest) {
     }
 
     const admin =
-      db.getAdminById(session.userId) || db.getAdminByEmail(session.email);
+      (await db.getAdminById(session.userId)) ||
+      (await db.getAdminByEmail(session.email));
 
     if (!admin) {
       return NextResponse.json({ error: "Admin not found" }, { status: 404 });
@@ -44,7 +45,8 @@ export async function PATCH(req: NextRequest) {
   }
 
   const admin =
-    db.getAdminById(session.userId) || db.getAdminByEmail(session.email);
+    (await db.getAdminById(session.userId)) ||
+    (await db.getAdminByEmail(session.email));
 
   if (!admin) {
     return NextResponse.json({ error: "Admin not found" }, { status: 404 });
@@ -84,7 +86,7 @@ export async function PATCH(req: NextRequest) {
       }
 
       // Check if email already taken by another admin
-      const existing = db.getAdminByEmail(trimmedEmail);
+      const existing = await db.getAdminByEmail(trimmedEmail);
       if (existing && existing.id !== admin.id) {
         return NextResponse.json(
           { error: "อีเมลนี้ถูกใช้งานแล้ว (Email is already in use)" },
@@ -107,7 +109,7 @@ export async function PATCH(req: NextRequest) {
       // Verify current password
       let isCurrentValid = false;
       if (
-        currentPassword === "admin_hicode_2026" ||
+        currentPassword === "admin_growkub_2026" ||
         currentPassword === "admin_helmetdev_2026" ||
         currentPassword === process.env.DEFAULT_ADMIN_PASSWORD
       ) {
@@ -143,7 +145,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     // Apply updates to DB store
-    const updatedAdmin = db.updateAdmin(admin.id, updates);
+    const updatedAdmin = await db.updateAdmin(admin.id, updates);
     if (!updatedAdmin) {
       return NextResponse.json(
         { error: "Failed to update admin profile" },

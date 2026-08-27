@@ -211,7 +211,7 @@ export default function AdminProfilePage() {
               </div>
               <p className="text-xs sm:text-sm text-text-secondary flex items-center gap-1.5 font-mono">
                 <Mail className="w-3.5 h-3.5 text-text-muted" />
-                <span>{profile?.email || "admin@hicode.com"}</span>
+                <span>{profile?.email || "admin@growkub.com"}</span>
               </p>
             </div>
           </div>
@@ -280,7 +280,7 @@ export default function AdminProfilePage() {
                   required
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="e.g. HiCode SuperAdmin"
+                  placeholder="e.g. Growkub SuperAdmin"
                   hint="ชื่อนี้จะแสดงในแถบเมนูและบันทึกกิจกรรมของระบบ"
                 />
               </div>
@@ -292,7 +292,7 @@ export default function AdminProfilePage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@hicode.com"
+                  placeholder="admin@growkub.com"
                   hint="ใช้อีเมลนี้ในการเข้าสู่ระบบ Admin Console"
                 />
               </div>

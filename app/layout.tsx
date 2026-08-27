@@ -11,20 +11,21 @@ const prompt = Prompt({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | HiCode",
-    default: "HiCode | Digital Product & Software Development",
+    template: "%s | Growkub",
+    default: "Growkub | Digital Product & Software Development",
   },
-  description: "HiCode is a premium digital product and software engineering studio. We design and build high-performance web applications, mobile apps, and custom business systems.",
+  description: "Growkub is a premium digital product and software engineering studio. We design and build high-performance web applications, mobile apps, and custom business systems.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   openGraph: {
-    title: "HiCode | Digital Product & Software Development",
-    description: "Build scalable web applications, mobile apps, and business systems with HiCode.",
-    siteName: "HiCode",
+    title: "Growkub | Digital Product & Software Development",
+    description: "Build scalable web applications, mobile apps, and business systems with Growkub.",
+    siteName: "Growkub",
     type: "website",
   },
   icons: {
     icon: [
       { url: "/favicon.ico" },
+      { url: "/favicon.png", type: "image/png" },
       { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
       { url: "/logo-icon.png", type: "image/png" },
     ],
@@ -51,7 +52,7 @@ export default function RootLayout({
             __html: `
               (function() {
                 try {
-                  var saved = localStorage.getItem('hicode_theme') || localStorage.getItem('helmetdev_theme');
+                  var saved = localStorage.getItem('growkub_theme') || localStorage.getItem('helmetdev_theme');
                   if (saved === 'dark') {
                     document.documentElement.classList.add('dark');
                   } else {

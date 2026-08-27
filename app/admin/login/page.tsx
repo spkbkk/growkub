@@ -12,8 +12,8 @@ import { BackgroundGlow } from "@/components/ui/BackgroundGlow";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@hicode.com");
-  const [password, setPassword] = useState("admin_hicode_2026");
+  const [email, setEmail] = useState("admin@growkub.com");
+  const [password, setPassword] = useState("admin_growkub_2026");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -66,17 +66,17 @@ export default function AdminLoginPage() {
             <div className="flex justify-center mb-1">
               <Image
                 src="/logo-white.png"
-                alt="HiCode Logo"
-                width={170}
-                height={55}
+                alt="Growkub Logo"
+                width={180}
+                height={60}
                 priority
                 className="h-12 w-auto object-contain hidden dark:block"
               />
               <Image
                 src="/logo.png"
-                alt="HiCode Logo"
-                width={170}
-                height={55}
+                alt="Growkub Logo"
+                width={180}
+                height={60}
                 priority
                 className="h-12 w-auto object-contain block dark:hidden"
               />
@@ -102,7 +102,7 @@ export default function AdminLoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@hicode.com"
+              placeholder="admin@growkub.com"
             />
 
             <Input
@@ -133,8 +133,8 @@ export default function AdminLoginPage() {
             <p className="text-[11px] font-mono text-text-muted">
               Demo credentials auto-filled:
               <br />
-              <span className="text-brand-orange">admin@hicode.com</span> /{" "}
-              <span className="text-brand-orange">admin_hicode_2026</span>
+              <span className="text-brand-orange">admin@growkub.com</span> /{" "}
+              <span className="text-brand-orange">admin_growkub_2026</span>
             </p>
           </div>
         </Card>

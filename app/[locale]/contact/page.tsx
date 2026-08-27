@@ -21,8 +21,8 @@ export async function generateMetadata({
         : "Contact Us & Project Request",
     description:
       locale === "th"
-        ? "เริ่มพัฒนา Digital Product หรือระบบซอฟต์แวร์ของคุณกับทีมงาน HiCode ส่งรายละเอียดเพื่อประเมินราคาได้ทันที"
-        : "Start your project with HiCode. Send us your project details for a tailored roadmap and quote.",
+        ? "เริ่มพัฒนา Digital Product หรือระบบซอฟต์แวร์ของคุณกับทีมงาน Growkub ส่งรายละเอียดเพื่อประเมินราคาได้ทันที"
+        : "Start your project with Growkub. Send us your project details for a tailored roadmap and quote.",
   };
 }
 
@@ -92,7 +92,7 @@ export default async function ContactPage({
               </div>
 
               <a
-                href="https://m.me/hicode"
+                href="https://m.me/growkub"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition-all group-hover:shadow-blue-500/40"
@@ -130,12 +130,12 @@ export default async function ContactPage({
                   <div>
                     <span className="text-xs text-text-muted block">Facebook Messenger</span>
                     <a
-                      href="https://m.me/hicode"
+                      href="https://m.me/growkub"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm font-semibold text-text-primary hover:text-blue-400 transition-colors"
                     >
-                      m.me/hicode
+                      m.me/growkub
                     </a>
                   </div>
                 </div>

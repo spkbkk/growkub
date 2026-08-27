@@ -84,19 +84,19 @@ export default async function ServicesPage({
         "Native-grade mobile applications built for iOS and Android with fluid gesture interactions, robust offline caching, and real-time push notifications.",
       deliverables_th: [
         "พัฒนาแบบ Cross-platform ด้วย React Native หรือ Flutter",
-        "ระบบเชื่อมต่อ Push Notification (Firebase / APNs)",
+        "ระบบเชื่อมต่อ Push Notification (APNs / Web Push)",
         "การจัดเก็บข้อมูลแบบ Offline-First Cache",
         "ระบบชำระเงิน In-App Purchases และ Payment Gateways",
         "เตรียมการและส่งมอบขึ้น App Store และ Google Play Store",
       ],
       deliverables_en: [
         "Cross-platform development with Flutter or React Native",
-        "Push notification integration via Firebase / APNs",
+        "Push notification integration via APNs / Web Push",
         "Offline-first local cache synchronization",
         "In-app payments & PromptPay gateway integrations",
         "Full store deployment on Apple App Store & Google Play",
       ],
-      techStack: ["React Native", "Flutter", "TypeScript", "Firebase", "WebSockets"],
+      techStack: ["React Native", "Flutter", "TypeScript", "PostgreSQL", "WebSockets"],
     },
     {
       number: "03",

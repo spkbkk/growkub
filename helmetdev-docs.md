@@ -1,18 +1,18 @@
 คุณคือ Senior Full-Stack Developer และ UI/UX Designer
 
-โปรเจกต์นี้ชื่อ "HiCode"
+โปรเจกต์นี้ชื่อ "Growkub"
 เป็นเว็บไซต์บริษัท Digital Product & Software Development
 
 ฉันได้แนบไฟล์:
-HiCode-website-spec.md
-HiCode-docs.md
+Growkub-website-spec.md
+Growkub-docs.md
 ให้คุณอ่านและทำตาม Specification ในไฟล์นี้เป็นหลัก
 
 ==================================================
 IMPORTANT
 ==================================================
 
-1. อ่าน HiCode-website-spec.md ให้ครบก่อนเริ่มเขียน Code
+1. อ่าน Growkub-website-spec.md ให้ครบก่อนเริ่มเขียน Code
 2. ห้ามข้าม Requirement ที่ระบุใน .md
 3. หากมีรายละเอียดที่ไม่ได้ระบุ ให้เลือกแนวทางที่เรียบง่าย ปลอดภัย และเหมาะกับ Production
 4. ห้ามถามคำถามที่ไม่จำเป็น หากสามารถตัดสินใจทาง Technical ได้เอง
@@ -31,7 +31,7 @@ BRAND
 ==================================================
 
 Brand:
-HiCode
+Growkub
 
 Tagline:
 Digital Product & Software Development
@@ -437,7 +437,7 @@ FINAL GOAL
 
 เมื่อเปิดเว็บไซต์ครั้งแรก ผู้ใช้ต้องเข้าใจภายในประมาณ 5 วินาทีว่า:
 
-HiCode คือใคร
+Growkub คือใคร
 ทำอะไร
 มีผลงานอะไร
 และจะติดต่อเพื่อเริ่ม Project ได้อย่างไร
@@ -450,7 +450,7 @@ TECHNICAL
 TRUSTWORTHY
 MINIMAL
 
-เริ่มต้นจากการอ่าน HiCode-website-spec.md
+เริ่มต้นจากการอ่าน Growkub-website-spec.md
 
 จากนั้นตรวจสอบ Project ปัจจุบัน
 

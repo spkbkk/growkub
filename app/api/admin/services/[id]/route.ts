@@ -11,7 +11,7 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const service = db.getServiceById(params.id);
+  const service = await db.getServiceById(params.id);
   if (!service) {
     return NextResponse.json({ error: "Service not found" }, { status: 404 });
   }
@@ -30,7 +30,7 @@ export async function PATCH(
 
   try {
     const body = await req.json();
-    const updated = db.updateService(params.id, body);
+    const updated = await db.updateService(params.id, body);
     if (!updated) {
       return NextResponse.json({ error: "Service not found" }, { status: 404 });
     }
@@ -53,7 +53,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const deleted = db.deleteService(params.id);
+  const deleted = await db.deleteService(params.id);
   if (!deleted) {
     return NextResponse.json({ error: "Service not found" }, { status: 404 });
   }

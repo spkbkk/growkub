@@ -25,21 +25,21 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
             <Link
               href={`/${locale}`}
               className="inline-flex items-center group select-none py-1"
-              aria-label="HiCode Home"
+              aria-label="Growkub Home"
             >
               <div className="relative h-10 flex items-center">
                 <Image
                   src="/logo-white.png"
-                  alt="HiCode Logo"
-                  width={150}
-                  height={46}
+                  alt="Growkub Logo"
+                  width={160}
+                  height={48}
                   className="h-10 w-auto object-contain hidden dark:block transition-transform duration-200 group-hover:scale-105"
                 />
                 <Image
                   src="/logo.png"
-                  alt="HiCode Logo"
-                  width={150}
-                  height={46}
+                  alt="Growkub Logo"
+                  width={160}
+                  height={48}
                   className="h-10 w-auto object-contain block dark:hidden transition-transform duration-200 group-hover:scale-105"
                 />
               </div>
@@ -108,7 +108,7 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
             <ul className="space-y-2.5 text-sm text-text-secondary">
               <li>
                 <a
-                  href="https://m.me/hicode"
+                  href="https://m.me/growkub"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-blue-400 transition-colors flex items-center gap-2 group"
@@ -127,11 +127,11 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
               </li>
               <li>
                 <a
-                  href="mailto:contact@hicode.com"
+                  href="mailto:contact@growkub.com"
                   className="hover:text-brand-orange transition-colors flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4 text-text-muted" />
-                  <span>contact@hicode.com</span>
+                  <span>contact@growkub.com</span>
                 </a>
               </li>
               <li>
@@ -148,7 +148,7 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-text-muted">
-          <p>© {currentYear} HiCode Studio. {dict.footer.rights}</p>
+          <p>© {currentYear} Growkub Studio. {dict.footer.rights}</p>
         </div>
       </Container>
     </footer>

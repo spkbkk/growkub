@@ -2,7 +2,7 @@ import { Dictionary } from "./types";
 
 export const th: Dictionary = {
   common: {
-    brandName: "HiCode",
+    brandName: "Growkub",
     tagline: "Digital Product & Software Development",
     startProject: "เริ่มโปรเจกต์ →",
     viewWorks: "ดูผลงานทั้งหมด",
@@ -107,9 +107,9 @@ export const th: Dictionary = {
     ],
   },
   aboutSection: {
-    badge: "เกี่ยวกับ HiCode",
+    badge: "เกี่ยวกับ Growkub",
     title: "สร้างสรรค์ซอฟต์แวร์เพื่อขับเคลื่อนธุรกิจไปข้างหน้า",
-    leadText: "HiCode คือ Digital Product Studio ที่มุ่งเน้นการสร้างซอฟต์แวร์ที่ใช้งานได้จริง มีเสถียรภาพ และมีดีไซน์ระดับพรีเมียม",
+    leadText: "Growkub คือ Digital Product Studio ที่มุ่งเน้นการสร้างซอฟต์แวร์ที่ใช้งานได้จริง มีเสถียรภาพ และมีดีไซน์ระดับพรีเมียม",
     description: "เราผสานวิศวกรรมซอฟต์แวร์สมัยใหม่ เข้ากับการออกแบบ UI/UX ที่ประณีต เพื่อส่งมอบผลิตภัณฑ์ที่สร้างผลลัพธ์ที่จับต้องได้",
     principles: [
       {
@@ -145,7 +145,7 @@ export const th: Dictionary = {
       phone: "เบอร์โทรศัพท์ / LINE ID",
       phonePlaceholder: "081-234-5678 หรือ LINE ID",
       company: "ชื่อบริษัท / องค์กร",
-      companyPlaceholder: "เช่น บริษัท ไฮโค้ด จำกัด (ถ้ามี)",
+      companyPlaceholder: "เช่น บริษัท โกรวกรับ จำกัด (ถ้ามี)",
       projectType: "ประเภทของโปรเจกต์",
       projectTypePlaceholder: "เลือกประเภทโปรเจกต์",
       projectTypes: [
@@ -175,18 +175,18 @@ export const th: Dictionary = {
       errorMessage: "เกิดข้อผิดพลาดในการส่งข้อมูล โปรดตรวจสอบความถูกต้องแล้วลองใหม่อีกครั้ง",
     },
     info: {
-      directEmail: "contact@hicode.com",
+      directEmail: "contact@growkub.com",
       location: "กรุงเทพมหานคร, ประเทศไทย (บริการครอบคลุมทั่วประเทศและสากล)",
       workingHours: "จันทร์ - ศุกร์: 09:00 - 18:00 น.",
       responseGuarantee: "การันตีการติดต่อกลับภายใน 24 ชั่วโมงทำการ",
-      facebookPage: "HiCode Official",
-      facebookMessenger: "m.me/hicode",
+      facebookPage: "Growkub Official",
+      facebookMessenger: "m.me/growkub",
     },
   },
   messengerWidget: {
     floatingTooltip: "แชทปรึกษาทีมงานผ่าน Messenger",
     onlineStatus: "ออนไลน์ / ตอบกลับไว",
-    title: "HiCode Assistant",
+    title: "Growkub Assistant",
     subtitle: "Digital Product & Engineering Studio",
     greeting: "สวัสดีครับ! สนใจพัฒนาซอฟต์แวร์ ทำ Web Application, Mobile App หรือปรึกษาประเมินราคา ทักคุยกับทีมงานได้เลยครับ",
     quickQuestionsTitle: "เลือกหัวข้อที่ต้องการคุยด่วน:",

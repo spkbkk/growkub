@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const settings = db.getSettings();
+  const settings = await db.getSettings();
   return NextResponse.json({ success: true, settings });
 }
 
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Key is required" }, { status: 400 });
     }
 
-    const setting = db.updateSetting(key, value_th || "", value_en || "");
+    const setting = await db.updateSetting(key, value_th || "", value_en || "");
     return NextResponse.json({ success: true, setting });
   } catch (error) {
     return NextResponse.json(

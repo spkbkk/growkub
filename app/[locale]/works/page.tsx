@@ -17,8 +17,8 @@ export async function generateMetadata({
     title: locale === "th" ? "ผลงานทั้งหมด (Selected Works)" : "Selected Works & Case Studies",
     description:
       locale === "th"
-        ? "รวมผลงานและเคสศึกษาการพัฒนาระบบ Web Application, Mobile App และระบบองค์กรโดย HiCode"
-        : "Explore case studies and software products engineered by HiCode Studio.",
+        ? "รวมผลงานและเคสศึกษาการพัฒนาระบบ Web Application, Mobile App และระบบองค์กรโดย Growkub"
+        : "Explore case studies and software products engineered by Growkub Studio.",
   };
 }
 
@@ -33,7 +33,7 @@ export default async function WorksPage({
 
   const locale = params.locale as Locale;
   const dict = getDictionary(locale);
-  const projects = db.getProjects({ publishedOnly: true });
+  const projects = await db.getProjects({ publishedOnly: true });
 
   return (
     <div className="w-full pt-12 pb-24 relative">

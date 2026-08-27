@@ -62,22 +62,22 @@ export const Navbar: React.FC<NavbarProps> = ({ locale, dict }) => {
           <Link
             href={`/${locale}`}
             className="flex items-center group select-none py-1"
-            aria-label="HiCode Home"
+            aria-label="Growkub Home"
           >
             <div className="relative h-8 sm:h-9 flex items-center">
               <Image
                 src="/logo-white.png"
-                alt="HiCode Logo"
-                width={130}
-                height={40}
+                alt="Growkub Logo"
+                width={140}
+                height={42}
                 priority
                 className="h-8 sm:h-9 w-auto object-contain hidden dark:block transition-transform duration-200 group-hover:scale-105"
               />
               <Image
                 src="/logo.png"
-                alt="HiCode Logo"
-                width={130}
-                height={40}
+                alt="Growkub Logo"
+                width={140}
+                height={42}
                 priority
                 className="h-8 sm:h-9 w-auto object-contain block dark:hidden transition-transform duration-200 group-hover:scale-105"
               />

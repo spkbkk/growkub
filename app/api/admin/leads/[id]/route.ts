@@ -11,7 +11,7 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const lead = db.getLeadById(params.id);
+  const lead = await db.getLeadById(params.id);
   if (!lead) {
     return NextResponse.json({ error: "Lead not found" }, { status: 404 });
   }
@@ -47,7 +47,7 @@ export async function PATCH(
     );
   }
 
-  const updated = db.updateLeadStatus(
+  const updated = await db.updateLeadStatus(
     params.id,
     status || "NEW",
     internal_note
@@ -69,7 +69,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const deleted = db.deleteLead(params.id);
+  const deleted = await db.deleteLead(params.id);
   if (!deleted) {
     return NextResponse.json({ error: "Lead not found" }, { status: 404 });
   }

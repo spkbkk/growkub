@@ -9,7 +9,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const projects = db.getProjects();
+  const projects = await db.getProjects();
   return NextResponse.json({ success: true, projects });
 }
 
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
 
     const slug = body.slug || slugify(body.title_en || body.title_th);
 
-    const project = db.createProject({
+    const project = await db.createProject({
       ...body,
       slug,
       technologies: Array.isArray(body.technologies)

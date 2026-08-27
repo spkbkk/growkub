@@ -109,16 +109,16 @@ export default function AdminLayout({
               <div className="relative h-8 flex items-center">
                 <Image
                   src="/logo-white.png"
-                  alt="HiCode"
-                  width={110}
-                  height={32}
+                  alt="Growkub"
+                  width={120}
+                  height={36}
                   className="h-7 w-auto object-contain hidden dark:block"
                 />
                 <Image
                   src="/logo.png"
-                  alt="HiCode"
-                  width={110}
-                  height={32}
+                  alt="Growkub"
+                  width={120}
+                  height={36}
                   className="h-7 w-auto object-contain block dark:hidden"
                 />
               </div>
@@ -165,7 +165,7 @@ export default function AdminLayout({
                 <span>{user?.name || "Admin User"}</span>
               </div>
               <div className="text-[11px] text-text-muted truncate">
-                {user?.email || "admin@hicode.com"}
+                {user?.email || "admin@growkub.com"}
               </div>
             </div>
           </Link>
@@ -198,14 +198,14 @@ export default function AdminLayout({
           <div className="flex items-center">
             <Image
               src="/logo-white.png"
-              alt="HiCode"
+              alt="Growkub"
               width={100}
               height={28}
               className="h-6 w-auto object-contain hidden dark:block"
             />
             <Image
               src="/logo.png"
-              alt="HiCode"
+              alt="Growkub"
               width={100}
               height={28}
               className="h-6 w-auto object-contain block dark:hidden"

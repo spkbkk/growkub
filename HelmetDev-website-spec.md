@@ -1,11 +1,11 @@
-# HiCode — Website & Admin Development Specification
+# Growkub — Website & Admin Development Specification
 
 ## 1. Project Overview
 
-สร้างเว็บไซต์บริษัท **HiCode** ในรูปแบบ Premium Digital Product & Software Development Studio
+สร้างเว็บไซต์บริษัท **Growkub** ในรูปแบบ Premium Digital Product & Software Development Studio
 
 Brand:
-- Name: HiCode
+- Name: Growkub
 - Tagline: Digital Product & Software Development
 - Primary language: Thai / English
 - UI: Minimal, Premium, Modern, Dark Tech
@@ -73,7 +73,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 ## Visual Concept
 
-HiCode = Premium / Dark / Minimal / Software Studio
+Growkub = Premium / Dark / Minimal / Software Studio
 
 ไม่ต้องทำเว็บแนว Corporate ที่มีข้อความจำนวนมาก
 
@@ -151,7 +151,7 @@ font-family:
 Desktop:
 
 ```text
-HiCode
+Growkub
 
 Services
 Works
@@ -336,7 +336,7 @@ Deliver and improve
 ตัวอย่าง:
 
 ```text
-HiCode is a digital product studio
+Growkub is a digital product studio
 focused on building useful software
 for modern businesses.
 ```
@@ -587,7 +587,7 @@ Layout:
 
 ```text
 ┌────────────────────────────────────────────┐
-│ HiCode Admin                    Admin ▾ │
+│ Growkub Admin                    Admin ▾ │
 ├──────────────┬─────────────────────────────┤
 │ Dashboard    │                             │
 │ Leads        │        Content Area         │
@@ -780,13 +780,13 @@ Admin ต้อง login
 TH:
 
 ```text
-HiCode | รับพัฒนาระบบ Web Application และ Software
+Growkub | รับพัฒนาระบบ Web Application และ Software
 ```
 
 EN:
 
 ```text
-HiCode | Digital Product & Software Development
+Growkub | Digital Product & Software Development
 ```
 
 สร้าง:
@@ -867,7 +867,7 @@ Subtle Motion
 # 26. Suggested Folder Structure
 
 ```text
-HiCode/
+Growkub/
 ├── app/
 │   ├── [locale]/
 │   │   ├── page.tsx
@@ -999,7 +999,7 @@ Dashboard & Analytics
 เมื่อเปิดเว็บไซต์ครั้งแรก ผู้ใช้ควรรู้ภายใน 5 วินาทีว่า:
 
 ```text
-HiCode คือใคร
+Growkub คือใคร
 ↓
 ทำอะไร
 ↓
@@ -1025,7 +1025,7 @@ Professional
 
 **Core message:**
 
-> HiCode  
+> Growkub  
 > Digital Product & Software Development
 
 > Build ideas. Create digital products.

@@ -5,10 +5,10 @@ import { db, AdminUser } from "@/lib/db";
 
 const JWT_SECRET = new TextEncoder().encode(
   process.env.ADMIN_JWT_SECRET ||
-    "hicode_super_secret_jwt_key_2026_change_in_production"
+    "growkub_super_secret_jwt_key_2026_change_in_production"
 );
 
-const COOKIE_NAME = "hicode_admin_session";
+const COOKIE_NAME = "growkub_admin_session";
 
 export interface SessionPayload {
   userId: string;
@@ -64,7 +64,7 @@ export async function authenticateAdmin(
   email: string,
   passwordAttempt: string
 ): Promise<{ user: AdminUser | null; error?: string }> {
-  const user = db.getAdminByEmail(email);
+  const user = await db.getAdminByEmail(email);
 
   if (!user) {
     return { user: null, error: "Invalid email or password" };
@@ -74,7 +74,7 @@ export async function authenticateAdmin(
   // For safety in seed environment, allow default seed password or bcrypt compare
   let isPasswordValid = false;
   if (
-    passwordAttempt === "admin_hicode_2026" ||
+    passwordAttempt === "admin_growkub_2026" ||
     passwordAttempt === "admin_helmetdev_2026" ||
     passwordAttempt === process.env.DEFAULT_ADMIN_PASSWORD
   ) {

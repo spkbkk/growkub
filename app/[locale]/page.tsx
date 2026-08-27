@@ -19,8 +19,8 @@ export async function generateMetadata({
   
   if (locale === "th") {
     return {
-      title: "HiCode | รับพัฒนาระบบ Web Application และ Software คุณภาพสูง",
-      description: "HiCode คือ Digital Product Studio ผู้เชี่ยวชาญด้านการพัฒนา Web Application, Mobile App และ Business Backend สำหรับธุรกิจยุคใหม่",
+      title: "Growkub | รับพัฒนาระบบ Web Application และ Software คุณภาพสูง",
+      description: "Growkub คือ Digital Product Studio ผู้เชี่ยวชาญด้านการพัฒนา Web Application, Mobile App และ Business Backend สำหรับธุรกิจยุคใหม่",
       alternates: {
         canonical: `/th`,
         languages: {
@@ -32,8 +32,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: "HiCode | Digital Product & Software Development",
-    description: "HiCode is a premier software engineering and digital product studio. We build scalable web applications, mobile apps, and custom business backends.",
+    title: "Growkub | Digital Product & Software Development",
+    description: "Growkub is a premier software engineering and digital product studio. We build scalable web applications, mobile apps, and custom business backends.",
     alternates: {
       canonical: `/en`,
       languages: {
@@ -55,7 +55,7 @@ export default async function HomePage({
 
   const locale = params.locale as Locale;
   const dict = getDictionary(locale);
-  const featuredProjects = db.getProjects({
+  const featuredProjects = await db.getProjects({
     publishedOnly: true,
     featuredOnly: true,
   });

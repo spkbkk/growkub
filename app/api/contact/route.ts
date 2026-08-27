@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     const validated = contactSchema.parse(body);
 
-    const lead = db.createLead({
+    const lead = await db.createLead({
       name: validated.name.trim(),
       email: validated.email.trim().toLowerCase(),
       phone: validated.phone.trim(),

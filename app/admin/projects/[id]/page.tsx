@@ -3,12 +3,12 @@ import { notFound } from "next/navigation";
 import { ProjectForm } from "@/components/admin/ProjectForm";
 import { db } from "@/lib/db";
 
-export default function EditProjectPage({
+export default async function EditProjectPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const project = db.getProjectById(params.id);
+  const project = await db.getProjectById(params.id);
 
   if (!project) {
     notFound();

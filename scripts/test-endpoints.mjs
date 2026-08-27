@@ -1,5 +1,5 @@
 async function runTests() {
-  console.log("=== HICODE E2E VERIFICATION ===");
+  console.log("=== GROWKUB E2E VERIFICATION ===");
 
   // 1. Home TH
   const resTh = await fetch("http://localhost:3000/th");
@@ -43,8 +43,8 @@ async function runTests() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: "admin@hicode.com",
-      password: "admin_hicode_2026",
+      email: "admin@growkub.com",
+      password: "admin_growkub_2026",
     }),
   });
   const loginData = await loginRes.json();
@@ -90,20 +90,91 @@ async function runTests() {
       Cookie: cookie || "",
     },
     body: JSON.stringify({
-      name: "HiCode Lead Architect",
+      name: "Growkub Lead Architect",
     }),
   });
   const updateProfileData = await updateProfileRes.json();
   console.log("11. Admin Profile PATCH:", updateProfileRes.status, "New Name:", updateProfileData.user?.name);
 
-  // 12. SEO Sitemap & Robots
+  // 12. Health Check API
+  const healthRes = await fetch("http://localhost:3000/api/admin/health", {
+    headers: { Cookie: cookie || "" },
+  });
+  const healthData = await healthRes.json();
+  console.log("12. Admin Health Check Status:", healthRes.status, "Mode:", healthData.health?.mode, "Latency:", healthData.latencyMs + "ms");
+
+  // 13. Create New Project API
+  const createProjRes = await fetch("http://localhost:3000/api/admin/projects", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookie || "",
+    },
+    body: JSON.stringify({
+      title_th: "ระบบทดสอบโครงการใหม่",
+      title_en: "Automated Test Project",
+      slug: "automated-test-project-" + Date.now(),
+      short_description_th: "คำอธิบายสั้นสำหรับทดสอบ",
+      short_description_en: "Short description for automated testing",
+      description_th: "รายละเอียดการทดสอบระบบ",
+      description_en: "Full description for automated test verification",
+      category: "Web Application",
+      cover_image: "/images/projects/project-1.jpg",
+      client_name: "Test Corp",
+      project_year: "2026",
+      technologies: ["Next.js", "TypeScript", "PostgreSQL"],
+    }),
+  });
+  const createProjData = await createProjRes.json();
+  console.log("13. Project Create Status:", createProjRes.status, "Created ID:", createProjData.project?.id);
+
+  // 14. Update & Delete Project API
+  if (createProjData.project?.id) {
+    const updateProjRes = await fetch(`http://localhost:3000/api/admin/projects/${createProjData.project.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookie || "",
+      },
+      body: JSON.stringify({
+        title_en: "Automated Test Project (Updated)",
+        is_featured: true,
+      }),
+    });
+    const updateProjData = await updateProjRes.json();
+    console.log("14. Project Update Status:", updateProjRes.status, "New Title:", updateProjData.project?.title_en);
+
+    const deleteProjRes = await fetch(`http://localhost:3000/api/admin/projects/${createProjData.project.id}`, {
+      method: "DELETE",
+      headers: { Cookie: cookie || "" },
+    });
+    console.log("15. Project Delete Status:", deleteProjRes.status);
+  }
+
+  // 16. Site Settings Save & Verify
+  const saveSettingsRes = await fetch("http://localhost:3000/api/admin/settings", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookie || "",
+    },
+    body: JSON.stringify({
+      key: "hero_tagline",
+      value_th: "ระบบดิจิทัลระดับพรีเมียม",
+      value_en: "Premium Enterprise Software Solutions",
+    }),
+  });
+  const saveSettingsData = await saveSettingsRes.json();
+  console.log("16. Settings Save Status:", saveSettingsRes.status, "Saved Value:", saveSettingsData.setting?.value_en);
+
+  // 17. SEO Sitemap & Robots
   const sitemapRes = await fetch("http://localhost:3000/sitemap.xml");
-  console.log("12. Sitemap Status:", sitemapRes.status, "(Expected 200)");
+  console.log("17. Sitemap Status:", sitemapRes.status, "(Expected 200)");
 
   const robotsRes = await fetch("http://localhost:3000/robots.txt");
-  console.log("13. Robots Status:", robotsRes.status, "(Expected 200)");
+  console.log("18. Robots Status:", robotsRes.status, "(Expected 200)");
 
-  console.log("\n>>> ALL TESTS COMPLETED SUCCESSFULLY! <<<");
+  console.log("\n>>> ALL 18 TESTS COMPLETED SUCCESSFULLY! <<<");
 }
 
 runTests().catch(console.error);

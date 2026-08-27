@@ -13,7 +13,7 @@ export default function AdminSettingsPage() {
       "เปลี่ยนไอเดียให้กลายเป็น Digital Product ที่สร้างผลลัพธ์จริง",
     hero_tagline_en:
       "We design and build high-performance software for modern businesses.",
-    contact_email: "contact@hicode.com",
+    contact_email: "contact@growkub.com",
     contact_phone: "+66 81 234 5678",
     location: "Bangkok, Thailand",
   });
@@ -21,23 +21,81 @@ export default function AdminSettingsPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch("/api/admin/settings");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.settings)) {
+        const newSettings = { ...settings };
+        data.settings.forEach((s: any) => {
+          if (s.key === "hero_tagline") {
+            newSettings.hero_tagline_th = s.value_th;
+            newSettings.hero_tagline_en = s.value_en;
+          } else if (s.key === "contact_email") {
+            newSettings.contact_email = s.value_en || s.value_th;
+          } else if (s.key === "contact_phone") {
+            newSettings.contact_phone = s.value_en || s.value_th;
+          } else if (s.key === "location") {
+            newSettings.location = s.value_en || s.value_th;
+          }
+        });
+        setSettings(newSettings);
+      }
+    } catch (err) {
+      console.error("Failed to load settings:", err);
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
     setSavedMessage(null);
 
     try {
-      await fetch("/api/admin/settings", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          key: "hero_tagline",
-          value_th: settings.hero_tagline_th,
-          value_en: settings.hero_tagline_en,
+      await Promise.all([
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "hero_tagline",
+            value_th: settings.hero_tagline_th,
+            value_en: settings.hero_tagline_en,
+          }),
         }),
-      });
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "contact_email",
+            value_th: settings.contact_email,
+            value_en: settings.contact_email,
+          }),
+        }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "contact_phone",
+            value_th: settings.contact_phone,
+            value_en: settings.contact_phone,
+          }),
+        }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "location",
+            value_th: settings.location,
+            value_en: settings.location,
+          }),
+        }),
+      ]);
 
-      setSavedMessage("Settings saved successfully!");
+      setSavedMessage("บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว (Settings saved successfully!)");
       setTimeout(() => setSavedMessage(null), 3000);
     } catch (err) {
       console.error(err);
@@ -153,13 +211,13 @@ export default function AdminSettingsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Facebook Page Username / ID"
-              placeholder="e.g. hicode"
-              defaultValue="hicode"
+              placeholder="e.g. growkub"
+              defaultValue="growkub"
             />
             <Input
               label="Direct Messenger Link"
               disabled
-              value="https://m.me/hicode"
+              value="https://m.me/growkub"
             />
           </div>
         </Card>

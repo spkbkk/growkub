@@ -12,7 +12,7 @@ export async function GET(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const project = db.getProjectById(params.id);
+  const project = await db.getProjectById(params.id);
   if (!project) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }
@@ -43,7 +43,7 @@ export async function PATCH(
       body.slug = slugify(body.title_en);
     }
 
-    const updated = db.updateProject(params.id, body);
+    const updated = await db.updateProject(params.id, body);
     if (!updated) {
       return NextResponse.json({ error: "Project not found" }, { status: 404 });
     }
@@ -66,7 +66,7 @@ export async function DELETE(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const deleted = db.deleteProject(params.id);
+  const deleted = await db.deleteProject(params.id);
   if (!deleted) {
     return NextResponse.json({ error: "Project not found" }, { status: 404 });
   }

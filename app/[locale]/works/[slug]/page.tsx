@@ -25,7 +25,7 @@ export async function generateMetadata({
 }: {
   params: { locale: string; slug: string };
 }): Promise<Metadata> {
-  const project = db.getProjectBySlug(params.slug);
+  const project = await db.getProjectBySlug(params.slug);
   if (!project) return { title: "Project Not Found" };
 
   const locale = isValidLocale(params.locale) ? (params.locale as Locale) : "th";
@@ -34,10 +34,10 @@ export async function generateMetadata({
     locale === "th" ? project.short_description_th : project.short_description_en;
 
   return {
-    title: `${title} | HiCode Case Study`,
+    title: `${title} | Growkub Case Study`,
     description,
     openGraph: {
-      title: `${title} | HiCode`,
+      title: `${title} | Growkub`,
       description,
       images: [project.cover_image],
     },
@@ -55,7 +55,7 @@ export default async function CaseStudyPage({
 
   const locale = params.locale as Locale;
   const dict = getDictionary(locale);
-  const project = db.getProjectBySlug(params.slug);
+  const project = await db.getProjectBySlug(params.slug);
 
   if (!project) {
     notFound();

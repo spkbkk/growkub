@@ -2,7 +2,7 @@ import { Dictionary } from "./types";
 
 export const en: Dictionary = {
   common: {
-    brandName: "HiCode",
+    brandName: "Growkub",
     tagline: "Digital Product & Software Development",
     startProject: "Start a Project →",
     viewWorks: "View Works",
@@ -107,9 +107,9 @@ export const en: Dictionary = {
     ],
   },
   aboutSection: {
-    badge: "About HiCode",
+    badge: "About Growkub",
     title: "Engineering software that moves businesses forward.",
-    leadText: "HiCode is a digital product studio focused on building useful, reliable, and aesthetic software for ambitious teams.",
+    leadText: "Growkub is a digital product studio focused on building useful, reliable, and aesthetic software for ambitious teams.",
     description: "We combine modern engineering practices, clean architecture, and thoughtful UI/UX design to deliver digital products that stand out.",
     principles: [
       {
@@ -175,18 +175,18 @@ export const en: Dictionary = {
       errorMessage: "Something went wrong. Please check your information or try again.",
     },
     info: {
-      directEmail: "contact@hicode.com",
+      directEmail: "contact@growkub.com",
       location: "Bangkok, Thailand (Available Worldwide)",
       workingHours: "Mon - Fri: 09:00 - 18:00 (GMT+7)",
       responseGuarantee: "Fast response within 24 hours guaranteed.",
-      facebookPage: "HiCode Official",
-      facebookMessenger: "m.me/hicode",
+      facebookPage: "Growkub Official",
+      facebookMessenger: "m.me/growkub",
     },
   },
   messengerWidget: {
     floatingTooltip: "Chat with engineering team on Messenger",
     onlineStatus: "Online / Fast Response",
-    title: "HiCode Assistant",
+    title: "Growkub Assistant",
     subtitle: "Digital Product & Engineering Studio",
     greeting: "Hi there! Interested in custom web development, mobile apps, or system architecture? Chat directly with our engineering team.",
     quickQuestionsTitle: "Choose a quick topic to start:",

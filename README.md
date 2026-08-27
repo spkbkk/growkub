@@ -1,6 +1,6 @@
-# HiCode — Premium Digital Product & Software Studio
+# Growkub — Premium Digital Product & Software Studio
 
-> **HiCode** | Digital Product & Software Development  
+> **Growkub** | Digital Product & Software Development  
 > Build ideas. Create digital products.
 
 ---
@@ -69,11 +69,25 @@ npm run start
 
 ---
 
+## ⚡ Vercel Deployment Guide
+
+1. Push this repository to **GitHub** (or GitLab / Bitbucket).
+2. Go to [vercel.com](https://vercel.com) and click **"Add New Project"**.
+3. Import your repository. Vercel will automatically detect **Next.js**.
+4. In **Environment Variables**, add:
+   - `DATABASE_URL`: Your Supabase / PostgreSQL Connection URI (`postgresql://postgres:[PASSWORD]@db.[PROJECT_REF].supabase.co:5432/postgres`)
+   - `ADMIN_JWT_SECRET`: A secure random string for admin sessions
+   - `NEXT_PUBLIC_SITE_URL`: Your Vercel domain (e.g. `https://your-domain.vercel.app`)
+   - `NEXT_PUBLIC_FACEBOOK_PAGE_ID`: `growkub`
+   - `NEXT_PUBLIC_FACEBOOK_PAGE_URL`: `https://facebook.com/growkub`
+5. Click **Deploy**. Vercel will build and deploy your site with automatic HTTPS and Edge CDN!
+
+
 ## 🔐 Admin Portal
 
 - **URL**: [http://localhost:3000/admin](http://localhost:3000/admin)
-- **Default Email**: `admin@HiCode.com`
-- **Default Password**: `admin_HiCode_2026`
+- **Default Email**: `admin@Growkub.com`
+- **Default Password**: `admin_Growkub_2026`
 
 ### Admin Features:
 - **Dashboard**: Real-time KPI counters (New Leads, Active Projects, Published Works, Monthly Leads) and recent inquiries.
@@ -87,7 +101,7 @@ npm run start
 ## 📁 Project Structure
 
 ```text
-HiCode/
+Growkub/
 ├── app/
 │   ├── [locale]/             # Bilingual Public Routes (/th, /en)
 │   │   ├── layout.tsx        # Public layout with Navbar & Footer

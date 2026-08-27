@@ -1,4 +1,4 @@
--- HiCode Database Schema (PostgreSQL / Supabase)
+-- Growkub Database Schema (PostgreSQL / Supabase)
 
 -- 1. admins
 CREATE TABLE IF NOT EXISTS admins (
