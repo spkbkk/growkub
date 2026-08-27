@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MessengerFloatingWidget } from "@/components/ui/MessengerFloatingWidget";
+import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale, locales } from "@/lib/i18n";
 
 export async function generateStaticParams() {
@@ -23,6 +24,11 @@ export default async function LocaleLayout({
   const locale = params.locale as Locale;
   const dict = getDictionary(locale);
 
+  // Load live Facebook page ID from DB
+  const settings = await db.getSettings();
+  const fbSetting = settings.find((s) => s.key === "facebook_page_id");
+  const facebookPageUsername = fbSetting?.value_en || fbSetting?.value_th || process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || "growkub";
+
   return (
     <div className="min-h-screen flex flex-col justify-between relative bg-smoke-black">
       <Navbar locale={locale} dict={dict} />
@@ -31,7 +37,7 @@ export default async function LocaleLayout({
       <MessengerFloatingWidget
         locale={locale}
         dict={dict}
-        facebookPageUsername={process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || "growkub"}
+        facebookPageUsername={facebookPageUsername}
       />
     </div>
   );

@@ -10,6 +10,8 @@ import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({
   params,
 }: {

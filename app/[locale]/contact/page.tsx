@@ -5,8 +5,11 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { BackgroundGlow } from "@/components/ui/BackgroundGlow";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -38,6 +41,17 @@ export default async function ContactPage({
   const locale = params.locale as Locale;
   const dict = getDictionary(locale);
   const info = dict.contactPage.info;
+
+  // Load live settings from database
+  const settings = await db.getSettings();
+  const fbSetting = settings.find((s) => s.key === "facebook_page_id");
+  const facebookPageId = fbSetting?.value_en || fbSetting?.value_th || process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || "growkub";
+
+  const emailSetting = settings.find((s) => s.key === "contact_email");
+  const directEmail = emailSetting?.value_en || emailSetting?.value_th || info.directEmail;
+
+  const locSetting = settings.find((s) => s.key === "location");
+  const location = (locale === "th" ? locSetting?.value_th : locSetting?.value_en) || locSetting?.value_th || info.location;
 
   return (
     <div className="w-full pt-12 pb-24 relative">
@@ -92,7 +106,7 @@ export default async function ContactPage({
               </div>
 
               <a
-                href="https://m.me/growkub"
+                href={`https://m.me/${facebookPageId}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 flex items-center justify-center gap-2 transition-all group-hover:shadow-blue-500/40"
@@ -130,12 +144,12 @@ export default async function ContactPage({
                   <div>
                     <span className="text-xs text-text-muted block">Facebook Messenger</span>
                     <a
-                      href="https://m.me/growkub"
+                      href={`https://m.me/${facebookPageId}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-sm font-semibold text-text-primary hover:text-blue-400 transition-colors"
                     >
-                      m.me/growkub
+                      m.me/{facebookPageId}
                     </a>
                   </div>
                 </div>
@@ -147,10 +161,10 @@ export default async function ContactPage({
                   <div>
                     <span className="text-xs text-text-muted block">Direct Email</span>
                     <a
-                      href={`mailto:${info.directEmail}`}
+                      href={`mailto:${directEmail}`}
                       className="text-sm font-semibold text-text-primary hover:text-brand-orange transition-colors"
                     >
-                      {info.directEmail}
+                      {directEmail}
                     </a>
                   </div>
                 </div>
@@ -162,7 +176,7 @@ export default async function ContactPage({
                   <div>
                     <span className="text-xs text-text-muted block">Location</span>
                     <span className="text-sm text-text-secondary">
-                      {info.location}
+                      {location}
                     </span>
                   </div>
                 </div>
