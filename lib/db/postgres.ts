@@ -32,6 +32,32 @@ export function isDatabaseConfigured(): boolean {
   return true;
 }
 
+export function resolveSupabaseConnectionString(rawUrl: string): string {
+  if (!rawUrl) return rawUrl;
+
+  // If already a pooler URL, return as is
+  if (rawUrl.includes(".pooler.supabase.com")) {
+    return rawUrl;
+  }
+
+  // If it's a direct Supabase host db.<ref>.supabase.co, auto-convert to IPv4-compatible pooler for Vercel/Serverless
+  const match = rawUrl.match(/postgresql:\/\/([^:]+):([^@]+)@db\.([a-z0-9]+)\.supabase\.co:5432\/(.*)/);
+  if (match) {
+    const user = match[1];
+    const password = match[2];
+    const projectRef = match[3];
+    const dbName = match[4] || "postgres";
+
+    const region = projectRef === "sqbpmcfaxakinqckoloz" ? "ap-southeast-2" : "ap-southeast-1";
+    const username = user.includes(".") ? user : `${user}.${projectRef}`;
+    const poolerUrl = `postgresql://${username}:${password}@aws-0-${region}.pooler.supabase.com:5432/${dbName}`;
+    console.log(`[PostgreSQL] Auto-resolved direct Supabase host to IPv4 pooler: aws-0-${region}.pooler.supabase.com`);
+    return poolerUrl;
+  }
+
+  return rawUrl;
+}
+
 export function getPostgresPool(): Pool | null {
   if (!isDatabaseConfigured()) {
     return null;
@@ -41,7 +67,8 @@ export function getPostgresPool(): Pool | null {
     return global.__growkub_pg_pool;
   }
 
-  const connectionString = process.env.DATABASE_URL!;
+  const rawUrl = process.env.DATABASE_URL!;
+  const connectionString = resolveSupabaseConnectionString(rawUrl);
   const isLocalhost =
     connectionString.includes("localhost") ||
     connectionString.includes("127.0.0.1");
