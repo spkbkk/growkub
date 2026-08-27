@@ -16,14 +16,30 @@ export default function AdminSettingsPage() {
     contact_email: "contact@growkub.com",
     contact_phone: "+66 81 234 5678",
     location: "Bangkok, Thailand",
+    facebook_page_id: "growkub",
   });
 
+  const [dbStatus, setDbStatus] = useState<{ connected: boolean; mode: string } | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [savedMessage, setSavedMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     fetchSettings();
+    fetchHealth();
   }, []);
+
+  const fetchHealth = async () => {
+    try {
+      const res = await fetch("/api/admin/health");
+      const data = await res.json();
+      if (data.health) {
+        setDbStatus(data.health);
+      }
+    } catch (err) {
+      console.error("Failed to check health:", err);
+    }
+  };
 
   const fetchSettings = async () => {
     try {
@@ -33,14 +49,16 @@ export default function AdminSettingsPage() {
         const newSettings = { ...settings };
         data.settings.forEach((s: any) => {
           if (s.key === "hero_tagline") {
-            newSettings.hero_tagline_th = s.value_th;
-            newSettings.hero_tagline_en = s.value_en;
+            newSettings.hero_tagline_th = s.value_th || newSettings.hero_tagline_th;
+            newSettings.hero_tagline_en = s.value_en || newSettings.hero_tagline_en;
           } else if (s.key === "contact_email") {
-            newSettings.contact_email = s.value_en || s.value_th;
+            newSettings.contact_email = s.value_en || s.value_th || newSettings.contact_email;
           } else if (s.key === "contact_phone") {
-            newSettings.contact_phone = s.value_en || s.value_th;
+            newSettings.contact_phone = s.value_en || s.value_th || newSettings.contact_phone;
           } else if (s.key === "location") {
-            newSettings.location = s.value_en || s.value_th;
+            newSettings.location = s.value_en || s.value_th || newSettings.location;
+          } else if (s.key === "facebook_page_id") {
+            newSettings.facebook_page_id = s.value_en || s.value_th || newSettings.facebook_page_id;
           }
         });
         setSettings(newSettings);
@@ -54,9 +72,10 @@ export default function AdminSettingsPage() {
     e.preventDefault();
     setIsSaving(true);
     setSavedMessage(null);
+    setErrorMessage(null);
 
     try {
-      await Promise.all([
+      const responses = await Promise.all([
         fetch("/api/admin/settings", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -93,14 +112,34 @@ export default function AdminSettingsPage() {
             value_en: settings.location,
           }),
         }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "facebook_page_id",
+            value_th: settings.facebook_page_id,
+            value_en: settings.facebook_page_id,
+          }),
+        }),
       ]);
 
-      setSavedMessage("บันทึกการตั้งค่าทั้งหมดเรียบร้อยแล้ว (Settings saved successfully!)");
-      setTimeout(() => setSavedMessage(null), 3000);
-    } catch (err) {
+      const allOk = responses.every((r) => r.ok);
+      if (allOk) {
+        setSavedMessage("บันทึกการตั้งค่าทั้งหมดลงฐานข้อมูลเรียบร้อยแล้ว (Saved successfully!)");
+        await fetchSettings();
+        await fetchHealth();
+      } else {
+        setErrorMessage("มีบางรายการบันทึกไม่สำเร็จ กรุณาลองใหม่อีกครั้ง");
+      }
+    } catch (err: any) {
       console.error(err);
+      setErrorMessage("เกิดข้อผิดพลาดในการเชื่อมต่อ: " + err.message);
     } finally {
       setIsSaving(false);
+      setTimeout(() => {
+        setSavedMessage(null);
+        setErrorMessage(null);
+      }, 4000);
     }
   };
 
@@ -117,9 +156,15 @@ export default function AdminSettingsPage() {
       </div>
 
       {savedMessage && (
-        <div className="p-3.5 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs flex items-center gap-2">
-          <CheckCircle2 className="w-4 h-4" />
-          <span>{savedMessage}</span>
+        <div className="p-4 rounded-lg bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-sm flex items-center gap-3 shadow-lg shadow-emerald-950/30 transition-all">
+          <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+          <span className="font-medium">{savedMessage}</span>
+        </div>
+      )}
+
+      {errorMessage && (
+        <div className="p-4 rounded-lg bg-rose-500/15 border border-rose-500/40 text-rose-300 text-sm flex items-center gap-3 shadow-lg shadow-rose-950/30 transition-all">
+          <span className="font-medium">{errorMessage}</span>
         </div>
       )}
 
@@ -212,12 +257,15 @@ export default function AdminSettingsPage() {
             <Input
               label="Facebook Page Username / ID"
               placeholder="e.g. growkub"
-              defaultValue="growkub"
+              value={settings.facebook_page_id}
+              onChange={(e) =>
+                setSettings({ ...settings, facebook_page_id: e.target.value })
+              }
             />
             <Input
               label="Direct Messenger Link"
               disabled
-              value="https://m.me/growkub"
+              value={`https://m.me/${settings.facebook_page_id || "growkub"}`}
             />
           </div>
         </Card>
@@ -231,7 +279,11 @@ export default function AdminSettingsPage() {
           <div className="text-xs font-mono space-y-2 text-text-secondary">
             <div className="flex justify-between py-1.5 border-b border-border/50">
               <span className="text-text-muted">Database Engine:</span>
-              <span className="text-text-primary">PostgreSQL / Supabase Ready</span>
+              <span className="text-text-primary">
+                {dbStatus?.connected && dbStatus.mode === "postgresql"
+                  ? "PostgreSQL / Supabase (Connected 🟢)"
+                  : "PostgreSQL / Supabase Ready"}
+              </span>
             </div>
             <div className="flex justify-between py-1.5 border-b border-border/50">
               <span className="text-text-muted">Data Layer:</span>
@@ -250,7 +302,7 @@ export default function AdminSettingsPage() {
             size="md"
             variant="primary"
             isLoading={isSaving}
-            className="font-semibold"
+            className="font-semibold px-6 py-2.5 shadow-lg shadow-brand-orange/20"
           >
             <Save className="w-4 h-4 mr-1.5" />
             <span>Save All Settings</span>

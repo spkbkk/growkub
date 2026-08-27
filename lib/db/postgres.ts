@@ -50,8 +50,8 @@ export function resolveSupabaseConnectionString(rawUrl: string): string {
 
     const region = projectRef === "sqbpmcfaxakinqckoloz" ? "ap-southeast-2" : "ap-southeast-1";
     const username = user.includes(".") ? user : `${user}.${projectRef}`;
-    const poolerUrl = `postgresql://${username}:${password}@aws-0-${region}.pooler.supabase.com:5432/${dbName}`;
-    console.log(`[PostgreSQL] Auto-resolved direct Supabase host to IPv4 pooler: aws-0-${region}.pooler.supabase.com`);
+    const poolerUrl = `postgresql://${username}:${password}@aws-0-${region}.pooler.supabase.com:6543/${dbName}?pgbouncer=true`;
+    console.log(`[PostgreSQL] Auto-resolved direct Supabase host to IPv4 Transaction pooler: aws-0-${region}.pooler.supabase.com:6543`);
     return poolerUrl;
   }
 
@@ -76,8 +76,8 @@ export function getPostgresPool(): Pool | null {
   const pool = new Pool({
     connectionString,
     ssl: isLocalhost ? false : { rejectUnauthorized: false },
-    max: 10,
-    idleTimeoutMillis: 30000,
+    max: 2,
+    idleTimeoutMillis: 10000,
     connectionTimeoutMillis: 10000,
   });
 
