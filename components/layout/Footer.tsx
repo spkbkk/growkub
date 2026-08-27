@@ -8,10 +8,20 @@ import { Locale, Dictionary } from "@/lib/i18n";
 interface FooterProps {
   locale: Locale;
   dict: Dictionary;
+  facebookPageUsername?: string;
+  contactEmail?: string;
+  heroTagline?: string;
 }
 
-export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
+export const Footer: React.FC<FooterProps> = ({
+  locale,
+  dict,
+  facebookPageUsername = "growkub",
+  contactEmail = "contact@growkub.com",
+  heroTagline,
+}) => {
   const currentYear = new Date().getFullYear();
+  const displayTagline = heroTagline || dict.footer.tagline;
 
   return (
     <footer className="w-full border-t border-border bg-smoke-black/90 pt-16 pb-12 relative overflow-hidden">
@@ -45,7 +55,7 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
               </div>
             </Link>
             <p className="text-sm text-text-secondary max-w-sm leading-relaxed">
-              {dict.footer.tagline}
+              {displayTagline}
             </p>
             <div className="pt-2 flex items-center gap-4 text-xs font-mono text-text-muted">
               <span className="inline-flex items-center gap-1.5">
@@ -108,7 +118,7 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
             <ul className="space-y-2.5 text-sm text-text-secondary">
               <li>
                 <a
-                  href="https://m.me/growkub"
+                  href={`https://m.me/${facebookPageUsername}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-blue-400 transition-colors flex items-center gap-2 group"
@@ -127,11 +137,11 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
               </li>
               <li>
                 <a
-                  href="mailto:contact@growkub.com"
+                  href={`mailto:${contactEmail}`}
                   className="hover:text-brand-orange transition-colors flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4 text-text-muted" />
-                  <span>contact@growkub.com</span>
+                  <span>{contactEmail}</span>
                 </a>
               </li>
               <li>
