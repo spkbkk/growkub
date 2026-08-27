@@ -17,8 +17,8 @@ export async function generateMetadata({
     title: locale === "th" ? "ผลงานทั้งหมด (Selected Works)" : "Selected Works & Case Studies",
     description:
       locale === "th"
-        ? "รวมผลงานและเคสศึกษาการพัฒนาระบบ Web Application, Mobile App และระบบองค์กรโดย HelmetDev"
-        : "Explore case studies and software products engineered by HelmetDev Studio.",
+        ? "รวมผลงานและเคสศึกษาการพัฒนาระบบ Web Application, Mobile App และระบบองค์กรโดย HiCode"
+        : "Explore case studies and software products engineered by HiCode Studio.",
   };
 }
 

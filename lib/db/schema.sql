@@ -1,4 +1,4 @@
--- HelmetDev Database Schema (PostgreSQL / Supabase)
+-- HiCode Database Schema (PostgreSQL / Supabase)
 
 -- 1. admins
 CREATE TABLE IF NOT EXISTS admins (

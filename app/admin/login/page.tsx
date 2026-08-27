@@ -12,8 +12,8 @@ import { BackgroundGlow } from "@/components/ui/BackgroundGlow";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@helmetdev.com");
-  const [password, setPassword] = useState("admin_helmetdev_2026");
+  const [email, setEmail] = useState("admin@hicode.com");
+  const [password, setPassword] = useState("admin_hicode_2026");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -63,20 +63,26 @@ export default function AdminLoginPage() {
         <Card className="p-8 sm:p-10 bg-smoke-dark/95 border-border shadow-2xl space-y-6">
           {/* Logo & Title */}
           <div className="text-center space-y-3">
-            <div className="w-14 h-14 rounded-2xl bg-smoke-dark border border-border/80 p-2 flex items-center justify-center mx-auto shadow-glow">
+            <div className="flex justify-center mb-1">
               <Image
-                src="/logo-icon.png"
-                alt="HelmetDev Logo"
-                width={40}
-                height={40}
-                className="w-full h-full object-contain"
+                src="/logo-white.png"
+                alt="HiCode Logo"
+                width={170}
+                height={55}
+                priority
+                className="h-12 w-auto object-contain hidden dark:block"
+              />
+              <Image
+                src="/logo.png"
+                alt="HiCode Logo"
+                width={170}
+                height={55}
+                priority
+                className="h-12 w-auto object-contain block dark:hidden"
               />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold tracking-tight text-text-primary">
-                Helmet<span className="text-brand-orange">Dev</span>
-              </h1>
-              <p className="text-xs text-text-secondary font-mono mt-0.5">
+              <p className="text-xs text-text-secondary font-mono">
                 Management Portal & CMS Console
               </p>
             </div>
@@ -96,7 +102,7 @@ export default function AdminLoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@helmetdev.com"
+              placeholder="admin@hicode.com"
             />
 
             <Input
@@ -127,8 +133,8 @@ export default function AdminLoginPage() {
             <p className="text-[11px] font-mono text-text-muted">
               Demo credentials auto-filled:
               <br />
-              <span className="text-brand-orange">admin@helmetdev.com</span> /{" "}
-              <span className="text-brand-orange">admin_helmetdev_2026</span>
+              <span className="text-brand-orange">admin@hicode.com</span> /{" "}
+              <span className="text-brand-orange">admin_hicode_2026</span>
             </p>
           </div>
         </Card>

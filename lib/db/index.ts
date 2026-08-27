@@ -217,6 +217,25 @@ class DataStore {
     );
   }
 
+  getAdminById(id: string): AdminUser | undefined {
+    return this.admins.find((a) => a.id === id);
+  }
+
+  updateAdmin(
+    id: string,
+    data: { name?: string; email?: string; password_hash?: string }
+  ): AdminUser | undefined {
+    const admin = this.admins.find((a) => a.id === id);
+    if (!admin) return undefined;
+
+    if (data.name !== undefined) admin.name = data.name;
+    if (data.email !== undefined) admin.email = data.email;
+    if (data.password_hash !== undefined) admin.password_hash = data.password_hash;
+    admin.updated_at = new Date().toISOString();
+
+    return admin;
+  }
+
   getAdminStats() {
     const now = new Date();
     const currentMonth = now.getMonth();
@@ -267,10 +286,17 @@ class DataStore {
 
 // Global Singleton Store for Node runtime
 declare global {
-  var __helmetdev_store: DataStore | undefined;
+  var __hicode_store: DataStore | undefined;
 }
 
-export const db = global.__helmetdev_store || new DataStore();
-if (process.env.NODE_ENV !== "production") {
-  global.__helmetdev_store = db;
-}
+export const db: DataStore = (() => {
+  if (global.__hicode_store) {
+    Object.setPrototypeOf(global.__hicode_store, DataStore.prototype);
+    return global.__hicode_store;
+  }
+  const store = new DataStore();
+  if (process.env.NODE_ENV !== "production") {
+    global.__hicode_store = store;
+  }
+  return store;
+})();

@@ -1,6 +1,6 @@
-# HelmetDev — Premium Digital Product & Software Studio
+# HiCode — Premium Digital Product & Software Studio
 
-> **HelmetDev** | Digital Product & Software Development  
+> **HiCode** | Digital Product & Software Development  
 > Build ideas. Create digital products.
 
 ---
@@ -72,8 +72,8 @@ npm run start
 ## 🔐 Admin Portal
 
 - **URL**: [http://localhost:3000/admin](http://localhost:3000/admin)
-- **Default Email**: `admin@helmetdev.com`
-- **Default Password**: `admin_helmetdev_2026`
+- **Default Email**: `admin@HiCode.com`
+- **Default Password**: `admin_HiCode_2026`
 
 ### Admin Features:
 - **Dashboard**: Real-time KPI counters (New Leads, Active Projects, Published Works, Monthly Leads) and recent inquiries.
@@ -87,7 +87,7 @@ npm run start
 ## 📁 Project Structure
 
 ```text
-helmetdev/
+HiCode/
 ├── app/
 │   ├── [locale]/             # Bilingual Public Routes (/th, /en)
 │   │   ├── layout.tsx        # Public layout with Navbar & Footer

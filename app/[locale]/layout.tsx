@@ -31,7 +31,7 @@ export default async function LocaleLayout({
       <MessengerFloatingWidget
         locale={locale}
         dict={dict}
-        facebookPageUsername={process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || "helmetdev"}
+        facebookPageUsername={process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || "hicode"}
       />
     </div>
   );

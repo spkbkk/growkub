@@ -61,27 +61,26 @@ export const Navbar: React.FC<NavbarProps> = ({ locale, dict }) => {
           {/* Logo */}
           <Link
             href={`/${locale}`}
-            className="flex items-center gap-2.5 group select-none"
-            aria-label="HelmetDev Home"
+            className="flex items-center group select-none py-1"
+            aria-label="HiCode Home"
           >
-            <div className="relative w-8 h-8 rounded-lg bg-smoke-dark/90 border border-border/80 p-1 flex items-center justify-center group-hover:border-brand-orange/50 transition-all duration-200 group-hover:shadow-[0_0_12px_rgba(255,106,0,0.25)]">
+            <div className="relative h-8 sm:h-9 flex items-center">
               <Image
-                src="/logo-icon.png"
-                alt="HelmetDev Logo"
-                width={28}
-                height={28}
+                src="/logo-white.png"
+                alt="HiCode Logo"
+                width={130}
+                height={40}
                 priority
-                className="w-full h-full object-contain transition-transform duration-200 group-hover:scale-105"
+                className="h-8 sm:h-9 w-auto object-contain hidden dark:block transition-transform duration-200 group-hover:scale-105"
               />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-base font-bold tracking-tight text-text-primary flex items-center leading-none">
-                Helmet<span className="text-brand-orange ml-0.5">Dev</span>
-                <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-orange ml-1 animate-pulse" />
-              </span>
-              <span className="text-[9px] font-mono tracking-widest text-text-muted uppercase mt-0.5 leading-none">
-                Digital Studio
-              </span>
+              <Image
+                src="/logo.png"
+                alt="HiCode Logo"
+                width={130}
+                height={40}
+                priority
+                className="h-8 sm:h-9 w-auto object-contain block dark:hidden transition-transform duration-200 group-hover:scale-105"
+              />
             </div>
           </Link>
 

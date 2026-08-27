@@ -3,10 +3,10 @@ import { AdminUser, Service, Project, Lead, SiteSetting } from "./types";
 export const initialAdmins: AdminUser[] = [
   {
     id: "admin-1",
-    email: "admin@helmetdev.com",
-    // bcrypt hash for "admin_helmetdev_2026"
-    password_hash: "$2a$10$gP7y8W.6tU7sX4u2e5kIpe.oXjF7z1uB.yC7bN8M2vT4e6W8q0K.K",
-    name: "HelmetDev Lead Admin",
+    email: "admin@hicode.com",
+    // bcrypt hash for "admin_hicode_2026"
+    password_hash: "$2a$10$PyoWQIXUv00i/zdyq6IaBeo4Yq9FFbSmXUBl9j8hxYFemsfy1Dp1a",
+    name: "HiCode Lead Admin",
     role: "admin",
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString(),
@@ -336,8 +336,8 @@ export const initialSiteSettings: SiteSetting[] = [
   {
     id: "set-2",
     key: "contact_email",
-    value_th: "contact@helmetdev.com",
-    value_en: "contact@helmetdev.com",
+    value_th: "contact@hicode.com",
+    value_en: "contact@hicode.com",
     updated_at: new Date().toISOString(),
   },
 ];

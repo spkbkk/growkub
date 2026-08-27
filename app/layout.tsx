@@ -11,15 +11,15 @@ const prompt = Prompt({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | HelmetDev",
-    default: "HelmetDev | Digital Product & Software Development",
+    template: "%s | HiCode",
+    default: "HiCode | Digital Product & Software Development",
   },
-  description: "HelmetDev is a premium digital product and software engineering studio. We design and build high-performance web applications, mobile apps, and custom business systems.",
+  description: "HiCode is a premium digital product and software engineering studio. We design and build high-performance web applications, mobile apps, and custom business systems.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   openGraph: {
-    title: "HelmetDev | Digital Product & Software Development",
-    description: "Build scalable web applications, mobile apps, and business systems with HelmetDev.",
-    siteName: "HelmetDev",
+    title: "HiCode | Digital Product & Software Development",
+    description: "Build scalable web applications, mobile apps, and business systems with HiCode.",
+    siteName: "HiCode",
     type: "website",
   },
   icons: {
@@ -46,15 +46,12 @@ export default function RootLayout({
   return (
     <html lang="th" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/logo-icon.png" type="image/png" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
-                  var saved = localStorage.getItem('helmetdev_theme');
+                  var saved = localStorage.getItem('hicode_theme') || localStorage.getItem('helmetdev_theme');
                   if (saved === 'dark') {
                     document.documentElement.classList.add('dark');
                   } else {

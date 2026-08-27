@@ -34,10 +34,10 @@ export async function generateMetadata({
     locale === "th" ? project.short_description_th : project.short_description_en;
 
   return {
-    title: `${title} | HelmetDev Case Study`,
+    title: `${title} | HiCode Case Study`,
     description,
     openGraph: {
-      title: `${title} | HelmetDev`,
+      title: `${title} | HiCode`,
       description,
       images: [project.cover_image],
     },

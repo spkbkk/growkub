@@ -19,8 +19,8 @@ export async function generateMetadata({
   
   if (locale === "th") {
     return {
-      title: "HelmetDev | รับพัฒนาระบบ Web Application และ Software คุณภาพสูง",
-      description: "HelmetDev คือ Digital Product Studio ผู้เชี่ยวชาญด้านการพัฒนา Web Application, Mobile App และ Business Backend สำหรับธุรกิจยุคใหม่",
+      title: "HiCode | รับพัฒนาระบบ Web Application และ Software คุณภาพสูง",
+      description: "HiCode คือ Digital Product Studio ผู้เชี่ยวชาญด้านการพัฒนา Web Application, Mobile App และ Business Backend สำหรับธุรกิจยุคใหม่",
       alternates: {
         canonical: `/th`,
         languages: {
@@ -32,8 +32,8 @@ export async function generateMetadata({
   }
 
   return {
-    title: "HelmetDev | Digital Product & Software Development",
-    description: "HelmetDev is a premier software engineering and digital product studio. We build scalable web applications, mobile apps, and custom business backends.",
+    title: "HiCode | Digital Product & Software Development",
+    description: "HiCode is a premier software engineering and digital product studio. We build scalable web applications, mobile apps, and custom business backends.",
     alternates: {
       canonical: `/en`,
       languages: {

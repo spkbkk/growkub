@@ -36,7 +36,7 @@ interface MessengerFloatingWidgetProps {
 export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = ({
   locale,
   dict,
-  facebookPageUsername = "helmetdev",
+  facebookPageUsername = "hicode",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasPrompted, setHasPrompted] = useState(false);
@@ -86,7 +86,7 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
                   <div className="w-10 h-10 rounded-xl bg-smoke-black border border-border p-1.5 flex items-center justify-center shadow-inner">
                     <Image
                       src="/logo-icon.png"
-                      alt="HelmetDev"
+                      alt="HiCode"
                       width={28}
                       height={28}
                       className="w-full h-full object-contain"
@@ -133,8 +133,8 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
                   <div className="p-3.5 rounded-2xl rounded-tl-sm bg-smoke border border-border/70 text-xs text-text-secondary leading-relaxed shadow-sm">
                     <p className="text-text-primary font-medium mb-1">
                       {locale === "th"
-                        ? "ยินดีต้อนรับสู่ HelmetDev"
-                        : "Welcome to HelmetDev"}
+                        ? "ยินดีต้อนรับสู่ HiCode"
+                        : "Welcome to HiCode"}
                     </p>
                     {t.greeting}
                   </div>

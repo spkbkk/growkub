@@ -3,7 +3,7 @@ import { db } from "@/lib/db";
 import { locales } from "@/lib/i18n";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://helmetdev.com";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://hicode.com";
   const projects = db.getProjects({ publishedOnly: true });
 
   const routes: MetadataRoute.Sitemap = [];

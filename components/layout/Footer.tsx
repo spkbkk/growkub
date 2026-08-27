@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, Github, Mail, Shield } from "lucide-react";
+import { ArrowUpRight, Github, Mail } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { Locale, Dictionary } from "@/lib/i18n";
 
@@ -24,26 +24,24 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
           <div className="md:col-span-2 space-y-4">
             <Link
               href={`/${locale}`}
-              className="flex items-center gap-3 group select-none"
-              aria-label="HelmetDev Home"
+              className="inline-flex items-center group select-none py-1"
+              aria-label="HiCode Home"
             >
-              <div className="relative w-9 h-9 rounded-lg bg-smoke-dark border border-border p-1.5 flex items-center justify-center group-hover:border-brand-orange/50 transition-colors">
+              <div className="relative h-10 flex items-center">
                 <Image
-                  src="/logo-icon.png"
-                  alt="HelmetDev Logo"
-                  width={30}
-                  height={30}
-                  className="w-full h-full object-contain"
+                  src="/logo-white.png"
+                  alt="HiCode Logo"
+                  width={150}
+                  height={46}
+                  className="h-10 w-auto object-contain hidden dark:block transition-transform duration-200 group-hover:scale-105"
                 />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-lg font-bold tracking-tight text-text-primary flex items-center leading-none">
-                  Helmet<span className="text-brand-orange ml-0.5">Dev</span>
-                  <span className="inline-block w-1.5 h-1.5 rounded-full bg-brand-orange ml-1" />
-                </span>
-                <span className="text-[10px] font-mono tracking-widest text-text-muted uppercase mt-0.5 leading-none">
-                  Digital Product Studio
-                </span>
+                <Image
+                  src="/logo.png"
+                  alt="HiCode Logo"
+                  width={150}
+                  height={46}
+                  className="h-10 w-auto object-contain block dark:hidden transition-transform duration-200 group-hover:scale-105"
+                />
               </div>
             </Link>
             <p className="text-sm text-text-secondary max-w-sm leading-relaxed">
@@ -110,7 +108,7 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
             <ul className="space-y-2.5 text-sm text-text-secondary">
               <li>
                 <a
-                  href="https://m.me/helmetdev"
+                  href="https://m.me/hicode"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-blue-400 transition-colors flex items-center gap-2 group"
@@ -129,11 +127,11 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
               </li>
               <li>
                 <a
-                  href="mailto:contact@helmetdev.com"
+                  href="mailto:contact@hicode.com"
                   className="hover:text-brand-orange transition-colors flex items-center gap-2"
                 >
                   <Mail className="w-4 h-4 text-text-muted" />
-                  <span>contact@helmetdev.com</span>
+                  <span>contact@hicode.com</span>
                 </a>
               </li>
               <li>
@@ -150,17 +148,7 @@ export const Footer: React.FC<FooterProps> = ({ locale, dict }) => {
 
         {/* Bottom Bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-text-muted">
-          <p>© {currentYear} HelmetDev Studio. {dict.footer.rights}</p>
-          <div className="flex items-center gap-6">
-            <Link
-              href="/admin/login"
-              className="hover:text-text-secondary transition-colors flex items-center gap-1"
-              aria-label="Admin Portal"
-            >
-              <Shield className="w-3.5 h-3.5" />
-              <span>Admin Portal</span>
-            </Link>
-          </div>
+          <p>© {currentYear} HiCode Studio. {dict.footer.rights}</p>
         </div>
       </Container>
     </footer>

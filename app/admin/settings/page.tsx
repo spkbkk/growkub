@@ -13,7 +13,7 @@ export default function AdminSettingsPage() {
       "เปลี่ยนไอเดียให้กลายเป็น Digital Product ที่สร้างผลลัพธ์จริง",
     hero_tagline_en:
       "We design and build high-performance software for modern businesses.",
-    contact_email: "contact@helmetdev.com",
+    contact_email: "contact@hicode.com",
     contact_phone: "+66 81 234 5678",
     location: "Bangkok, Thailand",
   });
@@ -153,13 +153,13 @@ export default function AdminSettingsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
               label="Facebook Page Username / ID"
-              placeholder="e.g. helmetdev"
-              defaultValue="helmetdev"
+              placeholder="e.g. hicode"
+              defaultValue="hicode"
             />
             <Input
               label="Direct Messenger Link"
               disabled
-              value="https://m.me/helmetdev"
+              value="https://m.me/hicode"
             />
           </div>
         </Card>

@@ -26,11 +26,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const locale = isValidLocale(params.locale) ? (params.locale as Locale) : "th";
   return {
-    title: locale === "th" ? "เกี่ยวกับเรา (About)" : "About HelmetDev",
+    title: locale === "th" ? "เกี่ยวกับเรา (About)" : "About HiCode",
     description:
       locale === "th"
-        ? "รู้จัก HelmetDev สตูดิโอผู้พัฒนา Digital Product และซอฟต์แวร์คุณภาพสูงสำหรับธุรกิจยุคใหม่"
-        : "HelmetDev is a digital product studio focused on building high-performance software for modern businesses.",
+        ? "รู้จัก HiCode สตูดิโอผู้พัฒนา Digital Product และซอฟต์แวร์คุณภาพสูงสำหรับธุรกิจยุคใหม่"
+        : "HiCode is a digital product studio focused on building high-performance software for modern businesses.",
   };
 }
 
@@ -105,8 +105,8 @@ export default async function AboutPage({
               </h2>
               <p className="text-sm text-text-secondary leading-relaxed font-normal">
                 {locale === "th"
-                  ? "HelmetDev ก่อตั้งขึ้นจากความตั้งใจที่จะยกระดับการพัฒนาซอฟต์แวร์ในประเทศไทย โดยหลีกเลี่ยงการสร้างระบบที่เทอะทะหรือใช้เทมเพลตสำเร็จรูปราคาถูก เราเชื่อว่าซอฟต์แวร์ที่ดีต้องทำงานได้รวดเร็ว ปลอดภัย มีความเสถียร และช่วยสร้างความได้เปรียบในการแข่งขันให้แก่ธุรกิจของคุณอย่างแท้จริง"
-                  : "HelmetDev was founded to bring modern, no-nonsense software craftsmanship to ambitious businesses. We reject bloated agency retainers and brittle low-code templates. Instead, we engineer custom, robust digital products built with clean code and long-term maintainability."}
+                  ? "HiCode ก่อตั้งขึ้นจากความตั้งใจที่จะยกระดับการพัฒนาซอฟต์แวร์ในประเทศไทย โดยหลีกเลี่ยงการสร้างระบบที่เทอะทะหรือใช้เทมเพลตสำเร็จรูปราคาถูก เราเชื่อว่าซอฟต์แวร์ที่ดีต้องทำงานได้รวดเร็ว ปลอดภัย มีความเสถียร และช่วยสร้างความได้เปรียบในการแข่งขันให้แก่ธุรกิจของคุณอย่างแท้จริง"
+                  : "HiCode was founded to bring modern, no-nonsense software craftsmanship to ambitious businesses. We reject bloated agency retainers and brittle low-code templates. Instead, we engineer custom, robust digital products built with clean code and long-term maintainability."}
               </p>
             </Card>
           </div>

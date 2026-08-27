@@ -16,6 +16,7 @@ import {
   Menu,
   X,
   Terminal,
+  UserCheck,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { cn } from "@/lib/utils";
@@ -40,21 +41,29 @@ export default function AdminLayout({
       return;
     }
 
+    let isMounted = true;
+
     // Verify session
     fetch("/api/admin/auth/me")
-      .then((res) => {
-        if (!res.ok) {
-          router.push("/admin/login");
-          return null;
-        }
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
+        if (!isMounted) return;
         if (data && data.authenticated) {
           setUser(data.user);
+          setIsLoading(false);
+        } else {
+          router.replace("/admin/login");
         }
       })
-      .finally(() => setIsLoading(false));
+      .catch(() => {
+        if (isMounted) {
+          router.replace("/admin/login");
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
   }, [pathname, isLoginPage, router]);
 
   const handleLogout = async () => {
@@ -82,6 +91,7 @@ export default function AdminLayout({
     { href: "/admin/leads", label: "Leads", icon: Users },
     { href: "/admin/projects", label: "Projects", icon: FolderGit2 },
     { href: "/admin/services", label: "Services", icon: Layers },
+    { href: "/admin/profile", label: "Profile", icon: UserCheck },
     { href: "/admin/settings", label: "Settings", icon: Settings },
   ];
 
@@ -94,20 +104,24 @@ export default function AdminLayout({
           <div className="flex items-center justify-between px-2">
             <Link
               href="/admin/dashboard"
-              className="flex items-center gap-2.5 group select-none"
+              className="flex items-center group select-none"
             >
-              <div className="w-8 h-8 rounded-lg bg-smoke border border-border p-1 flex items-center justify-center group-hover:border-brand-orange/50 transition-colors">
+              <div className="relative h-8 flex items-center">
                 <Image
-                  src="/logo-icon.png"
-                  alt="HelmetDev"
-                  width={26}
-                  height={26}
-                  className="w-full h-full object-contain"
+                  src="/logo-white.png"
+                  alt="HiCode"
+                  width={110}
+                  height={32}
+                  className="h-7 w-auto object-contain hidden dark:block"
+                />
+                <Image
+                  src="/logo.png"
+                  alt="HiCode"
+                  width={110}
+                  height={32}
+                  className="h-7 w-auto object-contain block dark:hidden"
                 />
               </div>
-              <span className="text-base font-bold tracking-tight text-text-primary">
-                Helmet<span className="text-brand-orange">Dev</span>
-              </span>
             </Link>
             <ThemeToggle />
           </div>
@@ -138,14 +152,23 @@ export default function AdminLayout({
 
         {/* Bottom Profile & Actions */}
         <div className="space-y-3 pt-6 border-t border-border/80">
-          <div className="px-2 py-1">
-            <div className="text-xs font-semibold text-text-primary truncate">
-              {user?.name || "Admin User"}
+          <Link
+            href="/admin/profile"
+            className="flex items-center gap-3 px-2.5 py-2 rounded-xl bg-smoke/60 hover:bg-smoke border border-transparent hover:border-brand-orange/30 transition-all group cursor-pointer"
+            title="Edit Admin Profile"
+          >
+            <div className="w-8 h-8 rounded-lg bg-brand-orange/15 border border-brand-orange/30 text-brand-orange font-bold text-xs flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
             </div>
-            <div className="text-[11px] text-text-muted truncate">
-              {user?.email || "admin@helmetdev.com"}
+            <div className="min-w-0 flex-1">
+              <div className="text-xs font-semibold text-text-primary group-hover:text-brand-orange transition-colors truncate flex items-center justify-between">
+                <span>{user?.name || "Admin User"}</span>
+              </div>
+              <div className="text-[11px] text-text-muted truncate">
+                {user?.email || "admin@hicode.com"}
+              </div>
             </div>
-          </div>
+          </Link>
 
           <div className="flex items-center gap-2">
             <Link
@@ -172,17 +195,21 @@ export default function AdminLayout({
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Mobile Bar */}
         <header className="md:hidden flex items-center justify-between p-4 border-b border-border bg-smoke-dark">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-smoke border border-border p-0.5 flex items-center justify-center">
-              <Image
-                src="/logo-icon.png"
-                alt="HelmetDev"
-                width={20}
-                height={20}
-                className="w-full h-full object-contain"
-              />
-            </div>
-            <span className="font-bold text-sm">HelmetDev Admin</span>
+          <div className="flex items-center">
+            <Image
+              src="/logo-white.png"
+              alt="HiCode"
+              width={100}
+              height={28}
+              className="h-6 w-auto object-contain hidden dark:block"
+            />
+            <Image
+              src="/logo.png"
+              alt="HiCode"
+              width={100}
+              height={28}
+              className="h-6 w-auto object-contain block dark:hidden"
+            />
           </div>
           <div className="flex items-center gap-2">
             <ThemeToggle />

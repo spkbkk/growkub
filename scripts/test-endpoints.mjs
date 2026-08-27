@@ -1,5 +1,5 @@
 async function runTests() {
-  console.log("=== HELMETDEV E2E VERIFICATION ===");
+  console.log("=== HICODE E2E VERIFICATION ===");
 
   // 1. Home TH
   const resTh = await fetch("http://localhost:3000/th");
@@ -43,8 +43,8 @@ async function runTests() {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      email: "admin@helmetdev.com",
-      password: "admin_helmetdev_2026",
+      email: "admin@hicode.com",
+      password: "admin_hicode_2026",
     }),
   });
   const loginData = await loginRes.json();
@@ -75,12 +75,33 @@ async function runTests() {
     console.log("9. Lead Status Update:", updateRes.status, "New Status:", updateData.lead?.status);
   }
 
-  // 10. SEO Sitemap & Robots
+  // 10. Admin Profile GET
+  const profileRes = await fetch("http://localhost:3000/api/admin/profile", {
+    headers: { Cookie: cookie || "" },
+  });
+  const profileData = await profileRes.json();
+  console.log("10. Admin Profile GET:", profileRes.status, profileData.user?.name, profileData.user?.email);
+
+  // 11. Admin Profile PATCH (Update Name)
+  const updateProfileRes = await fetch("http://localhost:3000/api/admin/profile", {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Cookie: cookie || "",
+    },
+    body: JSON.stringify({
+      name: "HiCode Lead Architect",
+    }),
+  });
+  const updateProfileData = await updateProfileRes.json();
+  console.log("11. Admin Profile PATCH:", updateProfileRes.status, "New Name:", updateProfileData.user?.name);
+
+  // 12. SEO Sitemap & Robots
   const sitemapRes = await fetch("http://localhost:3000/sitemap.xml");
-  console.log("10. Sitemap Status:", sitemapRes.status, "(Expected 200)");
+  console.log("12. Sitemap Status:", sitemapRes.status, "(Expected 200)");
 
   const robotsRes = await fetch("http://localhost:3000/robots.txt");
-  console.log("11. Robots Status:", robotsRes.status, "(Expected 200)");
+  console.log("13. Robots Status:", robotsRes.status, "(Expected 200)");
 
   console.log("\n>>> ALL TESTS COMPLETED SUCCESSFULLY! <<<");
 }

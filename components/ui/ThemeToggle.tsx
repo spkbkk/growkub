@@ -15,7 +15,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   useEffect(() => {
     setMounted(true);
     // Check saved theme or default to light (ตรีมสว่างควันบุหรี่)
-    const saved = localStorage.getItem("helmetdev_theme") as "light" | "dark" | null;
+    const saved = (localStorage.getItem("hicode_theme") || localStorage.getItem("helmetdev_theme")) as "light" | "dark" | null;
     const initialTheme = saved || "light";
     setTheme(initialTheme);
     if (initialTheme === "dark") {
@@ -28,7 +28,7 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
   const toggleTheme = () => {
     const next = theme === "light" ? "dark" : "light";
     setTheme(next);
-    localStorage.setItem("helmetdev_theme", next);
+    localStorage.setItem("hicode_theme", next);
     if (next === "dark") {
       document.documentElement.classList.add("dark");
     } else {

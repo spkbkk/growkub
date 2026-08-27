@@ -2,7 +2,7 @@ import { Dictionary } from "./types";
 
 export const th: Dictionary = {
   common: {
-    brandName: "HelmetDev",
+    brandName: "HiCode",
     tagline: "Digital Product & Software Development",
     startProject: "เริ่มโปรเจกต์ →",
     viewWorks: "ดูผลงานทั้งหมด",
@@ -107,9 +107,9 @@ export const th: Dictionary = {
     ],
   },
   aboutSection: {
-    badge: "เกี่ยวกับ HelmetDev",
+    badge: "เกี่ยวกับ HiCode",
     title: "สร้างสรรค์ซอฟต์แวร์เพื่อขับเคลื่อนธุรกิจไปข้างหน้า",
-    leadText: "HelmetDev คือ Digital Product Studio ที่มุ่งเน้นการสร้างซอฟต์แวร์ที่ใช้งานได้จริง มีเสถียรภาพ และมีดีไซน์ระดับพรีเมียม",
+    leadText: "HiCode คือ Digital Product Studio ที่มุ่งเน้นการสร้างซอฟต์แวร์ที่ใช้งานได้จริง มีเสถียรภาพ และมีดีไซน์ระดับพรีเมียม",
     description: "เราผสานวิศวกรรมซอฟต์แวร์สมัยใหม่ เข้ากับการออกแบบ UI/UX ที่ประณีต เพื่อส่งมอบผลิตภัณฑ์ที่สร้างผลลัพธ์ที่จับต้องได้",
     principles: [
       {
@@ -145,7 +145,7 @@ export const th: Dictionary = {
       phone: "เบอร์โทรศัพท์ / LINE ID",
       phonePlaceholder: "081-234-5678 หรือ LINE ID",
       company: "ชื่อบริษัท / องค์กร",
-      companyPlaceholder: "เช่น บริษัท เฮลเม็ทเทค จำกัด (ถ้ามี)",
+      companyPlaceholder: "เช่น บริษัท ไฮโค้ด จำกัด (ถ้ามี)",
       projectType: "ประเภทของโปรเจกต์",
       projectTypePlaceholder: "เลือกประเภทโปรเจกต์",
       projectTypes: [
@@ -175,18 +175,18 @@ export const th: Dictionary = {
       errorMessage: "เกิดข้อผิดพลาดในการส่งข้อมูล โปรดตรวจสอบความถูกต้องแล้วลองใหม่อีกครั้ง",
     },
     info: {
-      directEmail: "contact@helmetdev.com",
+      directEmail: "contact@hicode.com",
       location: "กรุงเทพมหานคร, ประเทศไทย (บริการครอบคลุมทั่วประเทศและสากล)",
       workingHours: "จันทร์ - ศุกร์: 09:00 - 18:00 น.",
       responseGuarantee: "การันตีการติดต่อกลับภายใน 24 ชั่วโมงทำการ",
-      facebookPage: "HelmetDev Official",
-      facebookMessenger: "m.me/helmetdev",
+      facebookPage: "HiCode Official",
+      facebookMessenger: "m.me/hicode",
     },
   },
   messengerWidget: {
     floatingTooltip: "แชทปรึกษาทีมงานผ่าน Messenger",
     onlineStatus: "ออนไลน์ / ตอบกลับไว",
-    title: "HelmetDev Assistant",
+    title: "HiCode Assistant",
     subtitle: "Digital Product & Engineering Studio",
     greeting: "สวัสดีครับ! สนใจพัฒนาซอฟต์แวร์ ทำ Web Application, Mobile App หรือปรึกษาประเมินราคา ทักคุยกับทีมงานได้เลยครับ",
     quickQuestionsTitle: "เลือกหัวข้อที่ต้องการคุยด่วน:",

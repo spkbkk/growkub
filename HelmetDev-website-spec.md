@@ -1,11 +1,11 @@
-# HelmetDev — Website & Admin Development Specification
+# HiCode — Website & Admin Development Specification
 
 ## 1. Project Overview
 
-สร้างเว็บไซต์บริษัท **HelmetDev** ในรูปแบบ Premium Digital Product & Software Development Studio
+สร้างเว็บไซต์บริษัท **HiCode** ในรูปแบบ Premium Digital Product & Software Development Studio
 
 Brand:
-- Name: HelmetDev
+- Name: HiCode
 - Tagline: Digital Product & Software Development
 - Primary language: Thai / English
 - UI: Minimal, Premium, Modern, Dark Tech
@@ -73,7 +73,7 @@ NEXT_PUBLIC_SITE_URL=http://localhost:3000
 
 ## Visual Concept
 
-HelmetDev = Premium / Dark / Minimal / Software Studio
+HiCode = Premium / Dark / Minimal / Software Studio
 
 ไม่ต้องทำเว็บแนว Corporate ที่มีข้อความจำนวนมาก
 
@@ -151,7 +151,7 @@ font-family:
 Desktop:
 
 ```text
-HelmetDev
+HiCode
 
 Services
 Works
@@ -336,7 +336,7 @@ Deliver and improve
 ตัวอย่าง:
 
 ```text
-HelmetDev is a digital product studio
+HiCode is a digital product studio
 focused on building useful software
 for modern businesses.
 ```
@@ -587,7 +587,7 @@ Layout:
 
 ```text
 ┌────────────────────────────────────────────┐
-│ HelmetDev Admin                    Admin ▾ │
+│ HiCode Admin                    Admin ▾ │
 ├──────────────┬─────────────────────────────┤
 │ Dashboard    │                             │
 │ Leads        │        Content Area         │
@@ -780,13 +780,13 @@ Admin ต้อง login
 TH:
 
 ```text
-HelmetDev | รับพัฒนาระบบ Web Application และ Software
+HiCode | รับพัฒนาระบบ Web Application และ Software
 ```
 
 EN:
 
 ```text
-HelmetDev | Digital Product & Software Development
+HiCode | Digital Product & Software Development
 ```
 
 สร้าง:
@@ -867,7 +867,7 @@ Subtle Motion
 # 26. Suggested Folder Structure
 
 ```text
-helmetdev/
+HiCode/
 ├── app/
 │   ├── [locale]/
 │   │   ├── page.tsx
@@ -999,7 +999,7 @@ Dashboard & Analytics
 เมื่อเปิดเว็บไซต์ครั้งแรก ผู้ใช้ควรรู้ภายใน 5 วินาทีว่า:
 
 ```text
-HelmetDev คือใคร
+HiCode คือใคร
 ↓
 ทำอะไร
 ↓
@@ -1025,7 +1025,7 @@ Professional
 
 **Core message:**
 
-> HelmetDev  
+> HiCode  
 > Digital Product & Software Development
 
 > Build ideas. Create digital products.
