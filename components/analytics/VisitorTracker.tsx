@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
-export function VisitorTracker() {
+function VisitorTrackerInner() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const lastTrackedPath = useRef<string | null>(null);
@@ -74,4 +74,12 @@ export function VisitorTracker() {
 
   // Completely invisible component
   return null;
+}
+
+export function VisitorTracker() {
+  return (
+    <Suspense fallback={null}>
+      <VisitorTrackerInner />
+    </Suspense>
+  );
 }
