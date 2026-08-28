@@ -9,7 +9,8 @@ const chatRequestSchema = z.object({
     .object({
       name: z.string().min(1, "Name is required"),
       contact: z.string().min(1, "Phone, LINE ID or Email is required"),
-      projectType: z.string().optional().default("Web / Mobile App"),
+      projectType: z.string().optional().default("Web Application"),
+      budget: z.string().optional().default("To be discussed"),
       note: z.string().optional().default(""),
     })
     .optional(),
@@ -37,10 +38,10 @@ export async function POST(req: NextRequest) {
         name: contactInfo.name.trim(),
         email,
         phone,
-        company: "Website Chat Inquiry",
+        company: "Website Live Chat",
         project_type: contactInfo.projectType || "Live Chat",
-        budget: "To be discussed",
-        message: `[Live Chat Contact]\nช่องทางติดต่อ: ${contactInfo.contact}\nประเภทโปรเจกต์: ${contactInfo.projectType}\nข้อความล่าสุด: ${message}\nหมายเหตุ: ${contactInfo.note}`,
+        budget: contactInfo.budget || "To be discussed",
+        message: `[รายละเอียดโปรเจกต์จาก Live Chat]\n• ประเภทโปรเจกต์: ${contactInfo.projectType}\n• งบประมาณโดยประมาณ: ${contactInfo.budget}\n• ความต้องการ / สเปกระบบ: ${contactInfo.note || "ไม่ได้ระบุ"}\n• ช่องทางติดต่อ: ${contactInfo.contact}`,
         status: "NEW",
       });
 

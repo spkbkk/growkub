@@ -73,6 +73,7 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
   const [leadName, setLeadName] = useState("");
   const [leadContact, setLeadContact] = useState("");
   const [leadProjectType, setLeadProjectType] = useState("Web Application");
+  const [leadBudget, setLeadBudget] = useState("30,000 - 70,000 บาท");
   const [leadNote, setLeadNote] = useState("");
   const [isSubmittingLead, setIsSubmittingLead] = useState(false);
   const [showInChatForm, setShowInChatForm] = useState(false);
@@ -207,12 +208,13 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          message: `[ขอติดต่อกลับ] ${leadProjectType} - ${leadNote}`,
+          message: `[ขอใบเสนอราคา] ${leadProjectType} (${leadBudget})\nรายละเอียด: ${leadNote || "ไม่ได้ระบุ"}`,
           locale,
           contactInfo: {
             name: leadName,
             contact: leadContact,
             projectType: leadProjectType,
+            budget: leadBudget,
             note: leadNote,
           },
         }),
@@ -226,8 +228,8 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
         text:
           data.reply ||
           (locale === "th"
-            ? `ขอบคุณครับคุณ ${leadName}! ทีมงานได้รับข้อมูลแล้ว จะติดต่อกลับทาง ${leadContact} ภายใน 24 ชม. ครับ`
-            : `Thank you ${leadName}! We have received your info and will contact you via ${leadContact} within 24 hours.`),
+            ? `ขอบคุณครับคุณ ${leadName}! ทีมงานได้รับรายละเอียดโปรเจกต์ (${leadProjectType} - งบ ${leadBudget}) เรียบร้อยแล้ว จะติดต่อกลับทาง ${leadContact} ภายใน 24 ชม. ครับ`
+            : `Thank you ${leadName}! We have received your project details (${leadProjectType} - ${leadBudget}) and will contact you via ${leadContact} within 24 hours.`),
         timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         quickReplies: data.quickReplies,
       };
@@ -473,67 +475,115 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
                       <div className="flex items-center justify-between border-b border-border/60 pb-2">
                         <span className="text-xs font-bold text-text-primary flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-brand-orange" />
-                          {locale === "th" ? "แบบฟอร์มขอใบเสนอราคาด่วน" : "Fast Quote Request"}
+                          {locale === "th" ? "แบบฟอร์มขอใบเสนอราคา / สเปกระบบ" : "Project Quote & Requirements"}
                         </span>
                         <button
                           type="button"
                           onClick={() => setShowInChatForm(false)}
-                          className="text-text-muted hover:text-text-primary text-xs"
+                          className="text-text-muted hover:text-text-primary text-xs p-1"
                         >
                           ✕
                         </button>
                       </div>
 
-                      <form onSubmit={handleSubmitLead} className="space-y-2 text-xs">
-                        <div>
-                          <input
-                            type="text"
-                            required
-                            placeholder={locale === "th" ? "ชื่อของคุณ *" : "Your Name *"}
-                            value={leadName}
-                            onChange={(e) => setLeadName(e.target.value)}
-                            className="w-full py-1.5 px-2.5 rounded-lg bg-smoke-black border border-border text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs"
-                          />
+                      <form onSubmit={handleSubmitLead} className="space-y-2.5 text-xs">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] text-text-muted font-mono block mb-0.5">
+                              {locale === "th" ? "ชื่อของคุณ *" : "Your Name *"}
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              placeholder={locale === "th" ? "เช่น คุณสมชาย" : "e.g. John"}
+                              value={leadName}
+                              onChange={(e) => setLeadName(e.target.value)}
+                              className="w-full py-1.5 px-2.5 rounded-lg bg-smoke-black border border-border text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] text-text-muted font-mono block mb-0.5">
+                              {locale === "th" ? "เบอร์โทร / LINE ID / อีเมล *" : "Phone / LINE / Email *"}
+                            </label>
+                            <input
+                              type="text"
+                              required
+                              placeholder={locale === "th" ? "08X-XXX-XXXX หรือ LINE ID" : "Phone or Email"}
+                              value={leadContact}
+                              onChange={(e) => setLeadContact(e.target.value)}
+                              className="w-full py-1.5 px-2.5 rounded-lg bg-smoke-black border border-border text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                          <div>
+                            <label className="text-[10px] text-text-muted font-mono block mb-0.5">
+                              {locale === "th" ? "ประเภทโปรเจกต์" : "Project Type"}
+                            </label>
+                            <select
+                              value={leadProjectType}
+                              onChange={(e) => setLeadProjectType(e.target.value)}
+                              className="w-full py-1.5 px-2 rounded-lg bg-smoke-black border border-border text-text-primary focus:outline-none focus:border-brand-orange text-xs"
+                            >
+                              <option value="Web Application">Web Application</option>
+                              <option value="Mobile App (iOS/Android)">Mobile App</option>
+                              <option value="Business ERP / Dashboard">Business ERP</option>
+                              <option value="E-Commerce Platform">E-Commerce</option>
+                              <option value="Other Custom Software">Other System</option>
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="text-[10px] text-text-muted font-mono block mb-0.5">
+                              {locale === "th" ? "งบประมาณโดยประมาณ" : "Budget Range"}
+                            </label>
+                            <select
+                              value={leadBudget}
+                              onChange={(e) => setLeadBudget(e.target.value)}
+                              className="w-full py-1.5 px-2 rounded-lg bg-smoke-black border border-border text-text-primary focus:outline-none focus:border-brand-orange text-xs"
+                            >
+                              <option value="ต่ำกว่า 30,000 บาท">&lt; 30,000 บาท</option>
+                              <option value="30,000 - 70,000 บาท">30,000 - 70,000 บาท</option>
+                              <option value="70,000 - 150,000 บาท">70,000 - 150,000 บาท</option>
+                              <option value="150,000+ บาท">150,000+ บาท</option>
+                              <option value="ยังไม่แน่ใจ (ปรึกษาก่อน)">ยังไม่แน่ใจ (ปรึกษาก่อน)</option>
+                            </select>
+                          </div>
                         </div>
 
                         <div>
-                          <input
-                            type="text"
-                            required
-                            placeholder={locale === "th" ? "เบอร์โทร / LINE ID / อีเมล *" : "Phone / LINE / Email *"}
-                            value={leadContact}
-                            onChange={(e) => setLeadContact(e.target.value)}
-                            className="w-full py-1.5 px-2.5 rounded-lg bg-smoke-black border border-border text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs"
+                          <label className="text-[10px] text-text-muted font-mono block mb-0.5">
+                            {locale === "th" ? "รายละเอียดความต้องการ / สเปกระบบที่ต้องการ" : "Project Requirements / Idea"}
+                          </label>
+                          <textarea
+                            rows={2}
+                            placeholder={
+                              locale === "th"
+                                ? "เช่น ต้องการเว็บขายของ มีระบบชำระเงิน และระบบสต็อกสินค้า..."
+                                : "e.g. Need an e-commerce platform with payment gateway and inventory..."
+                            }
+                            value={leadNote}
+                            onChange={(e) => setLeadNote(e.target.value)}
+                            className="w-full py-1.5 px-2.5 rounded-lg bg-smoke-black border border-border text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs resize-none"
                           />
                         </div>
 
-                        <div className="grid grid-cols-2 gap-2">
-                          <select
-                            value={leadProjectType}
-                            onChange={(e) => setLeadProjectType(e.target.value)}
-                            className="w-full py-1.5 px-2 rounded-lg bg-smoke-black border border-border text-text-primary focus:outline-none focus:border-brand-orange text-xs"
-                          >
-                            <option value="Web Application">Web Application</option>
-                            <option value="Mobile App">Mobile App</option>
-                            <option value="Business ERP">Business ERP</option>
-                            <option value="Other System">Other System</option>
-                          </select>
-
-                          <button
-                            type="submit"
-                            disabled={isSubmittingLead}
-                            className="w-full py-1.5 px-3 rounded-lg bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition-all disabled:opacity-50"
-                          >
-                            {isSubmittingLead ? (
-                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                            ) : (
-                              <>
-                                <span>{locale === "th" ? "ส่งข้อมูล" : "Submit"}</span>
-                                <ArrowRight className="w-3 h-3" />
-                              </>
-                            )}
-                          </button>
-                        </div>
+                        <button
+                          type="submit"
+                          disabled={isSubmittingLead}
+                          className="w-full py-2 px-3 rounded-lg bg-gradient-to-r from-brand-orange to-orange-600 hover:from-brand-orange-hover hover:to-orange-700 text-white font-semibold text-xs flex items-center justify-center gap-1.5 shadow-md shadow-brand-orange/20 transition-all disabled:opacity-50 active:scale-98"
+                        >
+                          {isSubmittingLead ? (
+                            <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <>
+                              <span>{locale === "th" ? "ส่งรายละเอียดเพื่อประเมินราคา" : "Submit Project Details"}</span>
+                              <ArrowRight className="w-3.5 h-3.5" />
+                            </>
+                          )}
+                        </button>
                       </form>
                     </motion.div>
                   )}
