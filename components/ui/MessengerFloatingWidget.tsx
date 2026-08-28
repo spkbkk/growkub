@@ -49,20 +49,36 @@ interface Message {
   showLeadForm?: boolean;
 }
 
+// LINE Official SVG Icon
+export const LineIcon: React.FC<{ className?: string }> = ({
+  className = "w-5 h-5",
+}) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M19.365 9.863c.349 0 .63.285.63.631 0 .345-.281.63-.63.63H17.61v1.125h1.755c.349 0 .63.283.63.63 0 .344-.281.629-.63.629h-2.386c-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63h2.386c.346 0 .627.285.627.63 0 .349-.281.63-.63.63H17.61v1.125h1.755zm-3.855 3.016c0 .27-.174.51-.432.596-.064.021-.133.031-.199.031-.211 0-.391-.09-.51-.25l-2.443-3.317v2.94c0 .344-.279.629-.631.629-.346 0-.626-.285-.626-.629V8.108c0-.27.173-.51.43-.595.06-.023.136-.033.194-.033.195 0 .375.104.495.254l2.462 3.33V8.108c0-.345.282-.63.63-.63.345 0 .63.285.63.63v4.771zm-5.741 0c0 .344-.282.629-.631.629-.345 0-.627-.285-.627-.629V8.108c0-.345.282-.63.63-.63.346 0 .628.285.628.63v4.771zm-2.466.629H4.917c-.345 0-.63-.285-.63-.629V8.108c0-.345.285-.63.63-.63.348 0 .63.285.63.63v4.141h1.756c.348 0 .629.283.629.63 0 .344-.282.629-.629.629M24 10.314C24 4.943 18.615.572 12 .572S0 4.943 0 10.314c0 4.811 4.27 8.842 10.035 9.608.391.082.923.258 1.058.59.12.301.079.766.038 1.08l-.164 1.02c-.045.301-.24 1.186 1.049.645 1.291-.539 6.916-4.078 9.436-6.975C23.176 14.393 24 12.458 24 10.314" />
+  </svg>
+);
+
 interface MessengerFloatingWidgetProps {
   locale: Locale;
   dict: Dictionary;
   facebookPageUsername?: string;
+  lineOaUrl?: string;
 }
 
 export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = ({
   locale,
   dict,
   facebookPageUsername = "growkub",
+  lineOaUrl = "https://lin.ee/8bzBi8O",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasPrompted, setHasPrompted] = useState(false);
-  const [activeTab, setActiveTab] = useState<"chat" | "messenger">("chat");
+  const [activeTab, setActiveTab] = useState<"chat" | "messenger" | "line">("chat");
 
   // Chat State
   const [messages, setMessages] = useState<Message[]>([]);
@@ -350,7 +366,20 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
                 )}
               >
                 <MessageSquare className="w-3.5 h-3.5" />
-                <span>{locale === "th" ? "แชทบนเว็บ (สด)" : "Live Web Chat"}</span>
+                <span>{locale === "th" ? "แชทสด" : "Live Chat"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("line")}
+                className={cn(
+                  "flex-1 py-2 flex items-center justify-center gap-1.5 transition-colors border-b-2",
+                  activeTab === "line"
+                    ? "border-[#06C755] text-[#06C755] font-bold bg-[#06C755]/10"
+                    : "border-transparent text-text-muted hover:text-text-primary"
+                )}
+              >
+                <LineIcon className="w-3.5 h-3.5" />
+                <span>LINE OA</span>
               </button>
               <button
                 type="button"
@@ -363,7 +392,7 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
                 )}
               >
                 <MessengerIcon className="w-3.5 h-3.5 text-blue-400" />
-                <span>Facebook Messenger</span>
+                <span>Messenger</span>
               </button>
             </div>
 
@@ -622,7 +651,62 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
               </div>
             )}
 
-            {/* TAB 2: FACEBOOK MESSENGER DIRECT */}
+            {/* TAB 2: LINE OFFICIAL ACCOUNT */}
+            {activeTab === "line" && (
+              <div className="flex-1 p-5 flex flex-col justify-between overflow-y-auto custom-scrollbar bg-smoke-dark/70">
+                <div className="space-y-4">
+                  {/* LINE OA Official Card */}
+                  <div className="p-4 rounded-2xl bg-gradient-to-b from-[#06C755]/20 to-smoke-black border border-[#06C755]/30 text-center space-y-3 shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-[#06C755] text-white flex items-center justify-center mx-auto shadow-md shadow-[#06C755]/30">
+                      <LineIcon className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <h4 className="text-sm font-bold text-text-primary">
+                        LINE Official Account
+                      </h4>
+                      <p className="text-xs text-text-secondary mt-1">
+                        {locale === "th" ? "แชทกับเราผ่าน LINE ได้ทันที" : "Chat with us on LINE instantly"}
+                      </p>
+                    </div>
+
+                    <p className="text-xs text-text-muted leading-relaxed">
+                      {locale === "th"
+                        ? "เพิ่มเพื่อนและแชทตรงกับทีมพัฒนาของเราผ่านแอป LINE ได้เลยครับ ตอบไว รับงานจริง"
+                        : "Add us as a friend and chat directly with our dev team on the LINE app. Fast response guaranteed."}
+                    </p>
+
+                    <a
+                      href={lineOaUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3 px-4 rounded-xl bg-[#06C755] hover:bg-[#05b04c] text-white font-semibold text-xs shadow-lg shadow-[#06C755]/30 flex items-center justify-center gap-2 transition-all active:scale-95"
+                    >
+                      <LineIcon className="w-4 h-4" />
+                      <span>{locale === "th" ? "เพิ่มเพื่อน / แชท LINE ↗" : "Add Friend / Chat on LINE ↗"}</span>
+                    </a>
+                  </div>
+
+                  {/* Guarantee Box */}
+                  <div className="p-3.5 rounded-xl bg-smoke border border-border flex items-center gap-2.5 text-xs text-emerald-400 font-mono">
+                    <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>{locale === "th" ? "รับประกันการตอบกลับภายใน 24 ชม." : "Guaranteed reply within 24 hours"}</span>
+                  </div>
+                </div>
+
+                <div className="pt-4 text-center">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("chat")}
+                    className="text-xs text-brand-orange hover:underline font-mono inline-flex items-center gap-1"
+                  >
+                    <span>← {locale === "th" ? "กลับไปแชทบนหน้าเว็บ" : "Back to web chat"}</span>
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: FACEBOOK MESSENGER DIRECT */}
             {activeTab === "messenger" && (
               <div className="flex-1 p-5 flex flex-col justify-between overflow-y-auto custom-scrollbar bg-smoke-dark/70">
                 <div className="space-y-4">

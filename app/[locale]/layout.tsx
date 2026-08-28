@@ -32,6 +32,9 @@ export default async function LocaleLayout({
   const fbSetting = settings.find((s) => s.key === "facebook_page_id");
   const facebookPageUsername = fbSetting?.value_en || fbSetting?.value_th || process.env.NEXT_PUBLIC_FACEBOOK_PAGE_ID || "growkub";
 
+  const lineSetting = settings.find((s) => s.key === "line_oa_url");
+  const lineOaUrl = lineSetting?.value_en || lineSetting?.value_th || "https://lin.ee/8bzBi8O";
+
   const emailSetting = settings.find((s) => s.key === "contact_email");
   const contactEmail = emailSetting?.value_en || emailSetting?.value_th || "contact@growkub.com";
 
@@ -55,6 +58,7 @@ export default async function LocaleLayout({
         email={contactEmail}
         sameAs={[
           `https://www.facebook.com/${facebookPageUsername}`,
+          lineOaUrl,
         ]}
         address={{
           addressLocality: "Bangkok",
@@ -73,6 +77,7 @@ export default async function LocaleLayout({
         locale={locale}
         dict={dict}
         facebookPageUsername={facebookPageUsername}
+        lineOaUrl={lineOaUrl}
         contactEmail={contactEmail}
         heroTagline={heroTagline}
       />
@@ -80,6 +85,7 @@ export default async function LocaleLayout({
         locale={locale}
         dict={dict}
         facebookPageUsername={facebookPageUsername}
+        lineOaUrl={lineOaUrl}
       />
       {isCookieConsentEnabled && <CookieConsentBanner locale={locale} />}
     </div>

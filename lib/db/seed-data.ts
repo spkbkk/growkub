@@ -375,4 +375,11 @@ export const initialSiteSettings: SiteSetting[] = [
     value_en: "We use essential and analytics cookies to optimize performance and deliver a secure browsing experience in compliance with PDPA standards.",
     updated_at: new Date().toISOString(),
   },
+  {
+    id: "set-8",
+    key: "line_oa_url",
+    value_th: "https://lin.ee/8bzBi8O",
+    value_en: "https://lin.ee/8bzBi8O",
+    updated_at: new Date().toISOString(),
+  },
 ];
