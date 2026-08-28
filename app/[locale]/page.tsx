@@ -6,6 +6,7 @@ import { WorksSection } from "@/components/home/WorksSection";
 import { ProcessSection } from "@/components/home/ProcessSection";
 import { AboutSection } from "@/components/home/AboutSection";
 import { CtaSection } from "@/components/home/CtaSection";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
@@ -62,8 +63,15 @@ export default async function HomePage({
     featuredOnly: true,
   });
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://growkub.com";
+
   return (
     <div className="w-full">
+      <BreadcrumbJsonLd
+        items={[
+          { name: locale === "th" ? "หน้าหลัก" : "Home", url: `${baseUrl}/${locale}` },
+        ]}
+      />
       <HeroSection locale={locale} dict={dict} />
       <ServicesSection locale={locale} dict={dict} />
       <WorksSection locale={locale} dict={dict} projects={featuredProjects} />

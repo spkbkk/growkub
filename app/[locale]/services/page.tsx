@@ -17,6 +17,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { BackgroundGlow } from "@/components/ui/BackgroundGlow";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/seo/JsonLd";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
 
@@ -26,12 +27,32 @@ export async function generateMetadata({
   params: { locale: string };
 }): Promise<Metadata> {
   const locale = isValidLocale(params.locale) ? (params.locale as Locale) : "th";
+  const title = locale === "th" ? "บริการของเรา (Services)" : "Our Services";
+  const description =
+    locale === "th"
+      ? "บริการพัฒนา Web Application, Mobile App และ Business Management System โดยทีมงานมืออาชีพ"
+      : "Tailored engineering services: Web Applications, Mobile Apps, and Enterprise Business Systems.";
   return {
-    title: locale === "th" ? "บริการของเรา (Services)" : "Our Services",
-    description:
-      locale === "th"
-        ? "บริการพัฒนา Web Application, Mobile App และ Business Management System โดยทีมงานมืออาชีพ"
-        : "Tailored engineering services: Web Applications, Mobile Apps, and Enterprise Business Systems.",
+    title,
+    description,
+    alternates: {
+      canonical: `/${locale}/services`,
+      languages: {
+        th: "/th/services",
+        en: "/en/services",
+      },
+    },
+    openGraph: {
+      title: `${title} | Growkub`,
+      description,
+      url: `/${locale}/services`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Growkub`,
+      description,
+    },
   };
 }
 
@@ -125,8 +146,31 @@ export default async function ServicesPage({
     },
   ];
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://growkub.com";
+
   return (
     <div className="w-full pt-12 pb-24 relative">
+      <BreadcrumbJsonLd
+        items={[
+          { name: locale === "th" ? "หน้าหลัก" : "Home", url: `${baseUrl}/${locale}` },
+          { name: locale === "th" ? "บริการ" : "Services", url: `${baseUrl}/${locale}/services` },
+        ]}
+      />
+      {servicesDetail.map((item) => {
+        const sTitle = locale === "th" ? item.title_th : item.title_en;
+        const sDesc = locale === "th" ? item.description_th : item.description_en;
+        return (
+          <ServiceJsonLd
+            key={item.number}
+            name={sTitle}
+            description={sDesc}
+            provider={{ name: "Growkub", url: baseUrl }}
+            url={`${baseUrl}/${locale}/services`}
+            serviceType="Software Development"
+            areaServed="TH"
+          />
+        );
+      })}
       <BackgroundGlow position="top" />
 
       <Container>

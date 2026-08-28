@@ -16,6 +16,7 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Badge } from "@/components/ui/Badge";
 import { BackgroundGlow } from "@/components/ui/BackgroundGlow";
+import { BreadcrumbJsonLd, ProfessionalServiceJsonLd } from "@/components/seo/JsonLd";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
 
@@ -25,12 +26,32 @@ export async function generateMetadata({
   params: { locale: string };
 }): Promise<Metadata> {
   const locale = isValidLocale(params.locale) ? (params.locale as Locale) : "th";
+  const title = locale === "th" ? "เกี่ยวกับเรา (About)" : "About Growkub";
+  const description =
+    locale === "th"
+      ? "รู้จัก Growkub สตูดิโอผู้พัฒนา Digital Product และซอฟต์แวร์คุณภาพสูงสำหรับธุรกิจยุคใหม่"
+      : "Growkub is a digital product studio focused on building high-performance software for modern businesses.";
   return {
-    title: locale === "th" ? "เกี่ยวกับเรา (About)" : "About Growkub",
-    description:
-      locale === "th"
-        ? "รู้จัก Growkub สตูดิโอผู้พัฒนา Digital Product และซอฟต์แวร์คุณภาพสูงสำหรับธุรกิจยุคใหม่"
-        : "Growkub is a digital product studio focused on building high-performance software for modern businesses.",
+    title,
+    description,
+    alternates: {
+      canonical: `/${locale}/about`,
+      languages: {
+        th: "/th/about",
+        en: "/en/about",
+      },
+    },
+    openGraph: {
+      title: `${title} | Growkub`,
+      description,
+      url: `/${locale}/about`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Growkub`,
+      description,
+    },
   };
 }
 
@@ -76,8 +97,27 @@ export default async function AboutPage({
     },
   ];
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://growkub.com";
+
   return (
     <div className="w-full pt-12 pb-24 relative">
+      <BreadcrumbJsonLd
+        items={[
+          { name: locale === "th" ? "หน้าหลัก" : "Home", url: `${baseUrl}/${locale}` },
+          { name: locale === "th" ? "เกี่ยวกับเรา" : "About", url: `${baseUrl}/${locale}/about` },
+        ]}
+      />
+      <ProfessionalServiceJsonLd
+        name="Growkub"
+        url={baseUrl}
+        description={locale === "th" ? "Growkub คือ Digital Product Studio ผู้เชี่ยวชาญด้านการพัฒนาซอฟต์แวร์คุณภาพสูง" : "Growkub is a premium digital product and software engineering studio."}
+        logo={`${baseUrl}/logo.png`}
+        priceRange="$$"
+        address={{
+          addressLocality: "Bangkok",
+          addressCountry: "TH",
+        }}
+      />
       <BackgroundGlow position="top" />
 
       <Container>

@@ -5,6 +5,7 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { BackgroundGlow } from "@/components/ui/BackgroundGlow";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { BreadcrumbJsonLd } from "@/components/seo/JsonLd";
 import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
@@ -17,15 +18,35 @@ export async function generateMetadata({
   params: { locale: string };
 }): Promise<Metadata> {
   const locale = isValidLocale(params.locale) ? (params.locale as Locale) : "th";
+  const title =
+    locale === "th"
+      ? "ติดต่อเรา / ส่งรายละเอียดโปรเจกต์ (Start a Project)"
+      : "Contact Us & Project Request";
+  const description =
+    locale === "th"
+      ? "เริ่มพัฒนา Digital Product หรือระบบซอฟต์แวร์ของคุณกับทีมงาน Growkub ส่งรายละเอียดเพื่อประเมินราคาได้ทันที"
+      : "Start your project with Growkub. Send us your project details for a tailored roadmap and quote.";
   return {
-    title:
-      locale === "th"
-        ? "ติดต่อเรา / ส่งรายละเอียดโปรเจกต์ (Start a Project)"
-        : "Contact Us & Project Request",
-    description:
-      locale === "th"
-        ? "เริ่มพัฒนา Digital Product หรือระบบซอฟต์แวร์ของคุณกับทีมงาน Growkub ส่งรายละเอียดเพื่อประเมินราคาได้ทันที"
-        : "Start your project with Growkub. Send us your project details for a tailored roadmap and quote.",
+    title,
+    description,
+    alternates: {
+      canonical: `/${locale}/contact`,
+      languages: {
+        th: "/th/contact",
+        en: "/en/contact",
+      },
+    },
+    openGraph: {
+      title: `${title} | Growkub`,
+      description,
+      url: `/${locale}/contact`,
+      type: "website",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${title} | Growkub`,
+      description,
+    },
   };
 }
 
@@ -53,8 +74,16 @@ export default async function ContactPage({
   const locSetting = settings.find((s) => s.key === "location");
   const location = (locale === "th" ? locSetting?.value_th : locSetting?.value_en) || locSetting?.value_th || info.location;
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://growkub.com";
+
   return (
     <div className="w-full pt-12 pb-24 relative">
+      <BreadcrumbJsonLd
+        items={[
+          { name: locale === "th" ? "หน้าหลัก" : "Home", url: `${baseUrl}/${locale}` },
+          { name: locale === "th" ? "ติดต่อ" : "Contact", url: `${baseUrl}/${locale}/contact` },
+        ]}
+      />
       <BackgroundGlow position="top" />
 
       <Container>

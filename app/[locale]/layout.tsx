@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MessengerFloatingWidget } from "@/components/ui/MessengerFloatingWidget";
+import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale, locales } from "@/lib/i18n";
 
@@ -35,8 +36,30 @@ export default async function LocaleLayout({
   const heroSetting = settings.find((s) => s.key === "hero_tagline");
   const heroTagline = locale === "th" ? heroSetting?.value_th : heroSetting?.value_en;
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://growkub.com";
+
   return (
     <div className="min-h-screen flex flex-col justify-between relative bg-smoke-black">
+      <OrganizationJsonLd
+        name="Growkub"
+        url={baseUrl}
+        logo={`${baseUrl}/logo.png`}
+        description="Growkub is a premium digital product and software engineering studio based in Bangkok, Thailand."
+        email={contactEmail}
+        sameAs={[
+          `https://www.facebook.com/${facebookPageUsername}`,
+        ]}
+        address={{
+          addressLocality: "Bangkok",
+          addressCountry: "TH",
+        }}
+      />
+      <WebSiteJsonLd
+        name="Growkub"
+        url={baseUrl}
+        description="Digital Product & Software Development Studio"
+        inLanguage={["th", "en"]}
+      />
       <Navbar locale={locale} dict={dict} />
       <main className="flex-1 w-full">{children}</main>
       <Footer

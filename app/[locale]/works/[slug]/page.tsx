@@ -16,6 +16,7 @@ import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { BackgroundGlow } from "@/components/ui/BackgroundGlow";
+import { BreadcrumbJsonLd, CaseStudyJsonLd } from "@/components/seo/JsonLd";
 import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
@@ -38,7 +39,22 @@ export async function generateMetadata({
   return {
     title: `${title} | Growkub Case Study`,
     description,
+    alternates: {
+      canonical: `/${locale}/works/${params.slug}`,
+      languages: {
+        th: `/th/works/${params.slug}`,
+        en: `/en/works/${params.slug}`,
+      },
+    },
     openGraph: {
+      title: `${title} | Growkub`,
+      description,
+      images: [project.cover_image],
+      url: `/${locale}/works/${params.slug}`,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
       title: `${title} | Growkub`,
       description,
       images: [project.cover_image],
@@ -69,8 +85,28 @@ export default async function CaseStudyPage({
   const fullDesc =
     locale === "th" ? project.description_th : project.description_en;
 
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://growkub.com";
+
   return (
     <div className="w-full pt-10 pb-24 relative">
+      <BreadcrumbJsonLd
+        items={[
+          { name: locale === "th" ? "หน้าหลัก" : "Home", url: `${baseUrl}/${locale}` },
+          { name: locale === "th" ? "ผลงาน" : "Works", url: `${baseUrl}/${locale}/works` },
+          { name: title, url: `${baseUrl}/${locale}/works/${project.slug}` },
+        ]}
+      />
+      <CaseStudyJsonLd
+        name={title}
+        description={shortDesc}
+        url={`${baseUrl}/${locale}/works/${project.slug}`}
+        image={project.cover_image}
+        datePublished={new Date(project.created_at).toISOString()}
+        dateModified={new Date(project.updated_at).toISOString()}
+        author={{ name: "Growkub", url: baseUrl }}
+        technologies={project.technologies}
+        clientName={project.client_name}
+      />
       <BackgroundGlow position="top" />
 
       <Container>

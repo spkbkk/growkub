@@ -15,12 +15,38 @@ export const metadata: Metadata = {
     default: "Growkub | Digital Product & Software Development",
   },
   description: "Growkub is a premium digital product and software engineering studio. We design and build high-performance web applications, mobile apps, and custom business systems.",
+  keywords: [
+    "Growkub",
+    "รับทำเว็บ",
+    "รับพัฒนาระบบ",
+    "Web Application",
+    "Software Development",
+    "Mobile App",
+    "Next.js",
+    "React",
+    "TypeScript",
+    "รับทำเว็บไซต์",
+    "พัฒนาซอฟต์แวร์",
+    "ระบบจัดการธุรกิจ",
+    "ERP",
+    "Digital Product Studio",
+    "Bangkok",
+    "Thailand",
+  ],
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   openGraph: {
     title: "Growkub | Digital Product & Software Development",
     description: "Build scalable web applications, mobile apps, and business systems with Growkub.",
     siteName: "Growkub",
     type: "website",
+    locale: "th_TH",
+    alternateLocale: "en_US",
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Growkub | Digital Product & Software Development",
+    description: "Build scalable web applications, mobile apps, and business systems with Growkub.",
   },
   icons: {
     icon: [
@@ -36,6 +62,17 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    // google: "YOUR_GOOGLE_VERIFICATION_CODE",
+    // other: { "facebook-domain-verification": "YOUR_FB_CODE" },
   },
 };
 
