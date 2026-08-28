@@ -7,6 +7,8 @@ import {
   Lead,
   SiteSetting,
   LeadStatus,
+  PageView,
+  AnalyticsSummary,
 } from "./types";
 import {
   initialAdmins,
@@ -31,6 +33,7 @@ export class InMemoryDataStore {
   projects: Project[] = [...initialProjects];
   leads: Lead[] = [...initialLeads];
   settings: SiteSetting[] = [...initialSiteSettings];
+  pageViews: PageView[] = [];
 
   async getProjects(params?: {
     publishedOnly?: boolean;
@@ -257,12 +260,79 @@ export class InMemoryDataStore {
       return d.getMonth() === currentMonth && d.getFullYear() === currentYear;
     }).length;
 
+    const uniqueVisitors = new Set(this.pageViews.map((pv) => pv.visitor_id)).size;
+
     return {
       newLeads: newLeadsCount,
       activeProjects: activeProjectsCount,
       publishedWorks: publishedWorksCount,
       thisMonthLeads: thisMonthLeadsCount,
       totalLeads: this.leads.length,
+      totalPageviews: this.pageViews.length,
+      uniqueVisitors,
+    };
+  }
+
+  async recordPageView(data: {
+    path: string;
+    locale: string;
+    referrer?: string;
+    device_type?: "desktop" | "mobile" | "tablet";
+    visitor_id: string;
+  }): Promise<void> {
+    const id = `pv-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+    this.pageViews.push({
+      id,
+      path: data.path,
+      locale: data.locale,
+      referrer: data.referrer,
+      device_type: data.device_type,
+      visitor_id: data.visitor_id,
+      created_at: new Date().toISOString(),
+    });
+  }
+
+  async getAnalyticsSummary(): Promise<AnalyticsSummary> {
+    const now = Date.now();
+    const oneDayAgo = now - 24 * 3600 * 1000;
+    const oneWeekAgo = now - 7 * 24 * 3600 * 1000;
+    const oneMonthAgo = now - 30 * 24 * 3600 * 1000;
+
+    const totalPageviews = this.pageViews.length;
+    const uniqueVisitors = new Set(this.pageViews.map((p) => p.visitor_id)).size;
+    const todayPageviews = this.pageViews.filter((p) => new Date(p.created_at).getTime() >= oneDayAgo).length;
+    const thisWeekPageviews = this.pageViews.filter((p) => new Date(p.created_at).getTime() >= oneWeekAgo).length;
+    const thisMonthPageviews = this.pageViews.filter((p) => new Date(p.created_at).getTime() >= oneMonthAgo).length;
+
+    const deviceStats = { desktop: 0, mobile: 0, tablet: 0 };
+    this.pageViews.forEach((p) => {
+      const type = (p.device_type || "desktop") as keyof typeof deviceStats;
+      if (deviceStats[type] !== undefined) {
+        deviceStats[type]++;
+      }
+    });
+
+    const pageCountMap: Record<string, number> = {};
+    this.pageViews.forEach((p) => {
+      pageCountMap[p.path] = (pageCountMap[p.path] || 0) + 1;
+    });
+
+    const topPages = Object.entries(pageCountMap)
+      .map(([path, views]) => ({ path, views }))
+      .sort((a, b) => b.views - a.views)
+      .slice(0, 6);
+
+    const recentVisits = [...this.pageViews].reverse().slice(0, 10);
+
+    return {
+      totalPageviews,
+      uniqueVisitors,
+      todayPageviews,
+      thisWeekPageviews,
+      thisMonthPageviews,
+      deviceStats,
+      topPages,
+      recentVisits,
     };
   }
 
@@ -575,6 +645,34 @@ export class DatabaseFacade {
       }
     }
     return memoryStore.getSettings();
+  }
+
+  async recordPageView(data: {
+    path: string;
+    locale: string;
+    referrer?: string;
+    device_type?: "desktop" | "mobile" | "tablet";
+    visitor_id: string;
+  }): Promise<void> {
+    if (this.usePostgres()) {
+      try {
+        await pgStore.recordPageView(data);
+      } catch (err: any) {
+        console.error("[Database] recordPageView failed on Postgres:", err.message);
+      }
+    }
+    await memoryStore.recordPageView(data);
+  }
+
+  async getAnalyticsSummary(): Promise<AnalyticsSummary> {
+    if (this.usePostgres()) {
+      try {
+        return await pgStore.getAnalyticsSummary();
+      } catch (err: any) {
+        console.error("[Database] getAnalyticsSummary failed on Postgres, using fallback:", err.message);
+      }
+    }
+    return memoryStore.getAnalyticsSummary();
   }
 
   async updateSetting(key: string, value_th: string, value_en: string): Promise<SiteSetting> {

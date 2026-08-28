@@ -97,3 +97,32 @@ export interface SiteSetting {
   value_en: string;
   updated_at: string;
 }
+
+export interface PageView {
+  id: string;
+  path: string;
+  locale: string;
+  referrer?: string;
+  device_type?: "desktop" | "mobile" | "tablet";
+  visitor_id: string;
+  created_at: string;
+}
+
+export interface AnalyticsSummary {
+  totalPageviews: number;
+  uniqueVisitors: number;
+  todayPageviews: number;
+  thisWeekPageviews: number;
+  thisMonthPageviews: number;
+  deviceStats: {
+    desktop: number;
+    mobile: number;
+    tablet: number;
+  };
+  topPages: {
+    path: string;
+    views: number;
+  }[];
+  recentVisits: PageView[];
+}
+

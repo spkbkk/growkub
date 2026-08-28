@@ -9,6 +9,14 @@ import {
   PlusCircle,
   Clock,
   ExternalLink,
+  Eye,
+  Activity,
+  Monitor,
+  Smartphone,
+  Tablet,
+  Globe2,
+  TrendingUp,
+  ShieldCheck,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -19,10 +27,14 @@ import { formatDate } from "@/lib/utils";
 export const dynamic = "force-dynamic";
 
 export default async function AdminDashboardPage() {
-  const stats = await db.getAdminStats();
-  const recentLeads = (await db.getLeads()).slice(0, 5);
-  const recentProjects = (await db.getProjects()).slice(0, 4);
-  const dbHealth = await db.checkHealth();
+  const [stats, analytics, recentLeads, recentProjects, dbHealth] =
+    await Promise.all([
+      db.getAdminStats(),
+      db.getAnalyticsSummary(),
+      db.getLeads().then((leads) => leads.slice(0, 5)),
+      db.getProjects().then((projs) => projs.slice(0, 4)),
+      db.checkHealth(),
+    ]);
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -43,6 +55,21 @@ export default async function AdminDashboardPage() {
     }
   };
 
+  const totalDeviceViews =
+    (analytics.deviceStats.desktop || 0) +
+    (analytics.deviceStats.mobile || 0) +
+    (analytics.deviceStats.tablet || 0) || 1;
+
+  const desktopPct = Math.round(
+    ((analytics.deviceStats.desktop || 0) / totalDeviceViews) * 100
+  );
+  const mobilePct = Math.round(
+    ((analytics.deviceStats.mobile || 0) / totalDeviceViews) * 100
+  );
+  const tabletPct = Math.round(
+    ((analytics.deviceStats.tablet || 0) / totalDeviceViews) * 100
+  );
+
   return (
     <div className="space-y-8">
       {/* Page Title & Actions */}
@@ -58,14 +85,17 @@ export default async function AdminDashboardPage() {
                 Supabase / Postgres Connected
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-amber-500/15 text-amber-400 border border-amber-500/30" title="Set DATABASE_URL to connect live PostgreSQL">
+              <span
+                className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-medium bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                title="Set DATABASE_URL to connect live PostgreSQL"
+              >
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400" />
                 In-Memory Mode
               </span>
             )}
           </div>
           <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
-            Key operational metrics and recent customer inquiries.
+            Key operational metrics, visitor analytics, and recent inquiries.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -78,7 +108,48 @@ export default async function AdminDashboardPage() {
 
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        {/* KPI 1: New Leads */}
+        {/* KPI 1: Total Pageviews */}
+        <Card className="p-6 bg-smoke-dark/90 border-border">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono text-text-muted uppercase">
+              Total Pageviews
+            </span>
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+              <Eye className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="text-3xl font-extrabold text-emerald-400">
+              {analytics.totalPageviews.toLocaleString()}
+            </div>
+            <span className="text-[11px] text-text-muted mt-1 flex items-center gap-1">
+              <TrendingUp className="w-3 h-3 text-emerald-400" />
+              <span>{analytics.todayPageviews} views today</span>
+            </span>
+          </div>
+        </Card>
+
+        {/* KPI 2: Unique Visitors */}
+        <Card className="p-6 bg-smoke-dark/90 border-border">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-mono text-text-muted uppercase">
+              Unique Visitors
+            </span>
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center">
+              <Activity className="w-4 h-4" />
+            </div>
+          </div>
+          <div className="mt-4">
+            <div className="text-3xl font-extrabold text-text-primary">
+              {analytics.uniqueVisitors.toLocaleString()}
+            </div>
+            <span className="text-[11px] text-text-muted mt-1 block">
+              Distinct visitor devices
+            </span>
+          </div>
+        </Card>
+
+        {/* KPI 3: New Inquiries */}
         <Card className="p-6 bg-smoke-dark/90 border-border">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono text-text-muted uppercase">
@@ -98,11 +169,11 @@ export default async function AdminDashboardPage() {
           </div>
         </Card>
 
-        {/* KPI 2: Active Projects */}
+        {/* KPI 4: Published Portfolio Works */}
         <Card className="p-6 bg-smoke-dark/90 border-border">
           <div className="flex items-center justify-between">
             <span className="text-xs font-mono text-text-muted uppercase">
-              Total Projects
+              Published Works
             </span>
             <div className="w-8 h-8 rounded-lg bg-smoke text-text-secondary flex items-center justify-center">
               <FolderGit2 className="w-4 h-4" />
@@ -110,51 +181,147 @@ export default async function AdminDashboardPage() {
           </div>
           <div className="mt-4">
             <div className="text-3xl font-extrabold text-text-primary">
-              {stats.activeProjects}
-            </div>
-            <span className="text-[11px] text-text-muted mt-1 block">
-              In portfolio catalog
-            </span>
-          </div>
-        </Card>
-
-        {/* KPI 3: Published Works */}
-        <Card className="p-6 bg-smoke-dark/90 border-border">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-text-muted uppercase">
-              Published Works
-            </span>
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-              <CheckCircle2 className="w-4 h-4" />
-            </div>
-          </div>
-          <div className="mt-4">
-            <div className="text-3xl font-extrabold text-emerald-400">
               {stats.publishedWorks}
             </div>
             <span className="text-[11px] text-text-muted mt-1 block">
-              Live on website
+              Live in public portfolio
             </span>
           </div>
         </Card>
+      </div>
 
-        {/* KPI 4: Monthly Leads */}
-        <Card className="p-6 bg-smoke-dark/90 border-border">
+      {/* ========================================================================= */}
+      {/* VISITOR & TRAFFIC ANALYTICS (DISPLAYED IN ADMIN ONLY) */}
+      {/* ========================================================================= */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Top Visited Pages (7 Cols) */}
+        <Card className="lg:col-span-7 p-6 bg-smoke-dark/90 border-border space-y-5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-mono text-text-muted uppercase">
-              This Month Leads
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-emerald-500/15 text-emerald-400 flex items-center justify-center">
+                <Globe2 className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-text-primary">
+                  Top Visited Pages (สถิติหน้ายอดนิยม)
+                </h2>
+                <p className="text-[11px] text-text-muted">
+                  Recorded pageviews across all routes
+                </p>
+              </div>
+            </div>
+            <span className="text-[10px] font-mono text-text-muted px-2 py-0.5 rounded bg-smoke border border-border">
+              Admin-Only Telemetry
             </span>
-            <div className="w-8 h-8 rounded-lg bg-smoke text-text-secondary flex items-center justify-center">
-              <Calendar className="w-4 h-4" />
+          </div>
+
+          <div className="space-y-3">
+            {analytics.topPages.length === 0 ? (
+              <div className="py-8 text-center text-xs text-text-muted">
+                ยังไม่มีข้อมูลการเข้าชม (รอผู้เข้าชมคนแรกบนระบบ)
+              </div>
+            ) : (
+              analytics.topPages.map((page, idx) => {
+                const maxViews = analytics.topPages[0]?.views || 1;
+                const pct = Math.round((page.views / maxViews) * 100);
+                return (
+                  <div key={idx} className="space-y-1.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-mono text-text-primary truncate max-w-[280px]">
+                        {page.path}
+                      </span>
+                      <span className="font-mono text-brand-orange font-bold">
+                        {page.views.toLocaleString()} views
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full bg-smoke rounded-full overflow-hidden">
+                      <div
+                        className="h-full bg-gradient-to-r from-brand-orange to-emerald-400 rounded-full"
+                        style={{ width: `${Math.max(pct, 5)}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </Card>
+
+        {/* Device Distribution (5 Cols) */}
+        <Card className="lg:col-span-5 p-6 bg-smoke-dark/90 border-border space-y-5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <div className="w-7 h-7 rounded-lg bg-blue-500/15 text-blue-400 flex items-center justify-center">
+                <Monitor className="w-3.5 h-3.5" />
+              </div>
+              <div>
+                <h2 className="text-sm font-bold text-text-primary">
+                  Device Breakdown
+                </h2>
+                <p className="text-[11px] text-text-muted">
+                  Visitor device distribution
+                </p>
+              </div>
             </div>
           </div>
-          <div className="mt-4">
-            <div className="text-3xl font-extrabold text-text-primary">
-              {stats.thisMonthLeads}
+
+          <div className="space-y-4 pt-2">
+            {/* Desktop */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="flex items-center gap-2 text-text-secondary">
+                  <Monitor className="w-3.5 h-3.5 text-text-primary" />
+                  <span>Desktop / Laptop</span>
+                </span>
+                <span className="font-mono font-bold text-text-primary">
+                  {analytics.deviceStats.desktop} ({desktopPct}%)
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-smoke rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-blue-500 rounded-full"
+                  style={{ width: `${desktopPct}%` }}
+                />
+              </div>
             </div>
-            <span className="text-[11px] text-text-muted mt-1 block">
-              Current calendar month
-            </span>
+
+            {/* Mobile */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="flex items-center gap-2 text-text-secondary">
+                  <Smartphone className="w-3.5 h-3.5 text-emerald-400" />
+                  <span>Mobile Phone</span>
+                </span>
+                <span className="font-mono font-bold text-text-primary">
+                  {analytics.deviceStats.mobile} ({mobilePct}%)
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-smoke rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-emerald-500 rounded-full"
+                  style={{ width: `${mobilePct}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Tablet */}
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="flex items-center gap-2 text-text-secondary">
+                  <Tablet className="w-3.5 h-3.5 text-amber-400" />
+                  <span>Tablet / iPad</span>
+                </span>
+                <span className="font-mono font-bold text-text-primary">
+                  {analytics.deviceStats.tablet} ({tabletPct}%)
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-smoke rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-amber-500 rounded-full"
+                  style={{ width: `${tabletPct}%` }}
+                />
+              </div>
+            </div>
           </div>
         </Card>
       </div>
@@ -167,7 +334,7 @@ export default async function AdminDashboardPage() {
               Recent Project Inquiries
             </h2>
             <p className="text-xs text-text-muted mt-0.5">
-              Latest requests submitted through public contact forms.
+              Latest requests submitted through public contact forms and live chat.
             </p>
           </div>
           <Link
@@ -194,7 +361,10 @@ export default async function AdminDashboardPage() {
             </thead>
             <tbody className="divide-y divide-border/60 font-normal">
               {recentLeads.map((lead) => (
-                <tr key={lead.id} className="hover:bg-smoke/40 transition-colors">
+                <tr
+                  key={lead.id}
+                  className="hover:bg-smoke/40 transition-colors"
+                >
                   <td className="py-3.5 text-xs text-text-muted font-mono whitespace-nowrap">
                     {formatDate(lead.created_at)}
                   </td>
@@ -204,25 +374,35 @@ export default async function AdminDashboardPage() {
                   <td className="py-3.5 text-text-secondary text-xs">
                     {lead.company || "-"}
                   </td>
-                  <td className="py-3.5 text-xs text-text-secondary">
-                    {lead.project_type}
+                  <td className="py-3.5">
+                    <span className="text-xs font-mono px-2 py-0.5 rounded bg-smoke border border-border">
+                      {lead.project_type}
+                    </span>
                   </td>
-                  <td className="py-3.5 text-xs font-mono text-brand-orange">
+                  <td className="py-3.5 text-xs font-mono text-text-primary">
                     {lead.budget}
                   </td>
-                  <td className="py-3.5 whitespace-nowrap">
-                    {getStatusBadge(lead.status)}
-                  </td>
+                  <td className="py-3.5">{getStatusBadge(lead.status)}</td>
                   <td className="py-3.5 text-right">
                     <Link
-                      href={`/admin/leads?id=${lead.id}`}
-                      className="text-xs font-mono text-text-secondary hover:text-brand-orange transition-colors"
+                      href={`/admin/leads`}
+                      className="text-xs text-brand-orange hover:underline font-mono"
                     >
                       Details →
                     </Link>
                   </td>
                 </tr>
               ))}
+              {recentLeads.length === 0 && (
+                <tr>
+                  <td
+                    colSpan={7}
+                    className="py-8 text-center text-xs text-text-muted"
+                  >
+                    No inquiries recorded yet.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Save, CheckCircle2, Sliders, Globe, Shield } from "lucide-react";
+import { Save, CheckCircle2, Sliders, Globe, Shield, Cookie } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
@@ -21,6 +21,13 @@ export default function AdminSettingsPage() {
       "รักษาความลับของธุรกิจ 100% ข้อมูลและ Source Code ของลูกค้าจะไม่ถูกนำไปเทรน AI สาธารณะ พร้อมเข้ารหัส End-to-End ตามมาตรฐาน OWASP และรับประกันเสถียรภาพ 99.99% Uptime",
     ai_security_statement_en:
       "100% data confidentiality. Your proprietary business logic and source code are strictly isolated and never fed into public AI training sets. End-to-end encrypted with 99.99% Uptime.",
+    cookie_consent_enabled: "true",
+    cookie_consent_title_th: "เว็บไซต์นี้มีการใช้งานคุกกี้ (Cookie Policy)",
+    cookie_consent_title_en: "We Value Your Privacy & Cookies",
+    cookie_consent_message_th:
+      "เราใช้คุกกี้ที่จำเป็นและคุกกี้เพื่อการวิเคราะห์เพื่อมอบประสบการณ์การใช้งานที่ราบรื่นและปลอดภัยตามมาตรฐาน PDPA",
+    cookie_consent_message_en:
+      "We use essential and analytics cookies to optimize performance and deliver a secure browsing experience in compliance with PDPA standards.",
     contact_email: "contact@growkub.com",
     contact_phone: "+66 81 234 5678",
     location: "Bangkok, Thailand",
@@ -65,6 +72,14 @@ export default function AdminSettingsPage() {
           } else if (s.key === "ai_security_statement") {
             newSettings.ai_security_statement_th = s.value_th || newSettings.ai_security_statement_th;
             newSettings.ai_security_statement_en = s.value_en || newSettings.ai_security_statement_en;
+          } else if (s.key === "cookie_consent_enabled") {
+            newSettings.cookie_consent_enabled = s.value_th || s.value_en || "true";
+          } else if (s.key === "cookie_consent_title") {
+            newSettings.cookie_consent_title_th = s.value_th || newSettings.cookie_consent_title_th;
+            newSettings.cookie_consent_title_en = s.value_en || newSettings.cookie_consent_title_en;
+          } else if (s.key === "cookie_consent_message") {
+            newSettings.cookie_consent_message_th = s.value_th || newSettings.cookie_consent_message_th;
+            newSettings.cookie_consent_message_en = s.value_en || newSettings.cookie_consent_message_en;
           } else if (s.key === "contact_email") {
             newSettings.contact_email = s.value_en || s.value_th || newSettings.contact_email;
           } else if (s.key === "contact_phone") {
@@ -115,6 +130,33 @@ export default function AdminSettingsPage() {
             key: "ai_security_statement",
             value_th: settings.ai_security_statement_th,
             value_en: settings.ai_security_statement_en,
+          }),
+        }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "cookie_consent_enabled",
+            value_th: settings.cookie_consent_enabled,
+            value_en: settings.cookie_consent_enabled,
+          }),
+        }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "cookie_consent_title",
+            value_th: settings.cookie_consent_title_th,
+            value_en: settings.cookie_consent_title_en,
+          }),
+        }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "cookie_consent_message",
+            value_th: settings.cookie_consent_message_th,
+            value_en: settings.cookie_consent_message_en,
           }),
         }),
         fetch("/api/admin/settings", {
@@ -183,7 +225,7 @@ export default function AdminSettingsPage() {
           Site Configuration & Settings
         </h1>
         <p className="text-xs sm:text-sm text-text-secondary mt-0.5">
-          Configure global copy, contact details, and SEO parameters.
+          Configure global copy, Cookie consent (PDPA), contact details, and SEO parameters.
         </p>
       </div>
 
@@ -280,6 +322,87 @@ export default function AdminSettingsPage() {
                 setSettings({
                   ...settings,
                   ai_security_statement_en: e.target.value,
+                })
+              }
+            />
+          </div>
+        </Card>
+
+        {/* ========================================================================= */}
+        {/* Cookie Consent & PDPA Banner Settings */}
+        {/* ========================================================================= */}
+        <Card className="p-6 bg-smoke-dark/90 border-border space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold font-mono text-amber-400 uppercase flex items-center gap-2">
+              <Cookie className="w-4 h-4 text-amber-400" />
+              <span>Cookie Policy & PDPA Consent Banner (การจัดการคุกกี้)</span>
+            </h3>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={settings.cookie_consent_enabled === "true"}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    cookie_consent_enabled: e.target.checked ? "true" : "false",
+                  })
+                }
+                className="w-4 h-4 rounded text-brand-orange focus:ring-brand-orange border-border bg-smoke"
+              />
+              <span className="text-xs font-mono text-text-primary">
+                {settings.cookie_consent_enabled === "true" ? "เปิดใช้งาน (Active)" : "ปิดการแสดงผล"}
+              </span>
+            </label>
+          </div>
+
+          <p className="text-xs text-text-secondary">
+            แถบแจ้งเตือนการใช้งานคุกกี้ที่แสดงที่หน้าเว็บตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล (PDPA)
+          </p>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <Input
+                label="Cookie Banner Title (Thai)"
+                value={settings.cookie_consent_title_th}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    cookie_consent_title_th: e.target.value,
+                  })
+                }
+              />
+              <Input
+                label="Cookie Banner Title (English)"
+                value={settings.cookie_consent_title_en}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    cookie_consent_title_en: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <Textarea
+              label="Cookie Policy Message (Thai)"
+              rows={2}
+              value={settings.cookie_consent_message_th}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  cookie_consent_message_th: e.target.value,
+                })
+              }
+            />
+
+            <Textarea
+              label="Cookie Policy Message (English)"
+              rows={2}
+              value={settings.cookie_consent_message_en}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  cookie_consent_message_en: e.target.value,
                 })
               }
             />

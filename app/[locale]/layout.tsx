@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { MessengerFloatingWidget } from "@/components/ui/MessengerFloatingWidget";
+import { CookieConsentBanner } from "@/components/ui/CookieConsentBanner";
+import { VisitorTracker } from "@/components/analytics/VisitorTracker";
 import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale, locales } from "@/lib/i18n";
@@ -36,10 +38,15 @@ export default async function LocaleLayout({
   const heroSetting = settings.find((s) => s.key === "hero_tagline");
   const heroTagline = locale === "th" ? heroSetting?.value_th : heroSetting?.value_en;
 
+  const cookieConsentSetting = settings.find((s) => s.key === "cookie_consent_enabled");
+  const isCookieConsentEnabled = cookieConsentSetting ? cookieConsentSetting.value_th === "true" || cookieConsentSetting.value_en === "true" : true;
+
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://growkub.com";
 
   return (
     <div className="min-h-screen flex flex-col justify-between relative bg-smoke-black">
+      {/* Invisible Visitor Analytics Tracker (Recorded in backend only) */}
+      <VisitorTracker />
       <OrganizationJsonLd
         name="Growkub"
         url={baseUrl}
@@ -74,6 +81,7 @@ export default async function LocaleLayout({
         dict={dict}
         facebookPageUsername={facebookPageUsername}
       />
+      {isCookieConsentEnabled && <CookieConsentBanner locale={locale} />}
     </div>
   );
 }

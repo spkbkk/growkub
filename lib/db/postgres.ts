@@ -8,6 +8,8 @@ import {
   Lead,
   SiteSetting,
   LeadStatus,
+  PageView,
+  AnalyticsSummary,
 } from "./types";
 import {
   initialAdmins,
@@ -189,6 +191,19 @@ export async function ensureDatabaseInitialized(): Promise<boolean> {
           value_en TEXT NOT NULL,
           updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
         );
+
+        CREATE TABLE IF NOT EXISTS page_views (
+          id VARCHAR(255) PRIMARY KEY,
+          path VARCHAR(255) NOT NULL,
+          locale VARCHAR(10) DEFAULT 'th',
+          referrer VARCHAR(500),
+          device_type VARCHAR(50) DEFAULT 'desktop',
+          visitor_id VARCHAR(255) NOT NULL,
+          created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+        );
+        CREATE INDEX IF NOT EXISTS idx_page_views_created_at ON page_views (created_at DESC);
+        CREATE INDEX IF NOT EXISTS idx_page_views_path ON page_views (path);
+        CREATE INDEX IF NOT EXISTS idx_page_views_visitor ON page_views (visitor_id);
       `);
 
       // 2. Seed initial data if tables are empty
@@ -723,9 +738,11 @@ export class PostgresDataStore {
   // --- STATS ---
   async getAdminStats() {
     const pool = await this.getClient();
-    const [leadsRes, projectsRes] = await Promise.all([
+    const [leadsRes, projectsRes, viewsCountRes, uniqueCountRes] = await Promise.all([
       pool.query("SELECT created_at, status FROM leads"),
       pool.query("SELECT id, is_published FROM projects"),
+      pool.query("SELECT COUNT(*) as count FROM page_views").catch(() => ({ rows: [{ count: 0 }] })),
+      pool.query("SELECT COUNT(DISTINCT visitor_id) as count FROM page_views").catch(() => ({ rows: [{ count: 0 }] })),
     ]);
 
     const now = new Date();
@@ -749,6 +766,80 @@ export class PostgresDataStore {
       publishedWorks: publishedWorksCount,
       thisMonthLeads: thisMonthLeadsCount,
       totalLeads: leads.length,
+      totalPageviews: parseInt(viewsCountRes.rows[0]?.count || "0", 10),
+      uniqueVisitors: parseInt(uniqueCountRes.rows[0]?.count || "0", 10),
+    };
+  }
+
+  // --- ANALYTICS / PAGEVIEWS ---
+  async recordPageView(data: {
+    path: string;
+    locale: string;
+    referrer?: string;
+    device_type?: "desktop" | "mobile" | "tablet";
+    visitor_id: string;
+  }): Promise<void> {
+    try {
+      const pool = await this.getClient();
+      const id = `pv-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+      await pool.query(
+        `INSERT INTO page_views (id, path, locale, referrer, device_type, visitor_id, created_at)
+         VALUES ($1, $2, $3, $4, $5, $6, NOW())`,
+        [
+          id,
+          data.path,
+          data.locale || "th",
+          data.referrer || "",
+          data.device_type || "desktop",
+          data.visitor_id,
+        ]
+      );
+    } catch (err: any) {
+      console.error("[PostgreSQL] Error recording page view:", err.message);
+    }
+  }
+
+  async getAnalyticsSummary(): Promise<AnalyticsSummary> {
+    const pool = await this.getClient();
+    const [totalRes, uniqueRes, todayRes, weekRes, monthRes, devicesRes, topPagesRes, recentRes] = await Promise.all([
+      pool.query("SELECT COUNT(*) as count FROM page_views").catch(() => ({ rows: [{ count: 0 }] })),
+      pool.query("SELECT COUNT(DISTINCT visitor_id) as count FROM page_views").catch(() => ({ rows: [{ count: 0 }] })),
+      pool.query("SELECT COUNT(*) as count FROM page_views WHERE created_at >= NOW() - INTERVAL '24 hours'").catch(() => ({ rows: [{ count: 0 }] })),
+      pool.query("SELECT COUNT(*) as count FROM page_views WHERE created_at >= NOW() - INTERVAL '7 days'").catch(() => ({ rows: [{ count: 0 }] })),
+      pool.query("SELECT COUNT(*) as count FROM page_views WHERE created_at >= NOW() - INTERVAL '30 days'").catch(() => ({ rows: [{ count: 0 }] })),
+      pool.query("SELECT device_type, COUNT(*) as count FROM page_views GROUP BY device_type").catch(() => ({ rows: [] })),
+      pool.query("SELECT path, COUNT(*) as count FROM page_views GROUP BY path ORDER BY count DESC LIMIT 6").catch(() => ({ rows: [] })),
+      pool.query("SELECT * FROM page_views ORDER BY created_at DESC LIMIT 10").catch(() => ({ rows: [] })),
+    ]);
+
+    const deviceStats = { desktop: 0, mobile: 0, tablet: 0 };
+    devicesRes.rows.forEach((r: any) => {
+      const type = (r.device_type || "desktop").toLowerCase() as keyof typeof deviceStats;
+      if (deviceStats[type] !== undefined) {
+        deviceStats[type] = parseInt(r.count, 10);
+      }
+    });
+
+    return {
+      totalPageviews: parseInt(totalRes.rows[0]?.count || "0", 10),
+      uniqueVisitors: parseInt(uniqueRes.rows[0]?.count || "0", 10),
+      todayPageviews: parseInt(todayRes.rows[0]?.count || "0", 10),
+      thisWeekPageviews: parseInt(weekRes.rows[0]?.count || "0", 10),
+      thisMonthPageviews: parseInt(monthRes.rows[0]?.count || "0", 10),
+      deviceStats,
+      topPages: topPagesRes.rows.map((r: any) => ({
+        path: r.path,
+        views: parseInt(r.count, 10),
+      })),
+      recentVisits: recentRes.rows.map((r: any) => ({
+        id: r.id,
+        path: r.path,
+        locale: r.locale,
+        referrer: r.referrer,
+        device_type: r.device_type,
+        visitor_id: r.visitor_id,
+        created_at: new Date(r.created_at).toISOString(),
+      })),
     };
   }
 

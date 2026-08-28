@@ -354,4 +354,25 @@ export const initialSiteSettings: SiteSetting[] = [
     value_en: "100% data confidentiality. Your proprietary business logic and source code are strictly isolated and never fed into public AI training sets. End-to-end encrypted with 99.99% Uptime.",
     updated_at: new Date().toISOString(),
   },
+  {
+    id: "set-5",
+    key: "cookie_consent_enabled",
+    value_th: "true",
+    value_en: "true",
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: "set-6",
+    key: "cookie_consent_title",
+    value_th: "เว็บไซต์นี้มีการใช้งานคุกกี้ (Cookie Policy)",
+    value_en: "We Value Your Privacy & Cookies",
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: "set-7",
+    key: "cookie_consent_message",
+    value_th: "เราใช้คุกกี้ที่จำเป็นและคุกกี้เพื่อการวิเคราะห์เพื่อมอบประสบการณ์การใช้งานที่ราบรื่นและปลอดภัยตามมาตรฐาน PDPA",
+    value_en: "We use essential and analytics cookies to optimize performance and deliver a secure browsing experience in compliance with PDPA standards.",
+    updated_at: new Date().toISOString(),
+  },
 ];
