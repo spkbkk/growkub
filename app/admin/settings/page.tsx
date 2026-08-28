@@ -13,6 +13,14 @@ export default function AdminSettingsPage() {
       "เปลี่ยนไอเดียให้กลายเป็น Digital Product ที่สร้างผลลัพธ์จริง",
     hero_tagline_en:
       "We design and build high-performance software for modern businesses.",
+    ai_headline_th:
+      "พัฒนาซอฟต์แวร์ด้วยพลัง AI ยกระดับความปลอดภัยและเสถียรภาพสูงสุด",
+    ai_headline_en:
+      "Engineering with AI: Uncompromising Security & Stability",
+    ai_security_statement_th:
+      "รักษาความลับของธุรกิจ 100% ข้อมูลและ Source Code ของลูกค้าจะไม่ถูกนำไปเทรน AI สาธารณะ พร้อมเข้ารหัส End-to-End ตามมาตรฐาน OWASP และรับประกันเสถียรภาพ 99.99% Uptime",
+    ai_security_statement_en:
+      "100% data confidentiality. Your proprietary business logic and source code are strictly isolated and never fed into public AI training sets. End-to-end encrypted with 99.99% Uptime.",
     contact_email: "contact@growkub.com",
     contact_phone: "+66 81 234 5678",
     location: "Bangkok, Thailand",
@@ -51,6 +59,12 @@ export default function AdminSettingsPage() {
           if (s.key === "hero_tagline") {
             newSettings.hero_tagline_th = s.value_th || newSettings.hero_tagline_th;
             newSettings.hero_tagline_en = s.value_en || newSettings.hero_tagline_en;
+          } else if (s.key === "ai_headline") {
+            newSettings.ai_headline_th = s.value_th || newSettings.ai_headline_th;
+            newSettings.ai_headline_en = s.value_en || newSettings.ai_headline_en;
+          } else if (s.key === "ai_security_statement") {
+            newSettings.ai_security_statement_th = s.value_th || newSettings.ai_security_statement_th;
+            newSettings.ai_security_statement_en = s.value_en || newSettings.ai_security_statement_en;
           } else if (s.key === "contact_email") {
             newSettings.contact_email = s.value_en || s.value_th || newSettings.contact_email;
           } else if (s.key === "contact_phone") {
@@ -83,6 +97,24 @@ export default function AdminSettingsPage() {
             key: "hero_tagline",
             value_th: settings.hero_tagline_th,
             value_en: settings.hero_tagline_en,
+          }),
+        }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "ai_headline",
+            value_th: settings.ai_headline_th,
+            value_en: settings.ai_headline_en,
+          }),
+        }),
+        fetch("/api/admin/settings", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: "ai_security_statement",
+            value_th: settings.ai_security_statement_th,
+            value_en: settings.ai_security_statement_en,
           }),
         }),
         fetch("/api/admin/settings", {
@@ -193,6 +225,65 @@ export default function AdminSettingsPage() {
               setSettings({ ...settings, hero_tagline_en: e.target.value })
             }
           />
+        </Card>
+
+        {/* AI-Powered Engineering & Security Statement Settings */}
+        <Card className="p-6 bg-smoke-dark/90 border-border space-y-5">
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-bold font-mono text-emerald-400 uppercase flex items-center gap-2">
+              <Shield className="w-4 h-4 text-emerald-400" />
+              <span>AI-Powered Software Development & Security Statement</span>
+            </h3>
+            <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+              Homepage & About Section
+            </span>
+          </div>
+
+          <p className="text-xs text-text-secondary">
+            ข้อความแสดงจุดยืนเรื่องการพัฒนาซอฟต์แวร์ด้วย AI ความปลอดภัยของข้อมูลลูกค้า (Zero-Trust) และความเสถียรของระบบ 99.99% Uptime
+          </p>
+
+          <div className="space-y-4">
+            <Input
+              label="AI Headline (Thai)"
+              value={settings.ai_headline_th}
+              onChange={(e) =>
+                setSettings({ ...settings, ai_headline_th: e.target.value })
+              }
+            />
+
+            <Input
+              label="AI Headline (English)"
+              value={settings.ai_headline_en}
+              onChange={(e) =>
+                setSettings({ ...settings, ai_headline_en: e.target.value })
+              }
+            />
+
+            <Textarea
+              label="Security & Stability Policy Statement (Thai)"
+              rows={2}
+              value={settings.ai_security_statement_th}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  ai_security_statement_th: e.target.value,
+                })
+              }
+            />
+
+            <Textarea
+              label="Security & Stability Policy Statement (English)"
+              rows={2}
+              value={settings.ai_security_statement_en}
+              onChange={(e) =>
+                setSettings({
+                  ...settings,
+                  ai_security_statement_en: e.target.value,
+                })
+              }
+            />
+          </div>
         </Card>
 
         {/* Global Contact Info */}

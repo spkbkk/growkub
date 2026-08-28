@@ -340,4 +340,18 @@ export const initialSiteSettings: SiteSetting[] = [
     value_en: "contact@growkub.com",
     updated_at: new Date().toISOString(),
   },
+  {
+    id: "set-3",
+    key: "ai_headline",
+    value_th: "พัฒนาซอฟต์แวร์ด้วยพลัง AI ยกระดับความปลอดภัยและเสถียรภาพสูงสุด",
+    value_en: "Engineering with AI: Uncompromising Security & Stability",
+    updated_at: new Date().toISOString(),
+  },
+  {
+    id: "set-4",
+    key: "ai_security_statement",
+    value_th: "รักษาความลับของธุรกิจ 100% ข้อมูลและ Source Code ของลูกค้าจะไม่ถูกนำไปเทรน AI สาธารณะ พร้อมเข้ารหัส End-to-End ตามมาตรฐาน OWASP และรับประกันเสถียรภาพ 99.99% Uptime",
+    value_en: "100% data confidentiality. Your proprietary business logic and source code are strictly isolated and never fed into public AI training sets. End-to-end encrypted with 99.99% Uptime.",
+    updated_at: new Date().toISOString(),
+  },
 ];

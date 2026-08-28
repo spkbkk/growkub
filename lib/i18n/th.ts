@@ -127,6 +127,35 @@ export const th: Dictionary = {
     ],
     techHeadline: "เทคโนโลยีที่เราเชี่ยวชาญ",
   },
+  aiEngineeringSection: {
+    badge: "AI-POWERED ENGINEERING & ZERO-TRUST SECURITY",
+    title: "พัฒนาซอฟต์แวร์ด้วยพลัง AI ยกระดับความปลอดภัยและเสถียรภาพสูงสุด",
+    subtitle: "เราผสานเทคโนโลยี AI สมัยใหม่เข้ากับมาตรฐานวิศวกรรมซอฟต์แวร์ระดับสากล เพื่อเร่งความเร็วในการพัฒนา ควบคู่กับการปกป้องข้อมูลของลูกค้าและการันตีความเสถียร 99.99%",
+    features: [
+      {
+        title: "AI-Accelerated Development (พัฒนาเร็วกว่า 2-3 เท่า)",
+        description: "ใช้ AI ช่วยออกแบบสถาปัตยกรรม เขียนโค้ด และจำลองสถานการณ์ทดสอบระบบ ทำให้ส่งมอบผลงานได้รวดเร็ว แม่นยำ โดยไม่ลดทอนคุณภาพ",
+        tag: "High Velocity",
+      },
+      {
+        title: "Zero-Trust & Private AI (รักษาความลับข้อมูล 100%)",
+        description: "Source Code และข้อมูลทางธุรกิจของลูกค้าจะถูกแยกส่วนเป็นความลับ ไม่ถูกนำไปเทรน AI สาธารณะ พร้อมเข้ารหัสความปลอดภัยตามมาตรฐานสากล",
+        tag: "Zero-Leakage",
+      },
+      {
+        title: "Type-Safe & Rock-Solid Stability (เสถียรภาพ 99.99%)",
+        description: "ใช้ภาษา TypeScript แบบเข้มงวดร่วมกับ Next.js SSR และ Automated Tests ตรวจสอบข้อผิดพลาด ป้องกันเว็บล่ม และรองรับการใช้งานพร้อมกันจำนวนมาก",
+        tag: "99.99% Uptime",
+      },
+      {
+        title: "Smart Enterprise AI Integration (ต่อยอดด้วย AI อัจฉริยะ)",
+        description: "พร้อมให้บริการเชื่อมต่อ AI เข้ากับระบบของคุณ เช่น ระบบอ่านเอกสาร OCR อัตโนมัติ, AI Chatbot ดูแลลูกค้า 24/7 และระบบวิเคราะห์ข้อมูลสถิติ",
+        tag: "Business Intelligence",
+      },
+    ],
+    securityBadge: "Enterprise Security Guaranteed",
+    securityGuarantee: "ทุกระบบผ่านการตรวจสอบความปลอดภัย ป้องกันช่องโหว่ OWASP ก่อนส่งมอบจริง 100%",
+  },
   ctaSection: {
     badge: "ร่วมงานกับเรา",
     headline: "มีไอเดียหรือโปรเจกต์ที่ต้องการพัฒนาใช่ไหม?",

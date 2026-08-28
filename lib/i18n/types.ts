@@ -83,6 +83,18 @@ export interface Dictionary {
     }[];
     techHeadline: string;
   };
+  aiEngineeringSection: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    features: {
+      title: string;
+      description: string;
+      tag: string;
+    }[];
+    securityBadge: string;
+    securityGuarantee: string;
+  };
   ctaSection: {
     badge: string;
     headline: string;

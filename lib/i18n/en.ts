@@ -127,6 +127,35 @@ export const en: Dictionary = {
     ],
     techHeadline: "Core Technologies We Master",
   },
+  aiEngineeringSection: {
+    badge: "AI-POWERED ENGINEERING & ZERO-TRUST SECURITY",
+    title: "Engineering with AI: Uncompromising Security & Stability",
+    subtitle: "We combine modern AI capabilities with rigorous software engineering to accelerate delivery while guaranteeing zero data leakage and 99.99% system stability.",
+    features: [
+      {
+        title: "AI-Accelerated Development (2-3x Faster Delivery)",
+        description: "Leveraging state-of-the-art AI for architecture design, boilerplate generation, and edge-case simulation—delivering products 2-3x faster with pristine code quality.",
+        tag: "High Velocity",
+      },
+      {
+        title: "Zero-Trust & Private AI (100% Data Confidentiality)",
+        description: "Your proprietary business logic and source code are strictly isolated and never fed into public AI training sets. End-to-end encrypted following OWASP standards.",
+        tag: "Zero-Leakage",
+      },
+      {
+        title: "Type-Safe & Rock-Solid Stability (99.99% Uptime)",
+        description: "Strict TypeScript and Next.js SSR architecture guaranteeing robust runtime stability, automated regression testing, and high concurrency resilience.",
+        tag: "99.99% Uptime",
+      },
+      {
+        title: "Smart Enterprise AI Integration (Business Intelligence)",
+        description: "Seamlessly infuse your software with smart AI capabilities: automated document OCR, 24/7 intelligent chat agents, and predictive business telemetry.",
+        tag: "Business Intelligence",
+      },
+    ],
+    securityBadge: "Enterprise Security Guaranteed",
+    securityGuarantee: "100% vulnerability scanned and security verified prior to production launch.",
+  },
   ctaSection: {
     badge: "Let's Collaborate",
     headline: "Have a project in mind? Let's build it.",
