@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,6 +8,14 @@ import {
   X,
   ExternalLink,
   ShieldCheck,
+  Send,
+  Sparkles,
+  Phone,
+  User,
+  CheckCircle2,
+  RefreshCw,
+  MessageSquare,
+  ChevronRight,
   ArrowRight,
 } from "lucide-react";
 import { Locale, Dictionary } from "@/lib/i18n";
@@ -27,6 +35,20 @@ export const MessengerIcon: React.FC<{ className?: string }> = ({
   </svg>
 );
 
+interface Message {
+  id: string;
+  sender: "bot" | "user";
+  text: string;
+  timestamp: string;
+  quickReplies?: Array<{
+    label: string;
+    text: string;
+    action?: "link" | "form" | "chat";
+    url?: string;
+  }>;
+  showLeadForm?: boolean;
+}
+
 interface MessengerFloatingWidgetProps {
   locale: Locale;
   dict: Dictionary;
@@ -40,11 +62,62 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasPrompted, setHasPrompted] = useState(false);
+  const [activeTab, setActiveTab] = useState<"chat" | "messenger">("chat");
 
+  // Chat State
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [inputText, setInputText] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  // In-chat Contact Form State
+  const [leadName, setLeadName] = useState("");
+  const [leadContact, setLeadContact] = useState("");
+  const [leadProjectType, setLeadProjectType] = useState("Web Application");
+  const [leadNote, setLeadNote] = useState("");
+  const [isSubmittingLead, setIsSubmittingLead] = useState(false);
+  const [showInChatForm, setShowInChatForm] = useState(false);
+
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const messengerUrl = `https://m.me/${facebookPageUsername}`;
   const t = dict.messengerWidget;
 
-  // Auto show subtle prompt tooltip after 3.5 seconds once per session
+  // Initial welcome message
+  useEffect(() => {
+    const initialGreeting: Message = {
+      id: "msg-welcome",
+      sender: "bot",
+      text:
+        locale === "th"
+          ? "สวัสดีครับ! ยินดีต้อนรับสู่ Growkub 🚀 พิมพ์สอบถามราคา รายละเอียดโปรเจกต์ หรือเลือกหัวข้อด้านล่างได้ทันทีครับ"
+          : "Hello! Welcome to Growkub 🚀 Ask about project pricing, tech stacks, or pick a quick topic below.",
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+      quickReplies: [
+        {
+          label: locale === "th" ? "💻 ทำ Web App" : "💻 Web App",
+          text: locale === "th" ? "สนใจพัฒนา Web Application ครับ" : "I want to build a Web Application",
+          action: "chat",
+        },
+        {
+          label: locale === "th" ? "📱 ทำ Mobile App" : "📱 Mobile App",
+          text: locale === "th" ? "สนใจทำ Mobile App iOS/Android ครับ" : "I want to build a Mobile App",
+          action: "chat",
+        },
+        {
+          label: locale === "th" ? "⚡ ขอใบเสนอราคา" : "⚡ Quote Request",
+          text: locale === "th" ? "ขอใบเสนอราคา / ประเมินงบ" : "Request a quotation",
+          action: "form",
+        },
+        {
+          label: locale === "th" ? "🏢 ระบบธุรกิจ / ERP" : "🏢 ERP Systems",
+          text: locale === "th" ? "ปรึกษาระบบจัดการธุรกิจ ERP ครับ" : "Consult about Enterprise ERP",
+          action: "chat",
+        },
+      ],
+    };
+    setMessages([initialGreeting]);
+  }, [locale]);
+
+  // Auto prompt tooltip
   useEffect(() => {
     const timer = setTimeout(() => {
       setHasPrompted(true);
@@ -52,17 +125,144 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
     return () => clearTimeout(timer);
   }, []);
 
-  const handleOpenMessenger = () => {
-    window.open(messengerUrl, "_blank", "noopener,noreferrer");
+  // Auto scroll to bottom of chat
+  useEffect(() => {
+    if (isOpen && activeTab === "chat") {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages, isLoading, isOpen, activeTab, showInChatForm]);
+
+  // Send message handler
+  const handleSendMessage = async (textToSend?: string) => {
+    const text = (textToSend || inputText).trim();
+    if (!text || isLoading) return;
+
+    const userMessage: Message = {
+      id: `user-${Date.now()}`,
+      sender: "user",
+      text,
+      timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setInputText("");
+    setIsLoading(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, locale }),
+      });
+
+      const data = await res.json();
+
+      if (data.showLeadForm) {
+        setShowInChatForm(true);
+      }
+
+      const botMessage: Message = {
+        id: `bot-${Date.now()}`,
+        sender: "bot",
+        text: data.reply || "ขอบคุณครับ ทีมงานกำลังตรวจสอบข้อมูลให้ครับ",
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        quickReplies: data.quickReplies,
+      };
+
+      setMessages((prev) => [...prev, botMessage]);
+    } catch (err) {
+      console.error("Chat error:", err);
+      const errorMessage: Message = {
+        id: `bot-err-${Date.now()}`,
+        sender: "bot",
+        text:
+          locale === "th"
+            ? "สามารถทักข้อความพูดคุยกับทีม Senior Developer บน Facebook Messenger ได้โดยตรงเลยครับ"
+            : "You can also chat directly with our Senior Developers on Facebook Messenger.",
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        quickReplies: [
+          {
+            label: locale === "th" ? "💬 เปิด Messenger" : "💬 Open Messenger",
+            text: "เปิด Messenger",
+            action: "link",
+            url: messengerUrl,
+          },
+        ],
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleSelectTopic = () => {
-    window.open(messengerUrl, "_blank", "noopener,noreferrer");
+  // Submit in-chat Lead form
+  const handleSubmitLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!leadName.trim() || !leadContact.trim() || isSubmittingLead) return;
+
+    setIsSubmittingLead(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          message: `[ขอติดต่อกลับ] ${leadProjectType} - ${leadNote}`,
+          locale,
+          contactInfo: {
+            name: leadName,
+            contact: leadContact,
+            projectType: leadProjectType,
+            note: leadNote,
+          },
+        }),
+      });
+
+      const data = await res.json();
+
+      const confirmationMessage: Message = {
+        id: `bot-confirm-${Date.now()}`,
+        sender: "bot",
+        text:
+          data.reply ||
+          (locale === "th"
+            ? `ขอบคุณครับคุณ ${leadName}! ทีมงานได้รับข้อมูลแล้ว จะติดต่อกลับทาง ${leadContact} ภายใน 24 ชม. ครับ`
+            : `Thank you ${leadName}! We have received your info and will contact you via ${leadContact} within 24 hours.`),
+        timestamp: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        quickReplies: data.quickReplies,
+      };
+
+      setMessages((prev) => [...prev, confirmationMessage]);
+      setShowInChatForm(false);
+      setLeadName("");
+      setLeadContact("");
+      setLeadNote("");
+    } catch (err) {
+      console.error("Lead submission error:", err);
+    } finally {
+      setIsSubmittingLead(false);
+    }
+  };
+
+  const handleQuickReplyClick = (qr: {
+    label: string;
+    text: string;
+    action?: "link" | "form" | "chat";
+    url?: string;
+  }) => {
+    if (qr.action === "link" && qr.url) {
+      window.open(qr.url, "_blank", "noopener,noreferrer");
+    } else if (qr.action === "form") {
+      setShowInChatForm(true);
+      handleSendMessage(qr.text);
+    } else {
+      handleSendMessage(qr.text);
+    }
   };
 
   return (
     <aside aria-label="Live Chat & Messenger" className="fixed bottom-5 right-5 z-40 select-none">
-      {/* Floating Popover Hub */}
+      {/* Floating Chat Hub Popover */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -70,15 +270,14 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 15, scale: 0.94 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className="mb-3 w-[calc(100vw-2.5rem)] sm:w-[380px] rounded-2xl bg-smoke-dark/95 border border-border/80 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col font-sans"
+            className="mb-3 w-[calc(100vw-2.5rem)] sm:w-[400px] h-[580px] max-h-[80vh] rounded-2xl bg-smoke-dark/95 border border-border/80 shadow-2xl backdrop-blur-xl overflow-hidden flex flex-col font-sans"
             style={{
               boxShadow:
-                "0 20px 40px -15px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.06), 0 0 25px -5px rgba(255,106,0,0.15)",
+                "0 20px 45px -15px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.06), 0 0 30px -5px rgba(255,106,0,0.18)",
             }}
           >
-            {/* Header */}
-            <div className="p-4 bg-gradient-to-r from-smoke to-smoke-dark border-b border-border/70 flex items-center justify-between relative overflow-hidden">
-              {/* Subtle orange accent glow line */}
+            {/* Header with Mode Switch */}
+            <div className="p-3.5 bg-gradient-to-r from-smoke to-smoke-dark border-b border-border/70 flex items-center justify-between relative overflow-hidden shrink-0">
               <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-brand-orange via-blue-500 to-brand-orange" />
 
               <div className="flex items-center gap-3">
@@ -96,112 +295,344 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
                     <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
                   </span>
                 </div>
+
                 <div>
                   <div className="flex items-center gap-1.5">
                     <h3 className="text-sm font-bold text-text-primary tracking-tight">
-                      {t.title}
+                      Growkub Live Chat
                     </h3>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-brand-orange/15 text-brand-orange border border-brand-orange/30">
+                    <span className="px-1.5 py-0.2 rounded text-[10px] font-mono font-semibold bg-brand-orange/15 text-brand-orange border border-brand-orange/30">
                       Studio
                     </span>
                   </div>
                   <p className="text-[11px] text-emerald-400 font-mono flex items-center gap-1 mt-0.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-                    {t.onlineStatus}
+                    {locale === "th" ? "ตอบกลับทันที (AI + Dev)" : "Online / Instant Reply"}
                   </p>
                 </div>
               </div>
 
+              <div className="flex items-center gap-1">
+                {/* Switch to Messenger quick button */}
+                <a
+                  href={messengerUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={locale === "th" ? "สลับไปคุยบน Facebook Messenger" : "Open Facebook Messenger"}
+                  className="w-8 h-8 rounded-lg bg-blue-600/20 hover:bg-blue-600/40 border border-blue-500/30 flex items-center justify-center text-blue-400 hover:text-blue-300 transition-colors"
+                >
+                  <MessengerIcon className="w-4 h-4" />
+                </a>
+
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="w-8 h-8 rounded-lg bg-smoke-black/60 hover:bg-smoke border border-border/50 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
+                  aria-label={t.close}
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+
+            {/* Top Navigation Tabs */}
+            <div className="flex border-b border-border/60 bg-smoke-black/40 text-xs font-mono shrink-0">
               <button
                 type="button"
-                onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-lg bg-smoke-black/60 hover:bg-smoke border border-border/50 flex items-center justify-center text-text-secondary hover:text-text-primary transition-colors focus:outline-none"
-                aria-label={t.close}
+                onClick={() => setActiveTab("chat")}
+                className={cn(
+                  "flex-1 py-2 flex items-center justify-center gap-1.5 transition-colors border-b-2",
+                  activeTab === "chat"
+                    ? "border-brand-orange text-brand-orange font-bold bg-smoke/40"
+                    : "border-transparent text-text-muted hover:text-text-primary"
+                )}
               >
-                <X className="w-4 h-4" />
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>{locale === "th" ? "แชทบนเว็บ (สด)" : "Live Web Chat"}</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setActiveTab("messenger")}
+                className={cn(
+                  "flex-1 py-2 flex items-center justify-center gap-1.5 transition-colors border-b-2",
+                  activeTab === "messenger"
+                    ? "border-blue-500 text-blue-400 font-bold bg-blue-500/10"
+                    : "border-transparent text-text-muted hover:text-text-primary"
+                )}
+              >
+                <MessengerIcon className="w-3.5 h-3.5 text-blue-400" />
+                <span>Facebook Messenger</span>
               </button>
             </div>
 
-            {/* Body */}
-            <div className="p-4 space-y-4 max-h-[60vh] overflow-y-auto custom-scrollbar">
-              {/* Studio Message Bubble */}
-              <div className="flex gap-2.5 items-start">
-                <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0 mt-0.5">
-                  <MessengerIcon className="w-4 h-4" />
-                </div>
-                <div className="flex-1 space-y-1.5">
-                  <div className="p-3.5 rounded-2xl rounded-tl-sm bg-smoke border border-border/70 text-xs text-text-secondary leading-relaxed shadow-sm">
-                    <p className="text-text-primary font-medium mb-1">
-                      {locale === "th"
-                        ? "ยินดีต้อนรับสู่ Growkub"
-                        : "Welcome to Growkub"}
-                    </p>
-                    {t.greeting}
-                  </div>
-                  <div className="flex items-center justify-between text-[10px] font-mono text-text-muted px-1">
-                    <span className="flex items-center gap-1">
-                      <ShieldCheck className="w-3 h-3 text-emerald-500" />
-                      {t.chatWithDeveloper}
-                    </span>
-                    <span>
-                      {locale === "th" ? "ออนไลน์ตอนนี้" : "Available now"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Quick Topics */}
-              <div className="space-y-2 pt-1">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-text-muted block">
-                  {t.quickQuestionsTitle}
-                </span>
-                <div className="grid grid-cols-1 gap-1.5">
-                  {t.quickQuestions.map((q, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleSelectTopic()}
-                      className="group w-full p-2.5 rounded-xl bg-smoke/80 hover:bg-smoke hover:border-brand-orange/40 border border-border/60 text-left transition-all duration-150 flex items-center justify-between gap-2 text-xs text-text-secondary hover:text-text-primary"
+            {/* TAB 1: INTERACTIVE ON-SITE LIVE CHAT */}
+            {activeTab === "chat" && (
+              <div className="flex-1 flex flex-col overflow-hidden bg-smoke-dark/60">
+                {/* Messages Stream */}
+                <div className="flex-1 p-3.5 space-y-3.5 overflow-y-auto custom-scrollbar">
+                  {messages.map((msg) => (
+                    <div
+                      key={msg.id}
+                      className={cn(
+                        "flex gap-2 items-start",
+                        msg.sender === "user" ? "flex-row-reverse" : "flex-row"
+                      )}
                     >
-                      <span className="font-medium">{q.label}</span>
-                      <ArrowRight className="w-3.5 h-3.5 text-text-muted group-hover:text-brand-orange group-hover:translate-x-0.5 transition-all shrink-0" />
-                    </button>
+                      {/* Bot Avatar */}
+                      {msg.sender === "bot" && (
+                        <div className="w-7 h-7 rounded-lg bg-smoke-black border border-border flex items-center justify-center p-1 shrink-0 mt-0.5">
+                          <Image
+                            src="/logo-icon.png"
+                            alt="Growkub"
+                            width={20}
+                            height={20}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                      )}
+
+                      {/* User Avatar */}
+                      {msg.sender === "user" && (
+                        <div className="w-7 h-7 rounded-lg bg-brand-orange/20 border border-brand-orange/40 flex items-center justify-center text-brand-orange shrink-0 mt-0.5">
+                          <User className="w-4 h-4" />
+                        </div>
+                      )}
+
+                      <div
+                        className={cn(
+                          "max-w-[82%] space-y-1.5",
+                          msg.sender === "user" ? "items-end text-right" : "items-start text-left"
+                        )}
+                      >
+                        <div
+                          className={cn(
+                            "p-3 rounded-2xl text-xs leading-relaxed shadow-sm whitespace-pre-line",
+                            msg.sender === "user"
+                              ? "bg-gradient-to-r from-brand-orange to-orange-600 text-white rounded-tr-none font-medium"
+                              : "bg-smoke border border-border/70 text-text-primary rounded-tl-none font-normal"
+                          )}
+                        >
+                          {msg.text}
+                        </div>
+
+                        <span className="text-[10px] font-mono text-text-muted px-1 block">
+                          {msg.timestamp}
+                        </span>
+
+                        {/* Quick Reply Pills */}
+                        {msg.quickReplies && msg.quickReplies.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 pt-1">
+                            {msg.quickReplies.map((qr, qIdx) => (
+                              <button
+                                key={qIdx}
+                                type="button"
+                                onClick={() => handleQuickReplyClick(qr)}
+                                className="py-1 px-2.5 rounded-lg bg-smoke hover:bg-smoke-light border border-border/80 hover:border-brand-orange/50 text-[11px] text-text-secondary hover:text-text-primary transition-all flex items-center gap-1 shadow-sm active:scale-95 text-left"
+                              >
+                                <span>{qr.label}</span>
+                                {qr.action === "link" ? (
+                                  <ExternalLink className="w-2.5 h-2.5 opacity-60" />
+                                ) : (
+                                  <ChevronRight className="w-2.5 h-2.5 text-brand-orange" />
+                                )}
+                              </button>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   ))}
+
+                  {/* Typing Indicator */}
+                  {isLoading && (
+                    <div className="flex gap-2 items-start">
+                      <div className="w-7 h-7 rounded-lg bg-smoke-black border border-border flex items-center justify-center p-1 shrink-0">
+                        <Image
+                          src="/logo-icon.png"
+                          alt="Growkub"
+                          width={20}
+                          height={20}
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                      <div className="p-3 rounded-2xl rounded-tl-none bg-smoke border border-border/70 flex items-center gap-1.5 shadow-sm">
+                        <span className="w-2 h-2 rounded-full bg-brand-orange animate-bounce [animation-delay:-0.3s]" />
+                        <span className="w-2 h-2 rounded-full bg-brand-orange animate-bounce [animation-delay:-0.15s]" />
+                        <span className="w-2 h-2 rounded-full bg-brand-orange animate-bounce" />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* In-Chat Callback / Quote Form */}
+                  {showInChatForm && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3.5 rounded-xl bg-smoke border border-brand-orange/40 shadow-lg space-y-3 font-sans"
+                    >
+                      <div className="flex items-center justify-between border-b border-border/60 pb-2">
+                        <span className="text-xs font-bold text-text-primary flex items-center gap-1.5">
+                          <Sparkles className="w-3.5 h-3.5 text-brand-orange" />
+                          {locale === "th" ? "แบบฟอร์มขอใบเสนอราคาด่วน" : "Fast Quote Request"}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => setShowInChatForm(false)}
+                          className="text-text-muted hover:text-text-primary text-xs"
+                        >
+                          ✕
+                        </button>
+                      </div>
+
+                      <form onSubmit={handleSubmitLead} className="space-y-2 text-xs">
+                        <div>
+                          <input
+                            type="text"
+                            required
+                            placeholder={locale === "th" ? "ชื่อของคุณ *" : "Your Name *"}
+                            value={leadName}
+                            onChange={(e) => setLeadName(e.target.value)}
+                            className="w-full py-1.5 px-2.5 rounded-lg bg-smoke-black border border-border text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <input
+                            type="text"
+                            required
+                            placeholder={locale === "th" ? "เบอร์โทร / LINE ID / อีเมล *" : "Phone / LINE / Email *"}
+                            value={leadContact}
+                            onChange={(e) => setLeadContact(e.target.value)}
+                            className="w-full py-1.5 px-2.5 rounded-lg bg-smoke-black border border-border text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <select
+                            value={leadProjectType}
+                            onChange={(e) => setLeadProjectType(e.target.value)}
+                            className="w-full py-1.5 px-2 rounded-lg bg-smoke-black border border-border text-text-primary focus:outline-none focus:border-brand-orange text-xs"
+                          >
+                            <option value="Web Application">Web Application</option>
+                            <option value="Mobile App">Mobile App</option>
+                            <option value="Business ERP">Business ERP</option>
+                            <option value="Other System">Other System</option>
+                          </select>
+
+                          <button
+                            type="submit"
+                            disabled={isSubmittingLead}
+                            className="w-full py-1.5 px-3 rounded-lg bg-brand-orange hover:bg-brand-orange-hover text-white font-semibold text-xs flex items-center justify-center gap-1 shadow-sm transition-all disabled:opacity-50"
+                          >
+                            {isSubmittingLead ? (
+                              <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                            ) : (
+                              <>
+                                <span>{locale === "th" ? "ส่งข้อมูล" : "Submit"}</span>
+                                <ArrowRight className="w-3 h-3" />
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      </form>
+                    </motion.div>
+                  )}
+
+                  <div ref={messagesEndRef} />
+                </div>
+
+                {/* Bottom Input Area */}
+                <div className="p-2.5 border-t border-border/70 bg-smoke-black/60 shrink-0">
+                  <form
+                    onSubmit={(e) => {
+                      e.preventDefault();
+                      handleSendMessage();
+                    }}
+                    className="flex items-center gap-2"
+                  >
+                    <input
+                      type="text"
+                      value={inputText}
+                      onChange={(e) => setInputText(e.target.value)}
+                      placeholder={locale === "th" ? "พิมพ์ข้อความสอบถามที่นี่..." : "Type your message here..."}
+                      disabled={isLoading}
+                      className="flex-1 py-2 px-3 rounded-xl bg-smoke border border-border/80 text-text-primary placeholder:text-text-muted focus:outline-none focus:border-brand-orange text-xs transition-colors"
+                    />
+
+                    <button
+                      type="submit"
+                      disabled={!inputText.trim() || isLoading}
+                      className="w-9 h-9 rounded-xl bg-brand-orange hover:bg-brand-orange-hover disabled:bg-smoke disabled:text-text-muted text-white flex items-center justify-center transition-all shrink-0 shadow-sm"
+                      aria-label="Send message"
+                    >
+                      <Send className="w-4 h-4" />
+                    </button>
+                  </form>
                 </div>
               </div>
+            )}
 
-              {/* Primary Direct Messenger Button */}
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => handleOpenMessenger()}
-                  className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-medium text-xs sm:text-sm shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2.5 transition-all duration-150 group active:scale-[0.98]"
-                >
-                  <MessengerIcon className="w-4 h-4 shrink-0 transition-transform group-hover:scale-110" />
-                  <span>{t.openMessenger}</span>
-                  <ExternalLink className="w-3.5 h-3.5 opacity-70 group-hover:opacity-100 shrink-0" />
-                </button>
-              </div>
+            {/* TAB 2: FACEBOOK MESSENGER DIRECT */}
+            {activeTab === "messenger" && (
+              <div className="flex-1 p-5 flex flex-col justify-between overflow-y-auto custom-scrollbar bg-smoke-dark/70">
+                <div className="space-y-4">
+                  {/* Messenger Official Card */}
+                  <div className="p-4 rounded-2xl bg-gradient-to-b from-blue-950/40 to-smoke-black border border-blue-500/30 text-center space-y-3 shadow-lg">
+                    <div className="w-12 h-12 rounded-2xl bg-blue-600 text-white flex items-center justify-center mx-auto shadow-md shadow-blue-500/30">
+                      <MessengerIcon className="w-6 h-6" />
+                    </div>
 
-              {/* Alternative Project Request link */}
-              <div className="pt-1 text-center">
-                <Link
-                  href={`/${locale}/contact`}
-                  onClick={() => setIsOpen(false)}
-                  className="text-[11px] text-text-muted hover:text-brand-orange transition-colors inline-flex items-center gap-1 font-mono"
-                >
-                  <span>{t.otherChannels}</span>
-                  <span className="text-brand-orange">→</span>
-                </Link>
+                    <div>
+                      <h4 className="text-sm font-bold text-text-primary">
+                        Facebook Messenger
+                      </h4>
+                      <p className="text-xs text-text-secondary mt-1">
+                        m.me/{facebookPageUsername}
+                      </p>
+                    </div>
+
+                    <p className="text-xs text-text-muted leading-relaxed">
+                      {locale === "th"
+                        ? "แชทตรงกับทีม Senior Developer ผ่านแอปพลิเคชัน Facebook Messenger บนมือถือหรือคอมพิวเตอร์ของคุณได้ทันที"
+                        : "Chat directly with our senior development team via Facebook Messenger app anytime."}
+                    </p>
+
+                    <a
+                      href={messengerUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 via-blue-500 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-semibold text-xs shadow-lg shadow-blue-500/30 flex items-center justify-center gap-2 transition-all active:scale-95"
+                    >
+                      <MessengerIcon className="w-4 h-4" />
+                      <span>{locale === "th" ? "เปิด Messenger ทันที ↗" : "Open in Messenger ↗"}</span>
+                    </a>
+                  </div>
+
+                  {/* Guarantee Box */}
+                  <div className="p-3.5 rounded-xl bg-smoke border border-border flex items-center gap-2.5 text-xs text-emerald-400 font-mono">
+                    <ShieldCheck className="w-4 h-4 text-emerald-500 shrink-0" />
+                    <span>{locale === "th" ? "รับประกันการตอบกลับภายใน 24 ชม." : "Guaranteed reply within 24 hours"}</span>
+                  </div>
+                </div>
+
+                <div className="pt-4 text-center">
+                  <button
+                    type="button"
+                    onClick={() => setActiveTab("chat")}
+                    className="text-xs text-brand-orange hover:underline font-mono inline-flex items-center gap-1"
+                  >
+                    <span>← {locale === "th" ? "กลับไปแชทบนหน้าเว็บ" : "Back to web chat"}</span>
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Floating Button / Toggle Bar */}
+      {/* Floating Action Button */}
       <div className="flex items-center gap-2 justify-end">
-        {/* Floating Tooltip Callout (Visible before opening if not opened) */}
+        {/* Floating Callout Tooltip */}
         <AnimatePresence>
           {!isOpen && hasPrompted && (
             <motion.div
@@ -212,39 +643,39 @@ export const MessengerFloatingWidget: React.FC<MessengerFloatingWidgetProps> = (
               className="hidden sm:flex items-center gap-2 py-2 px-3.5 rounded-full bg-smoke-dark/95 border border-border hover:border-brand-orange/40 text-xs text-text-primary shadow-xl backdrop-blur-md cursor-pointer transition-all hover:scale-105"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping inline-block shrink-0" />
-              <span className="font-medium">{t.floatingTooltip}</span>
-              <MessengerIcon className="w-3.5 h-3.5 text-blue-400" />
+              <span className="font-medium">
+                {locale === "th" ? "💬 แชทปรึกษาโปรเจกต์ได้เลยครับ" : "💬 Chat with us live"}
+              </span>
+              <Sparkles className="w-3.5 h-3.5 text-brand-orange" />
             </motion.div>
           )}
         </AnimatePresence>
 
-        {/* Main Messenger FAB Button */}
+        {/* Main Floating Button */}
         <motion.button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           whileHover={{ scale: 1.06 }}
           whileTap={{ scale: 0.94 }}
           aria-expanded={isOpen}
-          aria-label="Toggle Facebook Messenger Chat"
+          aria-label="Toggle Live Chat & Messenger"
           className={cn(
-            "relative w-14 h-14 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none",
+            "relative w-14 h-14 rounded-full flex items-center justify-center transition-all duration-200 focus:outline-none shadow-xl",
             isOpen
               ? "bg-smoke-dark border-2 border-brand-orange text-text-primary shadow-glow"
-              : "bg-gradient-to-tr from-blue-600 via-blue-500 to-indigo-600 text-white shadow-xl shadow-blue-500/30 hover:shadow-blue-500/50"
+              : "bg-gradient-to-tr from-brand-orange via-orange-500 to-amber-500 text-white shadow-brand-orange/30 hover:shadow-brand-orange/50"
           )}
         >
-          {/* Subtle surrounding ring glow */}
           {!isOpen && (
-            <span className="absolute inset-0 rounded-full bg-blue-500/30 animate-ping -z-10" />
+            <span className="absolute inset-0 rounded-full bg-brand-orange/30 animate-ping -z-10" />
           )}
 
           {isOpen ? (
             <X className="w-6 h-6 text-brand-orange" />
           ) : (
-            <MessengerIcon className="w-7 h-7 text-white" />
+            <MessageSquare className="w-6 h-6 text-white" />
           )}
 
-          {/* Active online green dot */}
           {!isOpen && (
             <span className="absolute top-1 right-1 w-3.5 h-3.5 rounded-full bg-emerald-500 border-2 border-smoke-black flex items-center justify-center">
               <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
