@@ -15,7 +15,6 @@ import {
   initialAdmins,
   initialServices,
   initialProjects,
-  initialLeads,
   initialSiteSettings,
 } from "./seed-data";
 
@@ -257,18 +256,6 @@ export async function ensureDatabaseInitialized(): Promise<boolean> {
         }
       }
 
-      // Leads
-      const leadCountRes = await pool.query("SELECT COUNT(*) FROM leads");
-      if (parseInt(leadCountRes.rows[0].count, 10) === 0) {
-        for (const l of initialLeads) {
-          await pool.query(
-            `INSERT INTO leads (id, name, email, phone, company, project_type, budget, message, status, internal_note, created_at, updated_at)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
-             ON CONFLICT (id) DO NOTHING`,
-            [l.id, l.name, l.email, l.phone, l.company, l.project_type, l.budget, l.message, l.status, l.internal_note || null, l.created_at, l.updated_at]
-          );
-        }
-      }
 
       // Site Settings
       const settingsCountRes = await pool.query("SELECT COUNT(*) FROM site_settings");

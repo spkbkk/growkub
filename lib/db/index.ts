@@ -14,7 +14,6 @@ import {
   initialAdmins,
   initialServices,
   initialProjects,
-  initialLeads,
   initialSiteSettings,
 } from "./seed-data";
 import {
@@ -31,7 +30,7 @@ export class InMemoryDataStore {
   admins: AdminUser[] = [...initialAdmins];
   services: Service[] = [...initialServices];
   projects: Project[] = [...initialProjects];
-  leads: Lead[] = [...initialLeads];
+  leads: Lead[] = [];
   settings: SiteSetting[] = [...initialSiteSettings];
   pageViews: PageView[] = [];
 

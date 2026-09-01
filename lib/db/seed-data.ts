@@ -280,9 +280,6 @@ export const initialProjects: Project[] = [
   },
 ];
 
-export const initialLeads: Lead[] = [];
-
-
 export const initialSiteSettings: SiteSetting[] = [
   {
     id: "set-1",
