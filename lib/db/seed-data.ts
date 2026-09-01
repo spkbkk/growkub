@@ -280,50 +280,8 @@ export const initialProjects: Project[] = [
   },
 ];
 
-export const initialLeads: Lead[] = [
-  {
-    id: "lead-1",
-    name: "Thanaphat S.",
-    email: "thanaphat@fintechasia.co",
-    phone: "089-123-4567",
-    company: "Fintech Asia Partners",
-    project_type: "Web Application",
-    budget: "100,000 - 300,000",
-    message: "ต้องการพัฒนาระบบ Portal สำหรับนักลงทุน ดูข้อมูลพอร์ตแบบ Real-time และสรุปภาษีประจำปี",
-    status: "NEW",
-    internal_note: "ส่งข้อความติดต่อกลับทางอีเมลและนัดประชุมออนไลน์สัปดาห์หน้า",
-    created_at: new Date(Date.now() - 3600 * 1000 * 2).toISOString(),
-    updated_at: new Date(Date.now() - 3600 * 1000 * 2).toISOString(),
-  },
-  {
-    id: "lead-2",
-    name: "Kittikorn M.",
-    email: "kittikorn@ecom-direct.com",
-    phone: "081-987-6543",
-    company: "E-Commerce Direct Thailand",
-    project_type: "Business System",
-    budget: "300,000+",
-    message: "ต้องการสร้างระบบหลังบ้านจัดการสต็อกสินค้าเชื่อมต่อกับ Lazada, Shopee และ TikTok Shop ในที่เดียว",
-    status: "DISCUSSION",
-    internal_note: "ส่ง Technical Specification ให้ลูกค้าพิจารณาแล้ว",
-    created_at: new Date(Date.now() - 3600 * 1000 * 24 * 3).toISOString(),
-    updated_at: new Date(Date.now() - 3600 * 1000 * 24).toISOString(),
-  },
-  {
-    id: "lead-3",
-    name: "Sarah Jenkins",
-    email: "sarah.j@globallogistics.io",
-    phone: "+66 82 456 7890",
-    company: "Global Logistics Hub",
-    project_type: "Mobile App",
-    budget: "100,000 - 300,000",
-    message: "We need a custom mobile tracking app for our truck drivers in Southeast Asia.",
-    status: "QUOTATION",
-    internal_note: "Quotation sent via PDF.",
-    created_at: new Date(Date.now() - 3600 * 1000 * 24 * 7).toISOString(),
-    updated_at: new Date(Date.now() - 3600 * 1000 * 24 * 5).toISOString(),
-  },
-];
+export const initialLeads: Lead[] = [];
+
 
 export const initialSiteSettings: SiteSetting[] = [
   {
