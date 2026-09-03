@@ -9,6 +9,8 @@ import { OrganizationJsonLd, WebSiteJsonLd } from "@/components/seo/JsonLd";
 import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale, locales } from "@/lib/i18n";
 
+export const revalidate = 60;
+
 export async function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
 }

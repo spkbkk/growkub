@@ -21,7 +21,22 @@ import { db } from "@/lib/db";
 import { getDictionary, isValidLocale, Locale } from "@/lib/i18n";
 import type { Metadata } from "next";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  try {
+    const projects = await db.getProjects({ publishedOnly: true });
+    const locales = ["th", "en"];
+    return locales.flatMap((locale) =>
+      projects.map((p) => ({
+        locale,
+        slug: p.slug,
+      }))
+    );
+  } catch (e) {
+    return [];
+  }
+}
 
 export async function generateMetadata({
   params,
@@ -173,7 +188,6 @@ export default async function CaseStudyPage({
             alt={title}
             fill
             priority
-            unoptimized
             className="object-cover object-top"
             sizes="(max-width: 1200px) 100vw, 1200px"
           />
@@ -247,7 +261,6 @@ export default async function CaseStudyPage({
                           src={img.image_url}
                           alt={alt || title}
                           fill
-                          unoptimized
                           className="object-cover object-top"
                           sizes="(max-width: 1200px) 100vw, 800px"
                         />

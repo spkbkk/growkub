@@ -77,9 +77,9 @@ export function getPostgresPool(): Pool | null {
   const pool = new Pool({
     connectionString,
     ssl: isLocalhost ? false : { rejectUnauthorized: false },
-    max: 2,
+    max: 5,
     idleTimeoutMillis: 10000,
-    connectionTimeoutMillis: 10000,
+    connectionTimeoutMillis: 8000,
   });
 
   pool.on("error", (err) => {
@@ -101,6 +101,14 @@ export async function ensureDatabaseInitialized(): Promise<boolean> {
 
   global.__growkub_pg_initialized = (async () => {
     try {
+      // Fast path: Check if database tables already exist to avoid slow DDL on serverless cold starts
+      const checkRes = await pool.query(
+        "SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'projects' LIMIT 1"
+      );
+      if (checkRes.rows.length > 0) {
+        return true;
+      }
+
       // 1. Create tables if not exist
       await pool.query(`
         CREATE TABLE IF NOT EXISTS admins (

@@ -373,6 +373,12 @@ const memoryStore: InMemoryDataStore = (() => {
 
 const pgStore = new PostgresDataStore();
 
+// In-Memory Fast Cache for Read-Heavy Queries (Settings & Projects)
+let _settingsCache: { data: SiteSetting[]; timestamp: number } | null = null;
+const _projectsCache = new Map<string, { data: Project[]; timestamp: number }>();
+const _slugCache = new Map<string, { data: Project | undefined; timestamp: number }>();
+const FAST_CACHE_TTL_MS = 60 * 1000; // 60 seconds
+
 // Unified Database Facade: Automatic routing to PostgreSQL or In-Memory Store
 export class DatabaseFacade {
   private usePostgres(): boolean {
@@ -384,25 +390,44 @@ export class DatabaseFacade {
     featuredOnly?: boolean;
     category?: string;
   }): Promise<Project[]> {
+    const key = JSON.stringify(params || {});
+    const cached = _projectsCache.get(key);
+    if (cached && Date.now() - cached.timestamp < FAST_CACHE_TTL_MS) {
+      return cached.data;
+    }
+    let res: Project[];
     if (this.usePostgres()) {
       try {
-        return await pgStore.getProjects(params);
+        res = await pgStore.getProjects(params);
       } catch (err: any) {
         console.error("[Database] getProjects failed on Postgres, using fallback:", err.message);
+        res = await memoryStore.getProjects(params);
       }
+    } else {
+      res = await memoryStore.getProjects(params);
     }
-    return memoryStore.getProjects(params);
+    _projectsCache.set(key, { data: res, timestamp: Date.now() });
+    return res;
   }
 
   async getProjectBySlug(slug: string): Promise<Project | undefined> {
+    const cached = _slugCache.get(slug);
+    if (cached && Date.now() - cached.timestamp < FAST_CACHE_TTL_MS) {
+      return cached.data;
+    }
+    let res: Project | undefined;
     if (this.usePostgres()) {
       try {
-        return await pgStore.getProjectBySlug(slug);
+        res = await pgStore.getProjectBySlug(slug);
       } catch (err: any) {
         console.error("[Database] getProjectBySlug failed on Postgres, using fallback:", err.message);
+        res = await memoryStore.getProjectBySlug(slug);
       }
+    } else {
+      res = await memoryStore.getProjectBySlug(slug);
     }
-    return memoryStore.getProjectBySlug(slug);
+    _slugCache.set(slug, { data: res, timestamp: Date.now() });
+    return res;
   }
 
   async getProjectById(id: string): Promise<Project | undefined> {
@@ -417,6 +442,8 @@ export class DatabaseFacade {
   }
 
   async createProject(data: Partial<Project>): Promise<Project> {
+    _projectsCache.clear();
+    _slugCache.clear();
     if (this.usePostgres()) {
       try {
         const proj = await pgStore.createProject(data);
@@ -431,6 +458,8 @@ export class DatabaseFacade {
   }
 
   async updateProject(id: string, data: Partial<Project>): Promise<Project | undefined> {
+    _projectsCache.clear();
+    _slugCache.clear();
     if (this.usePostgres()) {
       try {
         const updated = await pgStore.updateProject(id, data);
@@ -446,6 +475,8 @@ export class DatabaseFacade {
   }
 
   async deleteProject(id: string): Promise<boolean> {
+    _projectsCache.clear();
+    _slugCache.clear();
     if (this.usePostgres()) {
       try {
         const deleted = await pgStore.deleteProject(id);
@@ -636,14 +667,22 @@ export class DatabaseFacade {
   }
 
   async getSettings(): Promise<SiteSetting[]> {
+    if (_settingsCache && Date.now() - _settingsCache.timestamp < FAST_CACHE_TTL_MS) {
+      return _settingsCache.data;
+    }
+    let res: SiteSetting[];
     if (this.usePostgres()) {
       try {
-        return await pgStore.getSettings();
+        res = await pgStore.getSettings();
       } catch (err: any) {
         console.error("[Database] getSettings failed on Postgres, using fallback:", err.message);
+        res = await memoryStore.getSettings();
       }
+    } else {
+      res = await memoryStore.getSettings();
     }
-    return memoryStore.getSettings();
+    _settingsCache = { data: res, timestamp: Date.now() };
+    return res;
   }
 
   async recordPageView(data: {
@@ -675,6 +714,7 @@ export class DatabaseFacade {
   }
 
   async updateSetting(key: string, value_th: string, value_en: string): Promise<SiteSetting> {
+    _settingsCache = null;
     if (this.usePostgres()) {
       try {
         const setting = await pgStore.updateSetting(key, value_th, value_en);
